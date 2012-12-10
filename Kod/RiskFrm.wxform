@@ -1,4 +1,4 @@
-object frmNewForm: TfrmNewForm
+object frmNewForm_1: TfrmNewForm
   Left = 8
   Top = 8
   AutoScroll = False
@@ -42,73 +42,5 @@ object frmNewForm: TfrmNewForm
     Wx_ControlOrientation = wxControlVertical
     Wx_IDName = 'ID_WXBOXSIZER1'
     Wx_IDValue = 1001
-    object WxPanel1: TWxPanel
-      Left = 0
-      Top = 0
-      Width = 1366
-      Height = 768
-      TabOrder = 0
-      EVT_UPDATE_UI = 'WxPanel1UpdateUI'
-      Wx_BKColor = clBlack
-      Wx_Class = 'wxPanel'
-      Wx_ControlOrientation = wxControlVertical
-      Wx_Default = False
-      Wx_EventList.Strings = (
-        'EVT_UPDATE_UI:OnUpdateUI')
-      Wx_FGColor = clBlack
-      Wx_GeneralStyle = []
-      Wx_Hidden = False
-      Wx_IDName = 'ID_WXPANEL1'
-      Wx_IDValue = 1002
-      Wx_PaneCaption = 'WxPanel1'
-      Wx_PaneName = 'WxPanel1_Pane'
-      Wx_Aui_Dock_Direction = wxAUI_DOCK_NONE
-      Wx_Aui_Dockable_Direction = []
-      Wx_Aui_Pane_Style = []
-      Wx_Aui_Pane_Buttons = []
-      Wx_BestSize_Height = 0
-      Wx_BestSize_Width = 0
-      Wx_MinSize_Height = 0
-      Wx_MinSize_Width = 0
-      Wx_MaxSize_Height = 0
-      Wx_MaxSize_Width = 0
-      Wx_Floating_Height = 0
-      Wx_Floating_Width = 0
-      Wx_Floating_X_Pos = 0
-      Wx_Floating_Y_Pos = 0
-      object DebugText: TWxStaticText
-        Left = 416
-        Top = 280
-        Width = 61
-        Height = 19
-        Caption = 'DebugText'
-        TabOrder = 0
-        Wx_BGColor = clBlack
-        Wx_Class = 'wxStaticText'
-        Wx_ControlOrientation = wxControlVertical
-        Wx_FGColor = clBlack
-        Wx_GeneralStyle = []
-        Wx_Hidden = False
-        Wx_IDName = 'ID_DEBUGTEXT'
-        Wx_IDValue = 1003
-        Wx_LabelStyle = []
-        Wx_PaneCaption = 'WxStaticText1'
-        Wx_PaneName = 'WxStaticText1_Pane'
-        Wx_Aui_Dock_Direction = wxAUI_DOCK_NONE
-        Wx_Aui_Dockable_Direction = []
-        Wx_Aui_Pane_Style = []
-        Wx_Aui_Pane_Buttons = []
-        Wx_BestSize_Height = 0
-        Wx_BestSize_Width = 0
-        Wx_MinSize_Height = 0
-        Wx_MinSize_Width = 0
-        Wx_MaxSize_Height = 0
-        Wx_MaxSize_Width = 0
-        Wx_Floating_Height = 0
-        Wx_Floating_Width = 0
-        Wx_Floating_X_Pos = 0
-        Wx_Floating_Y_Pos = 0
-      end
-    end
   end
 end

@@ -11,6 +11,7 @@
 #include "RiskFrm.h"
 #include <wx/dcbuffer.h>
 #include <sstream>
+
 //Do not add custom headers between
 //Header Include Start and Header Include End
 //wxDev-C++ designer will remove them
@@ -25,14 +26,12 @@
 ////Event Table Start
 BEGIN_EVENT_TABLE(RiskFrm,wxFrame)
 	////Manual Code Start
-	EVT_LEFT_DOWN(RiskFrm::mouseLeftClick)
 	////Manual Code End
-	
+	EVT_UPDATE_UI(2500,RiskFrm::WxPanel1UpdateUI)
 	EVT_CLOSE(RiskFrm::OnClose)
-	
-	EVT_UPDATE_UI(ID_WXPANEL1,RiskFrm::WxPanel1UpdateUI)
 END_EVENT_TABLE()
 ////Event Table End
+
 
     
 
@@ -62,11 +61,6 @@ void RiskFrm::CreateGUIControls()
 	this->SetSizer(WxBoxSizer1);
 	this->SetAutoLayout(true);
 
-	WxPanel1 = new wxPanel(this, ID_WXPANEL1, wxPoint(0, 0), wxSize(1366, 768));
-	WxBoxSizer1->Add(WxPanel1, 0, wxALIGN_CENTER | wxALL, 5);
-
-	DebugText = new wxStaticText(WxPanel1, ID_DEBUGTEXT, _("DebugText"), wxPoint(416, 280), wxDefaultSize, 0, _("DebugText"));
-
 	SetTitle(_("Risk"));
 	SetIcon(wxNullIcon);
 	
@@ -76,7 +70,11 @@ void RiskFrm::CreateGUIControls()
 	Center();
 	
 	////GUI Items Creation End
-    _dc = new wxClientDC(WxPanel1);
+    //WxPanel1 = new wxPanel(this, ID_WXPANEL1, wxPoint(0, 0), wxSize(1366, 768));
+    MapPanel = new ClickablePanel(this, control, 2500, wxPoint(0,0), wxSize(1366,768));
+    _dc = new wxClientDC(MapPanel);
+    this->SetBackgroundColour(wxColour(0,0,0));
+    Centre();
 }
 
 void RiskFrm::OnClose(wxCloseEvent& event)
@@ -88,9 +86,9 @@ void RiskFrm::setResolution(unsigned int id){
     //TODO: sprawdzenie id i wybranie odpowiedniej mapy
     wxImage::AddHandler( new wxJPEGHandler );
     wxImage::AddHandler( new wxJPEGHandler );
-    wxImage::AddHandler( new wxJPEGHandler );
+    wxImage::AddHandler( new wxPNGHandler );
     map = new wxImage("map_regions.jpg");
-    mask = new wxImage("maska.jpg");
+    mask = new wxImage("maska.png");
     map_with_mask = new wxImage(*map);
 }
 
@@ -106,7 +104,7 @@ void RiskFrm::mouseLeftClick(wxMouseEvent & event){
     ss << " red=" << red;        
     ss >> s;
     wxString wxs(s);
-    DebugText -> SetLabel(DebugText -> GetLabel()+wxs);
+    //DebugText -> SetLabel(DebugText -> GetLabel()+wxs);
     unsigned char blue = mask->GetBlue(mpos.x,mpos.y);
     control.setSelectedRegion(red);
     event.Skip();
@@ -115,14 +113,14 @@ void RiskFrm::mouseLeftClick(wxMouseEvent & event){
 }
 
 void RiskFrm::paintSelectedRegion(unsigned int id){
-    DebugText -> SetLabel(DebugText -> GetLabel()+"paint:"+(char)id);
+    //DebugText -> SetLabel(DebugText -> GetLabel()+"paint:"+(char)id);
     delete map_with_mask;
     map_with_mask = new wxImage(*map);
     unsigned int w = map_with_mask->GetWidth();
     unsigned int h = map_with_mask->GetHeight();
     for(int i = 0; i < h; ++i){
         for(int j = 0; j < w; ++j){
-            if(mask->GetRed(j,i) == id)
+            if(mask->GetRed(j,i) == id && mask->GetBlue(j,i) == 240 && mask->GetGreen(j,i) ==240)
                 map_with_mask->SetRGB(j,i,255,0,0);
         }
     }
@@ -135,11 +133,12 @@ void RiskFrm::WxPanel1UpdateUI(wxUpdateUIEvent& event)
 {
 	// insert your code here
 	
-	
-	wxClientDC dc(WxPanel1);
+	wxClientDC dc(MapPanel);
 	wxBufferedDC bdc(&dc);
     if(map_with_mask){
         wxBitmap map_with_mask_bp(*map_with_mask);	 
         bdc.DrawBitmap(map_with_mask_bp,0,0,true);
     }
 }
+
+
