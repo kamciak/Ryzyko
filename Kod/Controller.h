@@ -1,35 +1,23 @@
 #ifndef CONTROLLER_H
 #define CONTROLLER_H
-#include "Player.h"
 #include "Board.h"
-#include <wx/colour.h>
-#include <iostream>
-#include <vector>
+#include "PlayersData.h"
+class RiskFrm;
 
-#define MAX_PLAYERS 6
-
-///Klasa - singleton, przechowuje informacje o graczach, planszy itp.
 class Controller{
-private:
-    //////////////////////////////////////////////
-    Controller();                              //
-    Controller(const Controller & c);           //  obsluga singletonu
-    Controller& operator=(const Controller & c);//
-    //////////////////////////////////////////////
-    std::vector<Player> _players;
-    Board _board;
+private:    
+    Controller(const Controller & c);
+    Controller & operator=(const Controller & c);
+    unsigned int _selected_region;
     
+    RiskFrm & _window;
 public:
-    ////////////////////////////////////
-    static Controller & getInstance(){//
-          static Controller instance; //
-          return instance;            //obsluga singletonu
-    }                                 //
-    ////////////////////////////////////
-
-    void setPlayerName(unsigned int id, const std::string name);
-    void setPlayerColor(unsigned int id, const wxColour color);
-    void togglePlayerUsed(unsigned int id);
+    void setSelectedRegion(unsigned int id);
+    Controller(Board & b, PlayersData & pd, RiskFrm & window);
+    PlayersData & players_data;
+    Board & board;    
 };
+
+
 
 #endif

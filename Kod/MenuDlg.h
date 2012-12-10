@@ -37,6 +37,7 @@
 #undef MenuDlg_STYLE
 #define MenuDlg_STYLE wxSYSTEM_MENU | wxDIALOG_NO_PARENT | wxMINIMIZE_BOX | wxCLOSE_BOX
 ////Dialog Style End
+class RiskFrm;
 
 class MenuDlg : public wxDialog
 {
@@ -131,6 +132,7 @@ class MenuDlg : public wxDialog
 	    wxBitmap * bitmapCheckBoxFalse;
 		void OnClose(wxCloseEvent& event);
 		void CreateGUIControls();
+        RiskFrm *_parent;
 };
 
     enum PlayerColor{

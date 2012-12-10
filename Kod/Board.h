@@ -1,17 +1,22 @@
 #ifndef BOARD_H
 #define BOARD_H
 #include <vector>
-#include <iostream>
-#include "Exceptions.h"
+#include <string>
 #include "Region.h"
 
+///Klasa-singleton przechowuj¹ca dane o planszy
 class Board{
 private:
-    std::vector<Region> _regions;
+	std::vector<Region> _board;
+    Region *_selected;
+	Board();
+	Board(const Board &b);
+	Board & operator=(const Board & b);
+	Region & region(std::string);
+	Region & region(unsigned int id);
 public:
-    Board();
-    Region &getRegion(std::string name);
+	static Board & instance();
+	void combat(unsigned int attacker, unsigned int defender);
 };
-
 
 #endif

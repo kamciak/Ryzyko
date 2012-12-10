@@ -26,6 +26,7 @@
 //Header Include Start and Header Include End.
 //wxDev-C++ designer will remove them. Add custom headers after the block.
 ////Header Include Start
+#include <wx/stattext.h>
 #include <wx/panel.h>
 #include <wx/sizer.h>
 ////Header Include End
@@ -35,6 +36,9 @@
 #define RiskFrm_STYLE wxCAPTION | wxSYSTEM_MENU | wxMINIMIZE_BOX | wxCLOSE_BOX
 ////Dialog Style End
 #include "MenuDlg.h"
+#include "Controller.h"
+#include "PlayersData.h"
+#include "Board.h"
 class RiskFrm : public wxFrame
 {
 	private:
@@ -44,12 +48,14 @@ class RiskFrm : public wxFrame
 		RiskFrm(wxWindow *parent, wxWindowID id = 1, const wxString &title = wxT("Risk"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = RiskFrm_STYLE);
 		virtual ~RiskFrm();
 		void WxPanel1UpdateUI(wxUpdateUIEvent& event);
+        
 		
 	private:
 		//Do not add custom control declarations between
 		//GUI Control Declaration Start and GUI Control Declaration End.
 		//wxDev-C++ will remove them. Add custom code after the block.
 		////GUI Control Declaration Start
+		wxStaticText *DebugText;
 		wxPanel *WxPanel1;
 		wxBoxSizer *WxBoxSizer1;
 		////GUI Control Declaration End
@@ -62,6 +68,7 @@ class RiskFrm : public wxFrame
 		enum
 		{
 			////GUI Enum Control ID Start
+			ID_DEBUGTEXT = 1003,
 			ID_WXPANEL1 = 1002,
 			////GUI Enum Control ID End
 			ID_DUMMY_VALUE_ //don't remove this value unless you have other enum values
@@ -70,7 +77,17 @@ class RiskFrm : public wxFrame
 	private:
 		void OnClose(wxCloseEvent& event);
 		void CreateGUIControls();
-		MenuDlg * menu;
+		MenuDlg *menu;
+        wxImage *map;
+        wxImage *mask;
+        wxImage *map_with_mask;
+        wxClientDC *_dc;
+        void mouseLeftClicl();
+        Controller control;
+    public:
+        void mouseLeftClick(wxMouseEvent & event);
+        void setResolution(unsigned int id);
+        void paintSelectedRegion(unsigned int id);
 };
 
 #endif

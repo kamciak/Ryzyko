@@ -1,53 +1,32 @@
 #ifndef REGION_H
 #define REGION_H
-#include <vector>
-#include <iostream>
+#include <string>
+#include "BattleResults.h"
+#include "RiskExceptions.h"
 class Player;
+class Board;
 
-///Klasa przechowuj¹ca wszystkie informacje o regionie na planszy gry
 class Region{
-friend class Board;               //Klasa planszy ma mieæ dostêp do sk³adników prywatnych - ona obs³u¿y dodawanie s¹siadów itp.
+friend class Board;		//klasa Board zajmuje siê ca³ym zarz¹dzaniem regionami, klasa Region dla wygody
 private:
-    //Identyfikator regionu
-    unsigned int _id;
-    //Nazwa w³asna regionu
-    std::string _name;
-
-    //Lista regionów s¹siednich
-    std::vector<Region*> _neighbors;
-
-    //Gracz kontroluj¹cy region
-    Player *_controller; 
-
-    //Iloœæ armii gracza w regionie
-    unsigned int _armies;   
-
-    //Dodaje podany region do listy s¹siadów
-    void addNeighbor(Region &nbor);
-
-public:
-
-    ///Kontruktor, ustawia nazwê regionu i jego identyfikator
-    Region(unsigned int id,std::string name);
-
-    ///Przekazuje graczowi kontrolê nad regionem
-    void setController(Player &player);
-
-    ///Przeprowadza walkê miêdzy tym regionem i wskazanym
-    void attack(Region &target);
-
-    ///Dodaje (lub usuwa) podan¹ liczbê armii z tego regionu
-    void addArmies(int num);
-
-    ///Zwraca iloœæ armii w regionie
-    unsigned int armyCount(){return _armies;}
-
-    ///Zwraca identyfikator regionu
-    unsigned int id(){return _id;}
+	unsigned int _id;
+	std::string _name;
+	Player *_controller;
+	unsigned int _armies;
+	
+	Region(unsigned int id, std::string name);
+	
+	BattleResults attack(Region &target);
+	void addArmies(const unsigned int num);
+	void removeArmies(const unsigned int num);
+	
+	void setController(Player &p);
+	
+	std::string name();
+	Player & controller();
+	unsigned int armyCount();
+	
 };
-
-
-
 
 
 #endif

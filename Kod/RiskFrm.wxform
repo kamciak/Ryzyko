@@ -1,11 +1,11 @@
-object frmNewForm_1: TfrmNewForm
+object frmNewForm: TfrmNewForm
   Left = 8
   Top = 8
   AutoScroll = False
   BorderIcons = [biSystemMenu, biMinimize]
   Caption = 'Risk'
-  ClientHeight = 730
-  ClientWidth = 1344
+  ClientHeight = 362
+  ClientWidth = 384
   Color = clAppWorkSpace
   OldCreateOrder = True
   PopupMenu = DesignerPopup.Owner
@@ -30,12 +30,12 @@ object frmNewForm_1: TfrmNewForm
   Wx_BorderAlignment = []
   isAuimanagerAvailable = False
   PixelsPerInch = 96
-  TextHeight = 16
+  TextHeight = 15
   object WxBoxSizer1: TWxBoxSizer
     Left = 0
     Top = 0
-    Width = 1344
-    Height = 730
+    Width = 384
+    Height = 362
     Align = alClient
     TabOrder = 0
     Wx_Class = 'wxBoxSizer'
@@ -43,9 +43,9 @@ object frmNewForm_1: TfrmNewForm
     Wx_IDName = 'ID_WXBOXSIZER1'
     Wx_IDValue = 1001
     object WxPanel1: TWxPanel
-      Left = 5
-      Top = 5
-      Width = 1360
+      Left = 0
+      Top = 0
+      Width = 1366
       Height = 768
       TabOrder = 0
       EVT_UPDATE_UI = 'WxPanel1UpdateUI'
@@ -76,6 +76,39 @@ object frmNewForm_1: TfrmNewForm
       Wx_Floating_Width = 0
       Wx_Floating_X_Pos = 0
       Wx_Floating_Y_Pos = 0
+      object DebugText: TWxStaticText
+        Left = 416
+        Top = 280
+        Width = 61
+        Height = 19
+        Caption = 'DebugText'
+        TabOrder = 0
+        Wx_BGColor = clBlack
+        Wx_Class = 'wxStaticText'
+        Wx_ControlOrientation = wxControlVertical
+        Wx_FGColor = clBlack
+        Wx_GeneralStyle = []
+        Wx_Hidden = False
+        Wx_IDName = 'ID_DEBUGTEXT'
+        Wx_IDValue = 1003
+        Wx_LabelStyle = []
+        Wx_PaneCaption = 'WxStaticText1'
+        Wx_PaneName = 'WxStaticText1_Pane'
+        Wx_Aui_Dock_Direction = wxAUI_DOCK_NONE
+        Wx_Aui_Dockable_Direction = []
+        Wx_Aui_Pane_Style = []
+        Wx_Aui_Pane_Buttons = []
+        Wx_BestSize_Height = 0
+        Wx_BestSize_Width = 0
+        Wx_MinSize_Height = 0
+        Wx_MinSize_Width = 0
+        Wx_MaxSize_Height = 0
+        Wx_MaxSize_Width = 0
+        Wx_Floating_Height = 0
+        Wx_Floating_Width = 0
+        Wx_Floating_X_Pos = 0
+        Wx_Floating_Y_Pos = 0
+      end
     end
   end
 end

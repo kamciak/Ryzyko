@@ -9,6 +9,7 @@
 ///------------------------------------------------------------------
 
 #include "MenuDlg.h"
+#include "RiskFrm.h"
 #include <wx/dcbuffer.h>
 //Do not add custom headers
 //wxDev-C++ designer will remove them
@@ -48,6 +49,7 @@ END_EVENT_TABLE()
 MenuDlg::MenuDlg(wxWindow *parent, wxWindowID id, const wxString &title, const wxPoint &position, const wxSize& size, long style)
 : wxDialog(parent, id, title, position, size, style)
 {
+    _parent=(RiskFrm*)parent;
 	CreateGUIControls();
     
 }
@@ -341,7 +343,7 @@ void MenuDlg::WxPanel1UpdateUI(wxUpdateUIEvent& event)
 {
     
 
-			wxImage::AddHandler( new wxJPEGHandler );
+	wxImage::AddHandler( new wxJPEGHandler );
 	wxImage image("background.jpg");
 	wxBitmap tlo(image);
 	wxClientDC dc(WxPanel1);
@@ -389,6 +391,8 @@ void MenuDlg::WxBitmapComboBox1Selected(wxCommandEvent& event )
 void MenuDlg::WxBitmapButton2Click(wxCommandEvent& event)
 {
 	// insert your code here
+    _parent->ShowFullScreen(true,wxFULLSCREEN_ALL);
+    _parent->setResolution(1);  //TODO -zmiana rozdzielczosci
 	EndModal(1);
 }
 

@@ -86,7 +86,7 @@ ProductName=
 ProductVersion=
 AutoIncBuildNrOnRebuild=0
 AutoIncBuildNrOnCompile=0
-UnitCount=13
+UnitCount=16
 
 [Profile1]
 ProfileName=MingW gcc
@@ -219,6 +219,26 @@ FileName=MenuDlg.wxform
 Folder=Risk
 Compile=0
 Link=0
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit15]
+FileName=PlayersData.cpp
+CompileCpp=1
+Folder=Risk
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit16]
+FileName=PlayersData.h
+CompileCpp=1
+Folder=Risk
+Compile=1
+Link=1
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
