@@ -40,7 +40,7 @@ RiskFrm::RiskFrm(wxWindow *parent, wxWindowID id, const wxString &title, const w
 {
 	CreateGUIControls();
 	
-	   menu=new MenuDlg(this);
+	   menu=new MenuDlg(this,control);
 		menu->ShowModal();
 
 }

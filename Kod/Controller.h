@@ -4,6 +4,7 @@
 #include "PlayersData.h"
 class RiskFrm;
 
+
 class Controller{
 private:    
     Controller(const Controller & c);

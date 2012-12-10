@@ -10,6 +10,7 @@
 
 #include "MenuDlg.h"
 #include "RiskFrm.h"
+#include "Controller.h"
 #include <wx/dcbuffer.h>
 //Do not add custom headers
 //wxDev-C++ designer will remove them
@@ -46,8 +47,8 @@ BEGIN_EVENT_TABLE(MenuDlg,wxDialog)
 END_EVENT_TABLE()
 ////Event Table End
 
-MenuDlg::MenuDlg(wxWindow *parent, wxWindowID id, const wxString &title, const wxPoint &position, const wxSize& size, long style)
-: wxDialog(parent, id, title, position, size, style)
+MenuDlg::MenuDlg(wxWindow *parent, Controller & control, wxWindowID id, const wxString &title, const wxPoint &position, const wxSize& size, long style)
+: wxDialog(parent, id, title, position, size, style), _controller(control)
 {
     _parent=(RiskFrm*)parent;
 	CreateGUIControls();
@@ -374,7 +375,12 @@ void MenuDlg::WxButton1Click(wxCommandEvent& event)
  */
 void MenuDlg::WxEdit4Updated(wxCommandEvent& event)
 {
-	// insert your code here
+	wxString txt = WxEdit4->GetValue();
+    if(txt == ""){
+        WxEdit4->SetValue("Gracz 4");
+        txt = "Gracz 4";
+    }
+    _controller.players_data.setPlayerName(4,std::string(txt.c_str()));
 }
 
 /*
@@ -382,7 +388,7 @@ void MenuDlg::WxEdit4Updated(wxCommandEvent& event)
  */
 void MenuDlg::WxBitmapComboBox1Selected(wxCommandEvent& event )
 {
-	// insert your code here
+	_controller.players_data.setPlayerColor(1,PlayerColor(WxBitmapComboBox1->GetCurrentSelection()));
 }
 
 /*

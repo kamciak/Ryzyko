@@ -38,6 +38,7 @@
 #define MenuDlg_STYLE wxSYSTEM_MENU | wxDIALOG_NO_PARENT | wxMINIMIZE_BOX | wxCLOSE_BOX
 ////Dialog Style End
 class RiskFrm;
+class Controller;
 
 class MenuDlg : public wxDialog
 {
@@ -45,7 +46,7 @@ class MenuDlg : public wxDialog
 		DECLARE_EVENT_TABLE();
 		
 	public:
-		MenuDlg(wxWindow *parent, wxWindowID id = 1, const wxString &title = wxT("MenuDlg"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = MenuDlg_STYLE);
+		MenuDlg(wxWindow *parent, Controller & control, wxWindowID id = 1, const wxString &title = wxT("MenuDlg"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = MenuDlg_STYLE);
 		void WxBitmapButton1Click(wxCommandEvent& event);
 		virtual ~MenuDlg();
 		void WxPanel1UpdateUI(wxUpdateUIEvent& event);
@@ -133,6 +134,7 @@ class MenuDlg : public wxDialog
 		void OnClose(wxCloseEvent& event);
 		void CreateGUIControls();
         RiskFrm *_parent;
+        Controller & _controller;
 };
 
     enum PlayerColor{

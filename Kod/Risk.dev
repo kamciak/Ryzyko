@@ -86,7 +86,7 @@ ProductName=
 ProductVersion=
 AutoIncBuildNrOnRebuild=0
 AutoIncBuildNrOnCompile=0
-UnitCount=18
+UnitCount=16
 
 [Profile1]
 ProfileName=MingW gcc
@@ -224,7 +224,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit15]
-FileName=PlayersData.cpp
+FileName=ClickablePanel.cpp
 CompileCpp=1
 Folder=Risk
 Compile=1
@@ -234,7 +234,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit16]
-FileName=PlayersData.h
+FileName=PlayersData.cpp
 CompileCpp=1
 Folder=Risk
 Compile=1

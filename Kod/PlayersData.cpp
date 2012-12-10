@@ -1,4 +1,5 @@
 #include "PlayersData.h"
+#include "MenuDlg.h"
 
 PlayersData::PlayersData(){
 	_names.push_back("Gracz 1");
@@ -13,12 +14,12 @@ PlayersData::PlayersData(){
 	_used.push_back(false);
 	_used.push_back(false);
 	_used.push_back(false);
-	_colors.push_back(1);
-	_colors.push_back(2);
-	_colors.push_back(3);
-	_colors.push_back(4);
-	_colors.push_back(5);
-	_colors.push_back(6);
+	_colors.push_back(PlayerColor(1));
+	_colors.push_back(PlayerColor(2));
+	_colors.push_back(PlayerColor(3));
+	_colors.push_back(PlayerColor(4));
+	_colors.push_back(PlayerColor(5));
+	_colors.push_back(PlayerColor(6));
 }
 
 PlayersData &PlayersData::instance(){
@@ -30,7 +31,7 @@ void PlayersData::setPlayerName(unsigned int id, std::string s){
 	_names.at(id)=s;
 }
 
-void PlayersData::setPlayerColor(unsigned int id, unsigned int color){
+void PlayersData::setPlayerColor(unsigned int id, PlayerColor color){
 	_colors.at(id)=color;
 }
 
@@ -42,7 +43,7 @@ std::string PlayersData::getPlayerName(unsigned int id){
 	return _names.at(id);
 }
 
-unsigned int PlayersData::getPlayerColor(unsigned int id){
+PlayerColor PlayersData::getPlayerColor(unsigned int id){
 	return _colors.at(id);
 }
 	
