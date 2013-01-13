@@ -12,6 +12,9 @@
 #include <wx/dcbuffer.h>
 #include <sstream>
 
+#define END_PHASE_X 790
+#define END_PHASE_Y 600
+
 //Do not add custom headers between
 //Header Include Start and Header Include End
 //wxDev-C++ designer will remove them
@@ -43,7 +46,7 @@ RiskFrm::RiskFrm(wxWindow *parent, wxWindowID id, const wxString &title, const w
 	menu=new MenuDlg(this,control);
     menu->ShowModal();
     using namespace std;
-   _colours.insert(make_pair(0,wxColour(0,170,190)));
+        _colours.insert(make_pair(0,wxColour(0,170,190)));
         _colours.insert(make_pair(1,wxColour(1,200,160)));
         _colours.insert(make_pair(2,wxColour(2,150,210)));
         _colours.insert(make_pair(3,wxColour(3,220,140)));
@@ -89,6 +92,18 @@ RiskFrm::RiskFrm(wxWindow *parent, wxWindowID id, const wxString &title, const w
         _colours.insert(make_pair(39,wxColour(39,240,10)));
         _colours.insert(make_pair(40,wxColour(40,20,230)));
         _colours.insert(make_pair(41,wxColour(41,230,20)));
+
+        _player_colours.insert(make_pair(RED,wxColour(255,0,0)));
+        _player_colours.insert(make_pair(BLUE,wxColour(0,0,255)));
+        _player_colours.insert(make_pair(GREEN,wxColour(0,255,0)));
+        _player_colours.insert(make_pair(CYAN,wxColour(0,255,255)));
+        _player_colours.insert(make_pair(DARKBLUE,wxColour(0,0,175)));
+        _player_colours.insert(make_pair(GRAY,wxColour(128,128,128)));
+        _player_colours.insert(make_pair(MAGENTA,wxColour(255,0,255)));
+        _player_colours.insert(make_pair(YELLOW,wxColour(255,255,0)));
+        _player_colours.insert(make_pair(ORANGE,wxColour(255,127,0)));
+        _player_colours.insert(make_pair(PURPLE,wxColour(175,0,175)));
+
 }
 
 RiskFrm::~RiskFrm()
@@ -136,7 +151,8 @@ void RiskFrm::setResolution(){
     unsigned int panel_y = 0.5 * (size.GetHeight()-height);
 
     MapPanel = new ClickablePanel(this, control, 2500, wxPoint(0,panel_y), wxSize(width,height));
-            
+    MapPanel -> end_phase_btn -> Move(END_PHASE_X * scale, END_PHASE_Y * scale);        
+
     wxImage::AddHandler( new wxJPEGHandler );
     wxImage::AddHandler( new wxJPEGHandler );
     wxImage::AddHandler( new wxPNGHandler );
@@ -160,11 +176,7 @@ void RiskFrm::paintSelectedRegion(unsigned int id){
     if(id != NO_REGION_SELECTED){             
         unsigned int w = map_with_mask->GetWidth();
         unsigned int h = map_with_mask->GetHeight();
-        wxColour region_col(0,0,0);
-        for(std::map<unsigned int,wxColour>::iterator i = _colours.begin(); i!=_colours.end(); ++i){
-            if(i->second.Red() == id)
-            region_col = i->second;
-        }    
+        wxColour region_col = _colours[id];
         for(int i = 0; i < h; ++i){
             for(int j = 0; j < w; ++j){
                 if(mask->GetRed(j,i) == region_col.Red() && mask->GetBlue(j,i) == region_col.Blue() && mask->GetGreen(j,i) ==region_col.Green())
@@ -204,16 +216,20 @@ void RiskFrm::WxPanel1UpdateUI(wxUpdateUIEvent& event)
             }
         }
     }
-    /*if(_info_box)
-        _info_box -> Raise();*/
 }
 
 unsigned int RiskFrm::getRegionID(unsigned int x, unsigned int y){
     if(x >= 0 && x < mask->GetSize().GetWidth() && y >= 0 && y < mask->GetSize().GetHeight()){
         unsigned char red = mask->GetRed(x,y);
-        return red;
+        if(red != 0)
+            return red;
+        else if(mask->GetGreen(x,y) == _colours[0].Green() &&
+        mask->GetBlue(x,y) == _colours[0].Blue()){
+            return red;
+        }
+        else
+            return NO_REGION_SELECTED;
     }
-    else return NO_REGION_SELECTED;
 }
 
 void RiskFrm::info(wxString txt){    
@@ -231,7 +247,10 @@ void RiskFrm::info(wxString txt){
 }
 
 void RiskFrm::endPhaseButtonVisible(bool flag){
-
+    if(flag)
+        MapPanel -> end_phase_btn -> Show();
+    else
+        MapPanel -> end_phase_btn -> Hide();
 }
 
 

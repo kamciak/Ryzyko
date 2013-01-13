@@ -78,7 +78,7 @@ Board::Board(){
         addConnection("Chengdu","Neyungri");
         addConnection("Chengdu","Lao");
         addConnection("Chengdu","Ajmer");
-         addConnection("Chengdu","Achinsk");
+        addConnection("Chengdu","Achinsk");
         
         addConnection("Neyungri","Aomori");
         addConnection("Neyungri","Bratsk");
@@ -207,6 +207,7 @@ Board::Board(){
         addConnection("Teape","Sipapo");
         
         addConnection("Fairbanks","Magadan");
+        addConnection("Fairbanks","Yellowknife");
         
         addConnection("Sipapo","Potosi");
         addConnection("Sipapo","Bahia");
@@ -220,6 +221,9 @@ Board::Board(){
         addConnection("Bahia","Bobo-Dioulasso");
         addConnection("Bahia","Potosi");
         addConnection("Bahia","Sipapo");
+
+        addConnection("Tandil","Bahia");
+        addConnection("Tandil","Potosi");
         
         addConnection("Bobo-Dioulasso","Mut");
         addConnection("Bobo-Dioulasso","Dessie");
@@ -246,6 +250,8 @@ Board::Board(){
         
         addConnection("Saka","Dessie");
         addConnection("Saka","Cradock");
+
+        addConnection("Cradock","Saka");
     }
     catch(RiskException &e){
         wxMessageBox(e.msg);

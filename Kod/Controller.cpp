@@ -358,9 +358,29 @@ void Controller::combat(unsigned int attacker, unsigned int defender){
     board.region(attacker).removeArmies(atk_losses);
     board.region(defender).removeArmies(def_losses);
     if(board.region(defender).armyCount() == 0){
+        //sprawdzenie czy wlasciciel podbitego regionu kontroluje jeszcze jakies regiony
+        bool owns = false;
+        for(int i = 0; i < board.numberOfRegions(); ++i){
+            if(i != defender && board.region(i).owner() == board.region(defender).owner())
+                owns = true;
+        }
+        if(!owns){
+            wxMessageBox(PlayersData::instance().player(board.region(defender).owner()).name()+" przegrywa!");
+            std::vector<unsigned int>::iterator iter;
+            for(iter = _players_queue.begin(); iter != _players_queue.end(); ++iter){
+                if(*iter == board.region(defender).owner()){
+                    _players_queue.erase(iter);
+                    break;
+                }                    
+            }   
+        }   
+        
+        //przemieszczenie wszystkich armii oprócz jednej z regionu atakujacego do atakowanego
         board.region(defender).setOwner(currentPlayer());
-        board.region(attacker).removeArmies(atk_dice - atk_losses);
-        board.region(defender).addArmies(atk_dice - atk_losses);
+        unsigned int armies_moved = board.region(attacker).armyCount() - 1;
+        board.region(attacker).removeArmies(armies_moved);
+        board.region(defender).addArmies(armies_moved);
+        
     }
 
     //TODO: Kod animacji itd;

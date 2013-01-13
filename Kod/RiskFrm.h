@@ -79,7 +79,8 @@ class RiskFrm : public wxFrame
 		void CreateGUIControls();
 		ClickablePanel *MapPanel;
         Controller control;
-        std::map<unsigned int,wxColour> _colours;
+        std::map<unsigned int, wxColour> _colours;
+        std::map<PlayerColor, wxColour> _player_colours;
         
     public:
         MenuDlg *menu;

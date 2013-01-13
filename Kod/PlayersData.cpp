@@ -17,6 +17,7 @@ void PlayersData::addPlayer(Player player){
     _players.push_back(player);
 }
 
+
 unsigned int PlayersData::numberOfPlayers(){
     return _players.size();
 }   
