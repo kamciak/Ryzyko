@@ -1,32 +1,52 @@
 #ifndef REGION_H
 #define REGION_H
+
 #include <string>
+#include <wx/wx.h>
+#include <vector>
+
 #include "BattleResults.h"
 #include "RiskExceptions.h"
+#include "Board.h"
 class Player;
-class Board;
 
+#ifndef NO_CONTROLLER
+    #define NO_CONTROLLER 50
+#endif
+
+///Klasa z informacjami o regionie
 class Region{
-friend class Board;		//klasa Board zajmuje siê ca³ym zarz¹dzaniem regionami, klasa Region dla wygody
 private:
 	unsigned int _id;
 	std::string _name;
-	Player *_controller;
+    unsigned int _controller;
 	unsigned int _armies;
-	
-	Region(unsigned int id, std::string name);
-	
-	BattleResults attack(Region &target);
-	void addArmies(const unsigned int num);
-	void removeArmies(const unsigned int num);
-	
-	void setController(Player &p);
-	
-	std::string name();
-	Player & controller();
-	unsigned int armyCount();
+    wxPoint _coords;
+    std::vector<unsigned int> _neighbors;
+public:    	
+    ///Konstruktor, przyjmuje nazwe regionu i wspolrzêdne punktu centralnego regionu dla mapy 1366x768
+	Region(unsigned int id, std::string region_name, wxPoint coords);
+    ///Zwraca ilosc armii w regionie
+    unsigned int armyCount();
+    ///Dodaje podana liczbe armii do regionu
+    void addArmies(unsigned int num);
+    ///Usuwa podana liczbe armii z regionu
+    void removeArmies(unsigned int num);
+    ///Dodaje region o podanym id do listy sasiadow, jesli jeszcze go tam nie ma
+    void addNeighbor(unsigned int id);
+    ///Zwraca wartosc logiczna czy region o podanym id jest sasiadem tego regionu
+    bool isNeighbor(unsigned int id);
+    ///Zwraca wspolrzedne punktu centralnego regionu dla mapy 1366x768
+    wxPoint center();    
+    ///Zwraca nazwe regionu
+    std::string name();
+    ///Zwraca id regionu
+    unsigned int id();
+    ///Zwraca id gracza kontrolujacego region
+    unsigned int controller();
+    ///Ustawia gracza o podanym id jako kontrolujacego ten region
+    void setController(unsigned int id);
 	
 };
-
 
 #endif

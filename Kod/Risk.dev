@@ -1,7 +1,7 @@
 [Project]
 FileName=Risk.dev
 Name=Risk
-UnitCount=14
+UnitCount=21
 PchHead=-1
 PchSource=-1
 Ver=3
@@ -86,7 +86,7 @@ ProductName=
 ProductVersion=
 AutoIncBuildNrOnRebuild=0
 AutoIncBuildNrOnCompile=0
-UnitCount=16
+UnitCount=22
 
 [Profile1]
 ProfileName=MingW gcc
@@ -234,7 +234,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit16]
-FileName=PlayersData.cpp
+FileName=ClickablePanel.h
 CompileCpp=1
 Folder=Risk
 Compile=1
@@ -244,9 +244,19 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit17]
-FileName=ClickablePanel.h
+FileName=PlayersData.cpp
 CompileCpp=1
-Folder=
+Folder=Risk
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit19]
+FileName=Region.h
+CompileCpp=1
+Folder=Risk
 Compile=1
 Link=1
 Priority=1000
@@ -254,9 +264,49 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit18]
-FileName=ClickablePanel.cpp
+FileName=Phase.cpp
 CompileCpp=1
-Folder=
+Folder=Risk
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit21]
+FileName=Board.h
+CompileCpp=1
+Folder=Risk
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit22]
+FileName=RiskExceptions.h
+CompileCpp=1
+Folder=Risk
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit23]
+FileName=Phase.h
+CompileCpp=1
+Folder=Risk
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit20]
+FileName=Player.h
+CompileCpp=1
+Folder=Risk
 Compile=1
 Link=1
 Priority=1000

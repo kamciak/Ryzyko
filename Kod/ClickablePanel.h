@@ -3,18 +3,18 @@
 #include <wx/panel.h>
 #include "Controller.h"
 
+class RiskFrm;
 
 class ClickablePanel : public wxPanel{
 private:    
     Controller & _controller;
-public:         
-    ClickablePanel(wxWindow* parent, Controller & control, wxWindowID id, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxTAB_TRAVERSAL, const wxString& name = "panel") 
-        : wxPanel(parent,id,pos,size,style,name), _controller(control){}
+    RiskFrm & _parent;
     
-    void mouseLeftClick(wxMouseEvent & event){
-        wxPoint pt = event.GetPosition();
-        _controller.selectRegion(pt.x,pt.y);
-    }
+public:      
+    wxTextCtrl *info_box;   
+    ClickablePanel(RiskFrm* parent, Controller & control, wxWindowID id, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxTAB_TRAVERSAL, const wxString& name = "panel");
+    
+    void mouseLeftClick(wxMouseEvent & event);
 
     DECLARE_EVENT_TABLE()
 };

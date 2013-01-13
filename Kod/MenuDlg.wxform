@@ -4,8 +4,8 @@ object frmNewForm: TfrmNewForm
   AutoScroll = False
   BorderIcons = [biSystemMenu, biMinimize]
   Caption = 'MenuDlg'
-  ClientHeight = 362
-  ClientWidth = 784
+  ClientHeight = 366
+  ClientWidth = 792
   Color = clBtnFace
   OldCreateOrder = True
   PopupMenu = DesignerPopup.Owner
@@ -29,7 +29,7 @@ object frmNewForm: TfrmNewForm
   Wx_BorderAlignment = []
   isAuimanagerAvailable = False
   PixelsPerInch = 96
-  TextHeight = 16
+  TextHeight = 13
   object WxPanel1: TWxPanel
     Left = 0
     Top = 0
@@ -65,10 +65,10 @@ object frmNewForm: TfrmNewForm
     Wx_Floating_X_Pos = 0
     Wx_Floating_Y_Pos = 0
     object WxBitmapButton1: TWxBitmapButton
-      Left = 578
-      Top = 34
-      Width = 94
-      Height = 20
+      Left = 633
+      Top = 23
+      Width = 93
+      Height = 17
       TabOrder = 0
       Glyph.Data = {
         961D0000424D961D00000000000036000000280000005E000000140000000100
@@ -583,15 +583,15 @@ object frmNewForm: TfrmNewForm
     object WxEdit1: TWxEdit
       Left = 210
       Top = 108
-      Width = 120
-      Height = 18
+      Width = 97
+      Height = 17
       BevelInner = bvNone
       BevelOuter = bvNone
       AutoSize = False
       Color = 12507364
       Font.Charset = ANSI_CHARSET
       Font.Color = 64
-      Font.Height = -11
+      Font.Height = -9
       Font.Name = 'Comic Sans MS'
       Font.Style = []
       ParentFont = False
@@ -631,15 +631,15 @@ object frmNewForm: TfrmNewForm
     object WxEdit2: TWxEdit
       Left = 210
       Top = 138
-      Width = 120
-      Height = 18
+      Width = 97
+      Height = 17
       BevelInner = bvNone
       BevelOuter = bvNone
       AutoSize = False
       Color = 12507364
       Font.Charset = ANSI_CHARSET
       Font.Color = 64
-      Font.Height = -11
+      Font.Height = -9
       Font.Name = 'Comic Sans MS'
       Font.Style = []
       ParentFont = False
@@ -679,15 +679,15 @@ object frmNewForm: TfrmNewForm
     object WxEdit3: TWxEdit
       Left = 210
       Top = 168
-      Width = 120
-      Height = 18
+      Width = 97
+      Height = 17
       BevelInner = bvNone
       BevelOuter = bvNone
       AutoSize = False
       Color = 12507364
       Font.Charset = ANSI_CHARSET
       Font.Color = 64
-      Font.Height = -11
+      Font.Height = -9
       Font.Name = 'Comic Sans MS'
       Font.Style = []
       ParentFont = False
@@ -728,15 +728,15 @@ object frmNewForm: TfrmNewForm
     object WxEdit4: TWxEdit
       Left = 210
       Top = 198
-      Width = 120
-      Height = 18
+      Width = 97
+      Height = 17
       BevelInner = bvNone
       BevelOuter = bvNone
       AutoSize = False
       Color = 12507364
       Font.Charset = ANSI_CHARSET
       Font.Color = 64
-      Font.Height = -11
+      Font.Height = -9
       Font.Name = 'Comic Sans MS'
       Font.Style = []
       ParentFont = False
@@ -778,15 +778,15 @@ object frmNewForm: TfrmNewForm
     object WxEdit5: TWxEdit
       Left = 210
       Top = 228
-      Width = 120
-      Height = 18
+      Width = 97
+      Height = 17
       BevelInner = bvNone
       BevelOuter = bvNone
       AutoSize = False
       Color = 12507364
       Font.Charset = ANSI_CHARSET
       Font.Color = 64
-      Font.Height = -11
+      Font.Height = -9
       Font.Name = 'Comic Sans MS'
       Font.Style = []
       ParentFont = False
@@ -827,15 +827,15 @@ object frmNewForm: TfrmNewForm
     object WxEdit6: TWxEdit
       Left = 210
       Top = 258
-      Width = 120
-      Height = 18
+      Width = 97
+      Height = 17
       BevelInner = bvNone
       BevelOuter = bvNone
       AutoSize = False
       Color = 12507364
       Font.Charset = ANSI_CHARSET
       Font.Color = 64
-      Font.Height = -11
+      Font.Height = -9
       Font.Name = 'Comic Sans MS'
       Font.Style = []
       ParentFont = False
@@ -874,11 +874,11 @@ object frmNewForm: TfrmNewForm
       Wx_Floating_Y_Pos = 0
     end
     object WxBitmapComboBox1: TWxBitmapComboBox
-      Left = 340
-      Top = 105
-      Width = 90
-      Height = 24
-      ItemHeight = 16
+      Left = 338
+      Top = 108
+      Width = 73
+      Height = 21
+      ItemHeight = 13
       TabOrder = 7
       Text = 'Kolor'
       EVT_COMBOBOX = 'WxBitmapComboBox1Selected'
@@ -910,11 +910,11 @@ object frmNewForm: TfrmNewForm
       Wx_Floating_Y_Pos = 0
     end
     object WxBitmapComboBox2: TWxBitmapComboBox
-      Left = 340
-      Top = 135
-      Width = 90
-      Height = 24
-      ItemHeight = 16
+      Left = 338
+      Top = 138
+      Width = 73
+      Height = 21
+      ItemHeight = 13
       TabOrder = 8
       Text = 'Kolor'
       EVT_COMBOBOX = 'WxBitmapComboBox1Selected'
@@ -946,11 +946,11 @@ object frmNewForm: TfrmNewForm
       Wx_Floating_Y_Pos = 0
     end
     object WxBitmapComboBox3: TWxBitmapComboBox
-      Left = 340
-      Top = 165
-      Width = 90
-      Height = 24
-      ItemHeight = 16
+      Left = 338
+      Top = 168
+      Width = 73
+      Height = 21
+      ItemHeight = 13
       TabOrder = 9
       Text = 'Kolor'
       EVT_COMBOBOX = 'WxBitmapComboBox1Selected'
@@ -982,11 +982,11 @@ object frmNewForm: TfrmNewForm
       Wx_Floating_Y_Pos = 0
     end
     object WxBitmapComboBox4: TWxBitmapComboBox
-      Left = 340
-      Top = 195
-      Width = 90
-      Height = 24
-      ItemHeight = 16
+      Left = 338
+      Top = 198
+      Width = 73
+      Height = 21
+      ItemHeight = 13
       TabOrder = 10
       Text = 'Kolor'
       EVT_COMBOBOX = 'WxBitmapComboBox1Selected'
@@ -1018,11 +1018,11 @@ object frmNewForm: TfrmNewForm
       Wx_Floating_Y_Pos = 0
     end
     object WxBitmapComboBox5: TWxBitmapComboBox
-      Left = 340
-      Top = 225
-      Width = 90
-      Height = 24
-      ItemHeight = 16
+      Left = 338
+      Top = 228
+      Width = 73
+      Height = 21
+      ItemHeight = 13
       TabOrder = 11
       Text = 'Kolor'
       EVT_COMBOBOX = 'WxBitmapComboBox1Selected'
@@ -1054,11 +1054,11 @@ object frmNewForm: TfrmNewForm
       Wx_Floating_Y_Pos = 0
     end
     object WxBitmapComboBox6: TWxBitmapComboBox
-      Left = 340
-      Top = 255
-      Width = 90
-      Height = 24
-      ItemHeight = 16
+      Left = 338
+      Top = 258
+      Width = 73
+      Height = 21
+      ItemHeight = 13
       TabOrder = 12
       Text = 'Kolor'
       EVT_COMBOBOX = 'WxBitmapComboBox1Selected'
@@ -1090,10 +1090,10 @@ object frmNewForm: TfrmNewForm
       Wx_Floating_Y_Pos = 0
     end
     object WxBitmapButton2: TWxBitmapButton
-      Left = 354
-      Top = 292
-      Width = 101
-      Height = 57
+      Left = 382
+      Top = 310
+      Width = 82
+      Height = 46
       TabOrder = 13
       Glyph.Data = {
         2A5A0000424D2A5A000000000000360000002800000065000000390000000100
@@ -2575,10 +2575,10 @@ object frmNewForm: TfrmNewForm
       Wx_Floating_Y_Pos = 0
     end
     object WxBitmapButton3: TWxBitmapButton
-      Left = 181
-      Top = 105
-      Width = 22
-      Height = 22
+      Left = 189
+      Top = 108
+      Width = 18
+      Height = 18
       TabOrder = 14
       Glyph.Data = {
         C6070000424DC607000000000000360000002800000016000000160000000100
@@ -2741,10 +2741,10 @@ object frmNewForm: TfrmNewForm
       Wx_Floating_Y_Pos = 0
     end
     object WxBitmapButton4: TWxBitmapButton
-      Left = 181
-      Top = 135
-      Width = 22
-      Height = 22
+      Left = 189
+      Top = 138
+      Width = 18
+      Height = 17
       TabOrder = 15
       Glyph.Data = {
         C6070000424DC607000000000000360000002800000016000000160000000100
@@ -2907,10 +2907,10 @@ object frmNewForm: TfrmNewForm
       Wx_Floating_Y_Pos = 0
     end
     object WxBitmapButton5: TWxBitmapButton
-      Left = 181
-      Top = 165
-      Width = 22
-      Height = 22
+      Left = 189
+      Top = 168
+      Width = 18
+      Height = 18
       TabOrder = 16
       Glyph.Data = {
         C6070000424DC607000000000000360000002800000016000000160000000100
@@ -3074,10 +3074,10 @@ object frmNewForm: TfrmNewForm
       Wx_Floating_Y_Pos = 0
     end
     object WxBitmapButton6: TWxBitmapButton
-      Left = 181
-      Top = 196
-      Width = 22
-      Height = 22
+      Left = 189
+      Top = 198
+      Width = 18
+      Height = 18
       TabOrder = 17
       Glyph.Data = {
         C6070000424DC607000000000000360000002800000016000000160000000100
@@ -3241,10 +3241,10 @@ object frmNewForm: TfrmNewForm
       Wx_Floating_Y_Pos = 0
     end
     object WxBitmapButton7: TWxBitmapButton
-      Left = 181
-      Top = 225
-      Width = 22
-      Height = 22
+      Left = 189
+      Top = 228
+      Width = 18
+      Height = 18
       TabOrder = 18
       Glyph.Data = {
         C6070000424DC607000000000000360000002800000016000000160000000100
@@ -3408,10 +3408,10 @@ object frmNewForm: TfrmNewForm
       Wx_Floating_Y_Pos = 0
     end
     object WxBitmapButton8: TWxBitmapButton
-      Left = 181
-      Top = 255
-      Width = 22
-      Height = 22
+      Left = 189
+      Top = 258
+      Width = 18
+      Height = 18
       TabOrder = 19
       Glyph.Data = {
         C6070000424DC607000000000000360000002800000016000000160000000100
@@ -3559,41 +3559,6 @@ object frmNewForm: TfrmNewForm
       KeepFormat = True
       Wx_PaneCaption = 'WxBitmapButton8'
       Wx_PaneName = 'WxBitmapButton8_Pane'
-      Wx_Aui_Dock_Direction = wxAUI_DOCK_NONE
-      Wx_Aui_Dockable_Direction = []
-      Wx_Aui_Pane_Style = []
-      Wx_Aui_Pane_Buttons = []
-      Wx_BestSize_Height = 0
-      Wx_BestSize_Width = 0
-      Wx_MinSize_Height = 0
-      Wx_MinSize_Width = 0
-      Wx_MaxSize_Height = 0
-      Wx_MaxSize_Width = 0
-      Wx_Floating_Height = 0
-      Wx_Floating_Width = 0
-      Wx_Floating_X_Pos = 0
-      Wx_Floating_Y_Pos = 0
-    end
-    object WxComboBox1: TWxComboBox
-      Left = 530
-      Top = 135
-      Width = 145
-      Height = 24
-      ItemHeight = 16
-      TabOrder = 20
-      Text = 'Rozdzielczo'#347#263
-      Wx_BGColor = clBlack
-      Wx_Class = 'wxComboBox'
-      Wx_ComboboxStyle = []
-      Wx_EditStyle = []
-      Wx_ControlOrientation = wxControlVertical
-      Wx_FGColor = clBlack
-      Wx_GeneralStyle = []
-      Wx_Hidden = False
-      Wx_IDName = 'ID_WXCOMBOBOX1'
-      Wx_IDValue = 1037
-      Wx_PaneCaption = 'WxComboBox1'
-      Wx_PaneName = 'WxComboBox1_Pane'
       Wx_Aui_Dock_Direction = wxAUI_DOCK_NONE
       Wx_Aui_Dockable_Direction = []
       Wx_Aui_Pane_Style = []

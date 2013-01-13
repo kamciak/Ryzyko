@@ -26,7 +26,6 @@
 //Header Include Start and Header Include End.
 //wxDev-C++ designer will remove them. Add custom headers after the block.
 ////Header Include Start
-#include <wx/combobox.h>
 #include <wx/bmpcbox.h>
 #include <wx/textctrl.h>
 #include <wx/bmpbuttn.h>
@@ -42,6 +41,7 @@ class Controller;
 
 class MenuDlg : public wxDialog
 {
+    friend class Controller;
 	private:
 		DECLARE_EVENT_TABLE();
 		
@@ -64,7 +64,6 @@ class MenuDlg : public wxDialog
 		//GUI Control Declaration Start and GUI Control Declaration End.
 		//wxDev-C++ will remove them. Add custom code after the block.
 		////GUI Control Declaration Start
-		wxComboBox *WxComboBox1;
 		wxBitmapButton *WxBitmapButton8;
 		wxBitmapButton *WxBitmapButton7;
 		wxBitmapButton *WxBitmapButton6;
@@ -96,7 +95,6 @@ class MenuDlg : public wxDialog
 		enum
 		{
 			////GUI Enum Control ID Start
-			ID_WXCOMBOBOX1 = 1037,
 			ID_WXBITMAPBUTTON8 = 1036,
 			ID_WXBITMAPBUTTON7 = 1035,
 			ID_WXBITMAPBUTTON6 = 1034,
@@ -122,7 +120,7 @@ class MenuDlg : public wxDialog
 			ID_DUMMY_VALUE_ //don't remove this value unless you have other enum values
 		};
 	
-	private:
+	private:        
         bool isPlayer3;
         bool isPlayer4;
         bool isPlayer5;
@@ -137,9 +135,7 @@ class MenuDlg : public wxDialog
         Controller & _controller;
 };
 
-    enum PlayerColor{
-        RED, GREEN, BLUE, GRAY, MAGENTA, YELLOW, CYAN, ORANGE, DARKBLUE, PURPLE   
-    };
+    
 
 
 #endif

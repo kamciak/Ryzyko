@@ -28,15 +28,21 @@
 ////Header Include Start
 #include <wx/sizer.h>
 ////Header Include End
-#include "ClickablePanel.h"
+
 ////Dialog Style Start
 #undef RiskFrm_STYLE
 #define RiskFrm_STYLE wxCAPTION | wxSYSTEM_MENU | wxMINIMIZE_BOX | wxCLOSE_BOX
 ////Dialog Style End
+#include <map>
+#include <sstream>
 #include "MenuDlg.h"
 #include "Controller.h"
 #include "PlayersData.h"
 #include "Board.h"
+#include "ClickablePanel.h"
+
+#define NO_REGION_SELECTED 99
+
 class RiskFrm : public wxFrame
 {
 	private:
@@ -72,16 +78,21 @@ class RiskFrm : public wxFrame
 		void OnClose(wxCloseEvent& event);
 		void CreateGUIControls();
 		ClickablePanel *MapPanel;
-        wxClientDC *_dc;
         Controller control;
+        std::map<unsigned int,wxColour> _colours;
+        
     public:
         MenuDlg *menu;
         wxImage *map;
         wxImage *mask;
         wxImage *map_with_mask;
+        wxImage *army_number_plate;
+        
         void mouseLeftClick(wxMouseEvent & event);
-        void setResolution(unsigned int id);
+        void setResolution();
         void paintSelectedRegion(unsigned int id);
+        void info(wxString txt);
+        unsigned int getRegionID(unsigned int x, unsigned int y);
 };
 
 #endif

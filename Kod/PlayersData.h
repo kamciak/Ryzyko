@@ -3,27 +3,26 @@
 #include <vector>
 #include <string>
 
-#define MAX_PLAYERS 6
-#include "MenuDlg.h"
+#include "Player.h"
+
+#ifndef MAX_PLAYERS
+    #define MAX_PLAYERS 6
+#endif
+
 enum PlayerColor;
 
 ///Klasa-singleton przechowuj¹ca informacje o graczach
 class PlayersData{
 private:
-	std::vector<std::string> _names;
-	std::vector<PlayerColor> _colors;
-	std::vector<bool> _used;
+    std::vector<Player> _players;
 	PlayersData();
 	PlayersData(const PlayersData &p);
 	PlayersData &operator=(const PlayersData &p);
 public:
 	static PlayersData &instance();
-	void setPlayerName(unsigned int id, std::string s);
-	void setPlayerColor(unsigned int id, PlayerColor color);
-	void setPlayerUsed(unsigned int id, bool b);
-	std::string getPlayerName(unsigned int id);
-	PlayerColor getPlayerColor(unsigned int id);
-	bool getPlayerUsed(unsigned int id);
+    Player & player(unsigned int id);
+    void addPlayer(Player player);
+    unsigned int numberOfPlayers();
 };
 
 
