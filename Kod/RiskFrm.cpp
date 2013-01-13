@@ -157,10 +157,13 @@ void RiskFrm::setResolution(){
     wxImage::AddHandler( new wxJPEGHandler );
     wxImage::AddHandler( new wxPNGHandler );
     wxImage::AddHandler( new wxPNGHandler );
+    wxImage::AddHandler( new wxPNGHandler );
     map = new wxImage("map_regions.jpg");
     map->Rescale(width,height);
     mask = new wxImage("maska.png");
     mask->Rescale(width,height);
+    region_highlight = new wxImage("maska.png");
+    region_highlight->Rescale(width,height);
     map_with_mask = new wxImage(*map);
     army_number_plate = new wxImage("Images/numberplate.png");
     info("Aktualny gracz: "+PlayersData::instance().player(control.currentPlayer()).name());
@@ -179,8 +182,14 @@ void RiskFrm::paintSelectedRegion(unsigned int id){
         wxColour region_col = _colours[id];
         for(int i = 0; i < h; ++i){
             for(int j = 0; j < w; ++j){
-                if(mask->GetRed(j,i) == region_col.Red() && mask->GetBlue(j,i) == region_col.Blue() && mask->GetGreen(j,i) ==region_col.Green())
-                    map_with_mask->SetRGB(j,i,255,0,0);
+                if(mask->GetRed(j,i) == region_col.Red() 
+                && mask->GetBlue(j,i) == region_col.Blue() 
+                && mask->GetGreen(j,i) ==region_col.Green()){
+                    unsigned char red = region_highlight->GetRed(j,i);
+                    unsigned char green = region_highlight->GetGreen(j,i);
+                    unsigned char blue = region_highlight->GetBlue(j,i);
+                    map_with_mask->SetRGB(j,i,red,green,blue);
+                }
             }
         }
     }
