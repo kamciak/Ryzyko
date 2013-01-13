@@ -6,7 +6,7 @@ Region::Region(unsigned int id,std::string region_name, wxPoint coords){
     _id = id;
     _name = region_name;
     _coords = coords;
-    _controller = NO_CONTROLLER;
+    _owner = NO_OWNER;
     _armies = 0;
 }
 
@@ -52,10 +52,10 @@ unsigned int Region::id(){
     return _id;
 }   
     
-unsigned int Region::controller(){
-    return _controller;
+unsigned int Region::owner(){
+    return _owner;
 }
 
-void Region::setController(unsigned int id){
-    _controller = id;
+void Region::setOwner(unsigned int id){
+    _owner = id;
 }

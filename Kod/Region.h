@@ -5,13 +5,10 @@
 #include <wx/wx.h>
 #include <vector>
 
-#include "BattleResults.h"
 #include "RiskExceptions.h"
-#include "Board.h"
-class Player;
 
-#ifndef NO_CONTROLLER
-    #define NO_CONTROLLER 50
+#ifndef NO_OWNER
+    #define NO_OWNER 50
 #endif
 
 ///Klasa z informacjami o regionie
@@ -19,7 +16,7 @@ class Region{
 private:
 	unsigned int _id;
 	std::string _name;
-    unsigned int _controller;
+    unsigned int _owner;
 	unsigned int _armies;
     wxPoint _coords;
     std::vector<unsigned int> _neighbors;
@@ -43,9 +40,9 @@ public:
     ///Zwraca id regionu
     unsigned int id();
     ///Zwraca id gracza kontrolujacego region
-    unsigned int controller();
+    unsigned int owner();
     ///Ustawia gracza o podanym id jako kontrolujacego ten region
-    void setController(unsigned int id);
+    void setOwner(unsigned int id);
 	
 };
 

@@ -93,6 +93,7 @@ class RiskFrm : public wxFrame
         void paintSelectedRegion(unsigned int id);
         void info(wxString txt);
         unsigned int getRegionID(unsigned int x, unsigned int y);
+        void endPhaseButtonVisible(bool flag);
 };
 
 #endif

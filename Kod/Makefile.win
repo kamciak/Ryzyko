@@ -1,7 +1,7 @@
 # Project: Risk
 # Compiler: Default GCC compiler
 # Compiler Type: MingW 3
-# Makefile created by wxDev-C++ IDE 7.4.2.558 on 08-01-13 13:00
+# Makefile created by wxDev-C++ IDE 7.4.2.569 on 13-01-13 16:46
 
 WXLIBNAME = wxmsw29u
 CPP       = g++.exe
@@ -9,10 +9,10 @@ CC        = gcc.exe
 WINDRES   = "windres.exe"
 OBJ       = Objects/MingW/RiskApp.o Objects/MingW/RiskFrm.o Objects/MingW/Board.o Objects/MingW/Region.o Objects/MingW/Player.o Objects/MingW/Controller.o Objects/MingW/MenuDlg.o Objects/MingW/ClickablePanel.o Objects/MingW/PlayersData.o Objects/MingW/Phase.o Objects/MingW/Risk_private.res
 LINKOBJ   = "Objects/MingW/RiskApp.o" "Objects/MingW/RiskFrm.o" "Objects/MingW/Board.o" "Objects/MingW/Region.o" "Objects/MingW/Player.o" "Objects/MingW/Controller.o" "Objects/MingW/MenuDlg.o" "Objects/MingW/ClickablePanel.o" "Objects/MingW/PlayersData.o" "Objects/MingW/Phase.o" Objects/MingW/Risk_private.res
-LIBS      = -L"D:/ZENworks/wxDevCpp_7_4_2_portable/wxDevCppP7/App/devcpp/lib/wx/gcc_lib" -L"D:/ZENworks/wxDevCpp_7_4_2_portable/wxDevCppP7/App/devcpp/lib" -L"D:/ZENworks/wxDevCpp_7_4_2_portable/wxDevCppP7/App/devcpp/MinGW32/lib" -mwindows -l$(WXLIBNAME) -l$(WXLIBNAME)_gl -lwxscintilla -lwxtiff -lwxjpeg -lwxpng -lwxzlib -lwxregexu -lwxexpat -lkernel32 -luser32 -lgdi32 -lcomdlg32 -lwinspool -lwinmm -lshell32 -lcomctl32 -lole32 -loleaut32 -luuid -lrpcrt4 -ladvapi32 -lwsock32 -lodbc32 -lopengl32  
-INCS      = -I"D:/ZENworks/wxDevCpp_7_4_2_portable/wxDevCppP7/App/devcpp/MinGW32/include"
-CXXINCS   = -I"D:/ZENworks/wxDevCpp_7_4_2_portable/wxDevCppP7/App/devcpp/MinGW32/include" -I"D:/ZENworks/wxDevCpp_7_4_2_portable/wxDevCppP7/App/devcpp/" -I"D:/ZENworks/wxDevCpp_7_4_2_portable/wxDevCppP7/App/devcpp/include/common" -I"D:/ZENworks/wxDevCpp_7_4_2_portable/wxDevCppP7/App/devcpp/include"
-RCINCS    = --include-dir "D:/ZENworks/WXDEVC~2/WXDEVC~1/App/devcpp/include/common"
+LIBS      = -L"C:/Program Files (x86)/Dev-Cpp/lib/wx/gcc_lib" -L"C:/Program Files (x86)/Dev-Cpp/lib" -L"C:/Program Files (x86)/Dev-Cpp/MinGW32/lib" -mwindows -l$(WXLIBNAME) -l$(WXLIBNAME)_gl -lwxscintilla -lwxtiff -lwxjpeg -lwxpng -lwxzlib -lwxregexu -lwxexpat -lkernel32 -luser32 -lgdi32 -lcomdlg32 -lwinspool -lwinmm -lshell32 -lcomctl32 -lole32 -loleaut32 -luuid -lrpcrt4 -ladvapi32 -lwsock32 -lodbc32 -lopengl32  
+INCS      = -I"C:/Program Files (x86)/Dev-Cpp/MinGW32/include"
+CXXINCS   = -I"C:/Program Files (x86)/Dev-Cpp/MinGW32/include" -I"C:/Program Files (x86)/Dev-Cpp/" -I"C:/Program Files (x86)/Dev-Cpp/include/common"
+RCINCS    = --include-dir "C:/PROGRA~2/Dev-Cpp/include/common"
 BIN       = Output/MingW/Risk.exe
 DEFINES   = -D__WXMSW__ -D__GNUWIN32__ -D_UNICODE
 CXXFLAGS  = $(CXXINCS) $(DEFINES)  
@@ -36,34 +36,34 @@ clean: clean-custom
 $(BIN): $(OBJ)
 	$(LINK) $(LINKOBJ) -o "$(BIN)" $(LIBS) 
 
-Objects/MingW/RiskApp.o: $(GLOBALDEPS) RiskApp.cpp RiskApp.h RiskFrm.h MenuDlg.h Controller.h Board.h Region.h BattleResults.h RiskExceptions.h Board.h PlayersData.h Player.h RegionDrawInformation.h PlayersData.h Board.h ClickablePanel.h Controller.h
+Objects/MingW/RiskApp.o: $(GLOBALDEPS) RiskApp.cpp RiskApp.h RiskFrm.h MenuDlg.h Controller.h Board.h Region.h RiskExceptions.h PlayersData.h Player.h RegionDrawInformation.h PlayersData.h Board.h ClickablePanel.h Controller.h
 	$(CPP) -c RiskApp.cpp -o Objects/MingW/RiskApp.o $(CXXFLAGS)
 
-Objects/MingW/RiskFrm.o: $(GLOBALDEPS) RiskFrm.cpp RiskFrm.h MenuDlg.h Controller.h Board.h Region.h BattleResults.h RiskExceptions.h Board.h PlayersData.h Player.h RegionDrawInformation.h PlayersData.h Board.h ClickablePanel.h Controller.h
+Objects/MingW/RiskFrm.o: $(GLOBALDEPS) RiskFrm.cpp RiskFrm.h MenuDlg.h Controller.h Board.h Region.h RiskExceptions.h PlayersData.h Player.h RegionDrawInformation.h PlayersData.h Board.h ClickablePanel.h Controller.h
 	$(CPP) -c RiskFrm.cpp -o Objects/MingW/RiskFrm.o $(CXXFLAGS)
 
-Objects/MingW/Board.o: $(GLOBALDEPS) Board.cpp Board.h Region.h BattleResults.h RiskExceptions.h Board.h
+Objects/MingW/Board.o: $(GLOBALDEPS) Board.cpp Board.h Region.h RiskExceptions.h
 	$(CPP) -c Board.cpp -o Objects/MingW/Board.o $(CXXFLAGS)
 
-Objects/MingW/Region.o: $(GLOBALDEPS) Region.cpp Region.h BattleResults.h RiskExceptions.h Board.h Region.h
+Objects/MingW/Region.o: $(GLOBALDEPS) Region.cpp Region.h RiskExceptions.h
 	$(CPP) -c Region.cpp -o Objects/MingW/Region.o $(CXXFLAGS)
 
 Objects/MingW/Player.o: $(GLOBALDEPS) Player.cpp Player.h
 	$(CPP) -c Player.cpp -o Objects/MingW/Player.o $(CXXFLAGS)
 
-Objects/MingW/Controller.o: $(GLOBALDEPS) Controller.cpp Controller.h Board.h Region.h BattleResults.h RiskExceptions.h Board.h PlayersData.h Player.h RegionDrawInformation.h RiskFrm.h MenuDlg.h Controller.h PlayersData.h Board.h ClickablePanel.h Controller.h Phase.h Util.h
+Objects/MingW/Controller.o: $(GLOBALDEPS) Controller.cpp Controller.h Board.h Region.h RiskExceptions.h PlayersData.h Player.h RegionDrawInformation.h RiskFrm.h MenuDlg.h Controller.h PlayersData.h Board.h ClickablePanel.h Controller.h Phase.h Util.h
 	$(CPP) -c Controller.cpp -o Objects/MingW/Controller.o $(CXXFLAGS)
 
-Objects/MingW/MenuDlg.o: $(GLOBALDEPS) MenuDlg.cpp MenuDlg.h RiskFrm.h MenuDlg.h Controller.h Board.h Region.h BattleResults.h RiskExceptions.h Board.h PlayersData.h Player.h RegionDrawInformation.h PlayersData.h Board.h ClickablePanel.h Controller.h Controller.h
+Objects/MingW/MenuDlg.o: $(GLOBALDEPS) MenuDlg.cpp MenuDlg.h RiskFrm.h MenuDlg.h Controller.h Board.h Region.h RiskExceptions.h PlayersData.h Player.h RegionDrawInformation.h PlayersData.h Board.h ClickablePanel.h Controller.h Controller.h
 	$(CPP) -c MenuDlg.cpp -o Objects/MingW/MenuDlg.o $(CXXFLAGS)
 
-Objects/MingW/ClickablePanel.o: $(GLOBALDEPS) ClickablePanel.cpp ClickablePanel.h Controller.h Board.h Region.h BattleResults.h RiskExceptions.h Board.h PlayersData.h Player.h RegionDrawInformation.h RiskFrm.h MenuDlg.h Controller.h PlayersData.h Board.h ClickablePanel.h
+Objects/MingW/ClickablePanel.o: $(GLOBALDEPS) ClickablePanel.cpp ClickablePanel.h Controller.h Board.h Region.h RiskExceptions.h PlayersData.h Player.h RegionDrawInformation.h RiskFrm.h MenuDlg.h Controller.h PlayersData.h Board.h ClickablePanel.h
 	$(CPP) -c ClickablePanel.cpp -o Objects/MingW/ClickablePanel.o $(CXXFLAGS)
 
 Objects/MingW/PlayersData.o: $(GLOBALDEPS) PlayersData.cpp PlayersData.h Player.h MenuDlg.h
 	$(CPP) -c PlayersData.cpp -o Objects/MingW/PlayersData.o $(CXXFLAGS)
 
-Objects/MingW/Phase.o: $(GLOBALDEPS) Phase.cpp Phase.h Controller.h Board.h Region.h BattleResults.h RiskExceptions.h Board.h PlayersData.h Player.h RegionDrawInformation.h RiskFrm.h MenuDlg.h Controller.h PlayersData.h Board.h ClickablePanel.h Controller.h Board.h
+Objects/MingW/Phase.o: $(GLOBALDEPS) Phase.cpp Phase.h Controller.h Board.h Region.h RiskExceptions.h PlayersData.h Player.h RegionDrawInformation.h RiskFrm.h MenuDlg.h Controller.h PlayersData.h Board.h ClickablePanel.h Controller.h Board.h
 	$(CPP) -c Phase.cpp -o Objects/MingW/Phase.o $(CXXFLAGS)
 
 Objects/MingW/Risk_private.res: Objects/MingW/Risk_private.rc RiskApp.rc 

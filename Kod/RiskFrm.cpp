@@ -229,3 +229,9 @@ void RiskFrm::info(wxString txt){
         buff.Append(txt);
     }
 }
+
+void RiskFrm::endPhaseButtonVisible(bool flag){
+
+}
+
+

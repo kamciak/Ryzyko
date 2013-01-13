@@ -12,6 +12,7 @@ void Controller::setSelectedRegion(unsigned int id){
 }
     
 void Controller::nextPhase(){
+    setSelectedRegion(NO_REGION_SELECTED);
     if(dynamic_cast<SetupPhase*>(_current_phase)){
         _current_player++;
         if(_current_player == _players_queue.end()){
@@ -33,12 +34,13 @@ void Controller::nextPhase(){
         delete _current_phase;
         _current_phase = new AttackPhase(*this);
         _window.info("Faza Walki: kliknij na swój region z dwoma lub wiêcej jednostkami, a nastêpnie na s¹siedni wrogi region, aby go zaatakowaæ");
-        
+        _window.endPhaseButtonVisible(true);
     }
     else if(dynamic_cast<AttackPhase*>(_current_phase)){
         delete _current_phase;
         _current_phase = new FortifyPhase(*this);
         _window.info("Faza ruchu: kliknij na jeden ze swoich regionów z dwoma lub wiêcej jednostkami, a nastêpnie któryœ ze swoich s¹siednich regionów aby przemieœciæ tam wojska");
+    
     }
     else if(dynamic_cast<FortifyPhase*>(_current_phase)){
         _current_player++;
@@ -48,9 +50,9 @@ void Controller::nextPhase(){
         _current_phase = new ReinforcePhase(*this);
         _window.info("Faza Rekrutacji: kliknij na jeden ze swoich regionów aby umieœciæ tam dodatkowe jednostki");
         calculateNumberOfRecruits(currentPlayer());
-        
+        _window.endPhaseButtonVisible(false);
     }
-    
+   
 }
 
 Controller::Controller(RiskFrm & window) 
@@ -182,7 +184,7 @@ bool Controller::initPlayers(){
 bool Controller::allRegionsTaken(){
     Board & board = Board::instance();
     for(int i = 0; i < board.numberOfRegions(); ++i){
-        if(board.region(i).controller() == NO_CONTROLLER)
+        if(board.region(i).owner() == NO_OWNER)
             return false;
     }
     return true;
@@ -206,9 +208,9 @@ std::vector<RegionDrawInformation> Controller::getRegionDrawInfo(){
         wxPoint postscale(prescale.x * scale, prescale.y * scale); 
         unsigned int armies = Board::instance().region(id).armyCount();
 
-        unsigned int controller_id = Board::instance().region(id).controller();
-        if(controller_id != NO_CONTROLLER){
-            wxImage & image = PlayersData::instance().player(controller_id).image();
+        unsigned int owner_id = Board::instance().region(id).owner();
+        if(owner_id != NO_OWNER){
+            wxImage & image = PlayersData::instance().player(owner_id).image();
     
             draw_info.push_back(RegionDrawInformation(postscale,image,armies));
         }
@@ -222,7 +224,7 @@ void Controller::calculateNumberOfRecruits(unsigned int player_id){
     int total = 0;
     int standard = 0;
     for(int i = 0; i < board.numberOfRegions(); ++i){
-        if(board.region(i).controller() == player_id)
+        if(board.region(i).owner() == player_id)
             ++standard;
     }
     standard = (standard/3) < 3 ? 3 : (standard/3);
@@ -233,72 +235,72 @@ void Controller::calculateNumberOfRecruits(unsigned int player_id){
 
 //Kontrola nad kontynentami:
     //Azja:
-    if(board.region("Erdenet").controller() == player_id &&
-    board.region("Ulan-Ude").controller() == player_id &&
-    board.region("Vorkuta").controller() == player_id &&    
-    board.region("Achinsk").controller() == player_id &&    
-    board.region("Bratsk").controller() == player_id &&    
-    board.region("Yakutsk").controller() == player_id &&    
-    board.region("Neyungri").controller() == player_id &&    
-    board.region("Ajmer").controller() == player_id &&    
-    board.region("Lao").controller() == player_id &&    
-    board.region("Chengdu").controller() == player_id &&    
-    board.region("Magadan").controller() == player_id &&    
-    board.region("Aomori").controller() == player_id){
+    if(board.region("Erdenet").owner() == player_id &&
+    board.region("Ulan-Ude").owner() == player_id &&
+    board.region("Vorkuta").owner() == player_id &&    
+    board.region("Achinsk").owner() == player_id &&    
+    board.region("Bratsk").owner() == player_id &&    
+    board.region("Yakutsk").owner() == player_id &&    
+    board.region("Neyungri").owner() == player_id &&    
+    board.region("Ajmer").owner() == player_id &&    
+    board.region("Lao").owner() == player_id &&    
+    board.region("Chengdu").owner() == player_id &&    
+    board.region("Magadan").owner() == player_id &&    
+    board.region("Aomori").owner() == player_id){
         _window.info("\tKontrola nad Azj¹: 7");
         total += 7;
     }            
 
     //Ameryka Pó³nocna: 
-    if(board.region("Fairbanks").controller() == player_id &&
-    board.region("Terrace").controller() == player_id &&
-    board.region("Yellowknife").controller() == player_id &&    
-    board.region("Manitoba").controller() == player_id &&    
-    board.region("Saguenay").controller() == player_id &&    
-    board.region("Riverton").controller() == player_id &&    
-    board.region("Hoover").controller() == player_id &&    
-    board.region("Teape").controller() == player_id &&    
-    board.region("Qaanaaq").controller() == player_id){
+    if(board.region("Fairbanks").owner() == player_id &&
+    board.region("Terrace").owner() == player_id &&
+    board.region("Yellowknife").owner() == player_id &&    
+    board.region("Manitoba").owner() == player_id &&    
+    board.region("Saguenay").owner() == player_id &&    
+    board.region("Riverton").owner() == player_id &&    
+    board.region("Hoover").owner() == player_id &&    
+    board.region("Teape").owner() == player_id &&    
+    board.region("Qaanaaq").owner() == player_id){
         _window.info("\tKontrola nad Ameryk¹ Pó³nocn¹: 5");
         total += 5;
     }    
 
     //Europa:
-    if(board.region("Reykjavik").controller() == player_id &&
-    board.region("Evel").controller() == player_id &&
-    board.region("Oulu").controller() == player_id &&    
-    board.region("Lida").controller() == player_id &&    
-    board.region("Gijon").controller() == player_id &&    
-    board.region("Temi").controller() == player_id &&    
-    board.region("Kansk").controller() == player_id){
+    if(board.region("Reykjavik").owner() == player_id &&
+    board.region("Evel").owner() == player_id &&
+    board.region("Oulu").owner() == player_id &&    
+    board.region("Lida").owner() == player_id &&    
+    board.region("Gijon").owner() == player_id &&    
+    board.region("Temi").owner() == player_id &&    
+    board.region("Kansk").owner() == player_id){
         _window.info("\tKontrola nad Europ¹: 5");
         total += 5;
     }
 
     //Afryka:
-    if(board.region("Bobo-Dioulasso").controller() == player_id &&
-    board.region("Mut").controller() == player_id &&
-    board.region("Dessie").controller() == player_id &&    
-    board.region("Likasi").controller() == player_id &&    
-    board.region("Cradock").controller() == player_id &&    
-    board.region("Saka").controller() == player_id){
+    if(board.region("Bobo-Dioulasso").owner() == player_id &&
+    board.region("Mut").owner() == player_id &&
+    board.region("Dessie").owner() == player_id &&    
+    board.region("Likasi").owner() == player_id &&    
+    board.region("Cradock").owner() == player_id &&    
+    board.region("Saka").owner() == player_id){
         _window.info("\tKontrola nad Afryk¹: 3");
         total += 3;
     }
     
     //Australia:
-    if(board.region("Kapit").controller() == player_id &&
-    board.region("Jayapura").controller() == player_id &&
-    board.region("Karratha").controller() == player_id &&    
-    board.region("Yeppon").controller() == player_id){
+    if(board.region("Kapit").owner() == player_id &&
+    board.region("Jayapura").owner() == player_id &&
+    board.region("Karratha").owner() == player_id &&    
+    board.region("Yeppon").owner() == player_id){
         _window.info("\tKontrola nad Australi¹: 2");
         total += 2;
     }    
     //Ameryka Po³udniowa
-    if(board.region("Sipapo").controller() == player_id &&
-    board.region("Potosi").controller() == player_id &&
-    board.region("Bahia").controller() == player_id &&    
-    board.region("Tandil").controller() == player_id){
+    if(board.region("Sipapo").owner() == player_id &&
+    board.region("Potosi").owner() == player_id &&
+    board.region("Bahia").owner() == player_id &&    
+    board.region("Tandil").owner() == player_id){
         _window.info("\tKontrola nad Ameryk¹ Po³udniow¹: 2");
         total += 2;
     }    
@@ -356,7 +358,7 @@ void Controller::combat(unsigned int attacker, unsigned int defender){
     board.region(attacker).removeArmies(atk_losses);
     board.region(defender).removeArmies(def_losses);
     if(board.region(defender).armyCount() == 0){
-        board.region(defender).setController(currentPlayer());
+        board.region(defender).setOwner(currentPlayer());
         board.region(attacker).removeArmies(atk_dice - atk_losses);
         board.region(defender).addArmies(atk_dice - atk_losses);
     }
