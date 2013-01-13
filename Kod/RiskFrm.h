@@ -87,7 +87,6 @@ class RiskFrm : public wxFrame
         wxImage *map;
         wxImage *mask;
         wxImage *map_with_mask;
-        wxImage *region_highlight;
         wxImage *army_number_plate;
         
         void mouseLeftClick(wxMouseEvent & event);
