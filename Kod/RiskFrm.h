@@ -41,6 +41,7 @@
 #include "Board.h"
 #include "ClickablePanel.h"
 
+
 #define NO_REGION_SELECTED 99
 
 class RiskFrm : public wxFrame
@@ -81,18 +82,26 @@ class RiskFrm : public wxFrame
         Controller control;
         std::map<unsigned int, wxColour> _colours;
         std::map<PlayerColor, wxColour> _player_colours;
+        wxImage *_fortify_phase_image;
+        wxImage *_attack_phase_image;
+        wxImage *_reinforce_phase_image;
+        wxImage *_setup_phase_image;
+        double _scale;
         
     public:
         MenuDlg *menu;
         wxImage *map;
         wxImage *mask;
         wxImage *map_with_mask;
+        wxImage *regions_highlight;
         wxImage *army_number_plate;
         
         void mouseLeftClick(wxMouseEvent & event);
         void setResolution();
         void paintSelectedRegion(unsigned int id);
         void info(wxString txt);
+        void setScale();
+        double getScale();
         unsigned int getRegionID(unsigned int x, unsigned int y);
         void endPhaseButtonVisible(bool flag);
 };

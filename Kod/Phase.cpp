@@ -3,6 +3,8 @@
 #include "RiskFrm.h"
 #include "Board.h"
 
+
+
 void FortifyPhase::handleRegionClicked(unsigned int id){
     unsigned int selected_region = _controller.selectedRegion();
     Board & board = Board::instance();
@@ -67,4 +69,20 @@ void SetupPhase::handleRegionClicked(unsigned int id){
     }
     
     
+}
+
+PhaseName AttackPhase::phaseName(){
+    return ATTACK;
+}
+
+PhaseName SetupPhase::phaseName(){
+    return SETUP;
+}
+
+PhaseName ReinforcePhase::phaseName(){
+    return REINFORCE;
+}
+
+PhaseName FortifyPhase::phaseName(){
+    return FORTIFY;
 }

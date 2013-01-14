@@ -4,9 +4,17 @@
 
 class Controller;
 
+enum PhaseName{
+    REINFORCE,
+    FORTIFY,
+    ATTACK,
+    SETUP
+};
+
 class Phase{
 public:
 	virtual void handleRegionClicked(unsigned int id) = 0;
+    virtual PhaseName phaseName() = 0;
 };
 
 class SetupPhase : public Phase{
@@ -15,6 +23,7 @@ private:
 public:
 	SetupPhase(Controller & controller) : _controller(controller){};
 	void handleRegionClicked(unsigned int id);
+    PhaseName phaseName();
 };
 
 class FortifyPhase : public Phase{
@@ -22,7 +31,8 @@ private:
 	Controller & _controller;
 public:
 	FortifyPhase(Controller & controller) : _controller(controller){};
-	void handleRegionClicked(unsigned int id);	
+	void handleRegionClicked(unsigned int id);
+    PhaseName phaseName();	
 };
 
 class AttackPhase : public Phase{
@@ -31,6 +41,7 @@ private:
 public:
 	AttackPhase(Controller & controller) : _controller(controller){};
 	void handleRegionClicked(unsigned int id);
+    PhaseName phaseName();
 };
 
 class ReinforcePhase : public Phase{
@@ -39,6 +50,7 @@ private:
 public:
 	ReinforcePhase(Controller & controller) : _controller(controller){};
 	void handleRegionClicked(unsigned int id);
+    PhaseName phaseName();
 };
 
 #endif

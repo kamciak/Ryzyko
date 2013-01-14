@@ -12,8 +12,15 @@
 #include <wx/dcbuffer.h>
 #include <sstream>
 
+#include "Util.h"
+
 #define END_PHASE_X 790
 #define END_PHASE_Y 600
+#define PHASE_BAR_X 520
+#define PHASE_BAR_Y 640
+#define DEFAULT_SIZE_X 1366
+#define DEFAULT_SIZE_Y 768
+#define BIG_IMAGE_THRESHHOLD 1500
 
 //Do not add custom headers between
 //Header Include Start and Header Include End
@@ -143,11 +150,11 @@ void RiskFrm::OnClose(wxCloseEvent& event)
 }
 
 void RiskFrm::setResolution(){
+    setScale();
+    double scale = getScale();
     wxSize size = this->GetSize();
-    
-    unsigned int width = size.GetWidth();
-    double scale = width/1366.0;
-    unsigned int height = 768.0 * scale; 
+    unsigned int width = DEFAULT_SIZE_X * scale;
+    unsigned int height = DEFAULT_SIZE_Y * scale; 
     unsigned int panel_y = 0.5 * (size.GetHeight()-height);
 
     MapPanel = new ClickablePanel(this, control, 2500, wxPoint(0,panel_y), wxSize(width,height));
@@ -157,12 +164,32 @@ void RiskFrm::setResolution(){
     wxImage::AddHandler( new wxJPEGHandler );
     wxImage::AddHandler( new wxPNGHandler );
     wxImage::AddHandler( new wxPNGHandler );
-    map = new wxImage("map_regions.jpg");
+    wxImage::AddHandler( new wxPNGHandler );
+    wxImage::AddHandler( new wxPNGHandler );
+    wxImage::AddHandler( new wxPNGHandler );
+    wxImage::AddHandler( new wxPNGHandler );
+    wxImage::AddHandler( new wxPNGHandler );
+    wxImage::AddHandler( new wxPNGHandler );
+
+    _fortify_phase_image = new wxImage("Images/fortifyphase.png");
+    _attack_phase_image = new wxImage("Images/attackphase.png");
+    _reinforce_phase_image = new wxImage("Images/reinforcephase.png");
+    _setup_phase_image = new wxImage("Images/setupphase.png");
+
+    map = new wxImage("Images/map_regions.jpg");
     map->Rescale(width,height);
-    mask = new wxImage("maska.png");
+    mask = new wxImage("Images/maska.png");
     mask->Rescale(width,height);
+    regions_highlight = new wxImage("Images/highlight.png");
+    regions_highlight->Rescale(width,height);
+    
     map_with_mask = new wxImage(*map);
-    army_number_plate = new wxImage("Images/numberplate.png");
+    bool big_image = this->GetSize().GetWidth() > BIG_IMAGE_THRESHHOLD ? true : false;
+    if(big_image)
+        army_number_plate = new wxImage("Images/numberplateb.png");
+    else
+        army_number_plate = new wxImage("Images/numberplates.png");
+
     info("Aktualny gracz: "+PlayersData::instance().player(control.currentPlayer()).name());
 }
 
@@ -179,8 +206,14 @@ void RiskFrm::paintSelectedRegion(unsigned int id){
         wxColour region_col = _colours[id];
         for(int i = 0; i < h; ++i){
             for(int j = 0; j < w; ++j){
-                if(mask->GetRed(j,i) == region_col.Red() && mask->GetBlue(j,i) == region_col.Blue() && mask->GetGreen(j,i) ==region_col.Green())
-                    map_with_mask->SetRGB(j,i,255,0,0);
+                if(mask->GetRed(j,i) == region_col.Red() 
+                && mask->GetBlue(j,i) == region_col.Blue() 
+                && mask->GetGreen(j,i) ==region_col.Green()){
+                    unsigned char red = regions_highlight->GetRed(j,i);
+                    unsigned char green = regions_highlight->GetGreen(j,i);
+                    unsigned char blue = regions_highlight->GetBlue(j,i);
+                    map_with_mask->SetRGB(j,i,red,green,blue);
+                }
             }
         }
     }
@@ -193,26 +226,46 @@ void RiskFrm::paintSelectedRegion(unsigned int id){
  */
 void RiskFrm::WxPanel1UpdateUI(wxUpdateUIEvent& event)
 {
-	
+	double scale = getScale();
+
 	wxClientDC dc(MapPanel);
 	wxBufferedDC bdc(&dc);
     if(map_with_mask){
         
         wxBitmap map_with_mask_bp(*map_with_mask);
+        wxBitmap *phase_bar_bmp;
+        PhaseName phase = control.getPhaseName();
+        switch(phase){
+            case SETUP:
+                phase_bar_bmp = new wxBitmap(*_setup_phase_image);
+                break;
+            case REINFORCE:
+                phase_bar_bmp = new wxBitmap(*_reinforce_phase_image);
+                break;
+            case ATTACK:
+                phase_bar_bmp = new wxBitmap(*_attack_phase_image);
+                break;
+            case FORTIFY:
+                phase_bar_bmp = new wxBitmap(*_fortify_phase_image);
+                break;
+        }
         bdc.DrawBitmap(map_with_mask_bp,0,0,true);
-
-        std::vector<RegionDrawInformation> draw_info = control.getRegionDrawInfo();
+        bdc.DrawBitmap(*phase_bar_bmp,wxPoint(PHASE_BAR_X * scale, PHASE_BAR_Y * scale),true);
+        bool big_image = this -> GetSize().GetWidth() > BIG_IMAGE_THRESHHOLD ? true : false;
+        std::vector<RegionDrawInformation> draw_info = control.getRegionDrawInfo(big_image);
         for(int i = 0; i < draw_info.size(); ++i){
             if(draw_info[i].image){
                 wxBitmap soldier_bp(*draw_info[i].image);
                 wxBitmap numberplate(*army_number_plate);
-                bdc.DrawBitmap(soldier_bp,draw_info[i].point.x-12,draw_info[i].point.y-35,true);
-                bdc.DrawBitmap(numberplate,draw_info[i].point.x-12,draw_info[i].point.y,true);
-                std::stringstream ss;
-                ss << draw_info[i].armies;
-                std::string armies_s;
-                ss >> armies_s;
-                bdc.DrawText(armies_s,draw_info[i].point.x-5,draw_info[i].point.y);
+
+                int bmp_width = soldier_bp.GetSize().GetWidth();
+                int soldier_height = soldier_bp.GetSize().GetHeight();
+
+                bdc.DrawBitmap(soldier_bp,draw_info[i].point.x-(bmp_width/2),draw_info[i].point.y-soldier_height,true);
+                bdc.DrawBitmap(numberplate,draw_info[i].point.x-(bmp_width/2),draw_info[i].point.y,true);
+                std::string armies_s = intToString(draw_info[i].armies);
+                int text_dx = armies_s.length() > 1 ? -5 : -2;
+                bdc.DrawText(armies_s,draw_info[i].point.x+text_dx,draw_info[i].point.y);
             }
         }
     }
@@ -252,5 +305,15 @@ void RiskFrm::endPhaseButtonVisible(bool flag){
     else
         MapPanel -> end_phase_btn -> Hide();
 }
+
+void RiskFrm::setScale(){
+    wxSize size = this->GetSize();    
+    unsigned int width = size.GetWidth();
+    _scale = width/1366.0;
+}
+
+double RiskFrm::getScale(){
+    return _scale;
+}   
 
 

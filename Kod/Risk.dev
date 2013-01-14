@@ -86,7 +86,7 @@ ProductName=
 ProductVersion=
 AutoIncBuildNrOnRebuild=0
 AutoIncBuildNrOnCompile=0
-UnitCount=23
+UnitCount=24
 
 [Profile1]
 ProfileName=MingW gcc
@@ -284,7 +284,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit23]
-FileName=Phase.h
+FileName=Util.h
 CompileCpp=1
 Folder=Risk
 Compile=1
@@ -304,9 +304,19 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit22]
-FileName=RegionDrawInformation.h
+FileName=Phase.h
 CompileCpp=1
 Folder=Risk
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit24]
+FileName=Util.cpp
+CompileCpp=1
+Folder=
 Compile=1
 Link=1
 Priority=1000

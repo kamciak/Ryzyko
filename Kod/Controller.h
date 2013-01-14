@@ -3,8 +3,11 @@
 #include "Board.h"
 #include "PlayersData.h"
 #include "RegionDrawInformation.h"
+#include "Phase.h"
 class RiskFrm;
 class Phase;
+
+
 
 ///Klasa odpowiedzialna za wspó³pracê danych ze stron¹ graficzn¹
 class Controller{
@@ -32,7 +35,8 @@ public:
     Controller(RiskFrm & window);
     ~Controller();
 
-
+    ///Zwraca wartoœæ PhaseName odpowiadaj¹c¹ aktualnej fazie
+    PhaseName getPhaseName();
     ///Koñczy fazê rozmieszczania pocz¹tkowych pionków i rozpoczyna grê
     void startGame();
     ///Przechodzi do nastepnej fazy w turze, lub konczy ture jezeli jest to ostatnia faza
@@ -48,7 +52,7 @@ public:
     ///Zwraca wartosc logiczna czy wszystkie regiony maja juz wlasciciela 
     bool allRegionsTaken();
     ///Zwraca obiekt przechowujacy wszystkie dane potrzebne do przedstawienia danych o regionie na mapie
-    std::vector<RegionDrawInformation> getRegionDrawInfo();
+    std::vector<RegionDrawInformation> getRegionDrawInfo(bool big_image);
     ///Zwraca ilosc armii pozosta³ych do rozdzielenia
     unsigned int armiesToDistribute();
     ///Dodaje armie do regionu i usuwa je z puli armii do rozdzielenia

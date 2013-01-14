@@ -10,10 +10,11 @@ class Player{
 private:
     wxString _name;
     wxImage _soldier_image;
+    wxImage _soldier_image_big;
 public:
     Player(wxString player_name, PlayerColor player_color);
     wxString name();
-    wxImage & image();
+    wxImage & image(bool big);
 };
 
 

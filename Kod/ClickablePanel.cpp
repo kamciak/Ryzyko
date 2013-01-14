@@ -12,10 +12,8 @@ END_EVENT_TABLE()
 
 ClickablePanel::ClickablePanel(RiskFrm* parent, Controller & control, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name) 
         : wxPanel(parent,id,pos,size,style,name), _controller(control), _parent(*parent){
-    wxSize s = this->GetSize();    
-    unsigned int width = s.GetWidth();
-    double scale = width/1366.0;
-    info_box = new wxTextCtrl(this,2499,"",wxPoint(520*scale,642*scale),wxSize(495*scale,105*scale),wxTE_READONLY | wxTE_MULTILINE);
+    double scale = parent->getScale();
+    info_box = new wxTextCtrl(this,2499,"",wxPoint(0*scale,0*scale),wxSize(495*scale,105*scale),wxTE_READONLY | wxTE_MULTILINE);
     wxImage::AddHandler( new wxPNGHandler );
     wxImage *end_phase_img = new wxImage("Images/end_turn.png");
     wxBitmap *end_phase_bmp = new wxBitmap(*end_phase_img);

@@ -2,12 +2,6 @@
 #define UTIL_H
 #include <sstream>
 
-std::string intToString(int n){
-    std::stringstream ss;
-    ss << n;
-    std::string s;
-    ss >> s;
-    return s;
-}
+std::string intToString(int n);
 
 #endif

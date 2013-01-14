@@ -199,7 +199,7 @@ void Controller::startGame(){
     calculateNumberOfRecruits(currentPlayer());
 }
 
-std::vector<RegionDrawInformation> Controller::getRegionDrawInfo(){
+std::vector<RegionDrawInformation> Controller::getRegionDrawInfo(bool big_image){
     std::vector<RegionDrawInformation> draw_info;
     for(int id = 0; id < Board::instance().numberOfRegions(); ++id){
         wxPoint prescale = Board::instance().region(id).center();
@@ -210,7 +210,7 @@ std::vector<RegionDrawInformation> Controller::getRegionDrawInfo(){
 
         unsigned int owner_id = Board::instance().region(id).owner();
         if(owner_id != NO_OWNER){
-            wxImage & image = PlayersData::instance().player(owner_id).image();
+            wxImage & image = PlayersData::instance().player(owner_id).image(big_image);
     
             draw_info.push_back(RegionDrawInformation(postscale,image,armies));
         }
@@ -357,7 +357,12 @@ void Controller::combat(unsigned int attacker, unsigned int defender){
 	
     board.region(attacker).removeArmies(atk_losses);
     board.region(defender).removeArmies(def_losses);
+    if(board.region(attacker).armyCount() == 1 ||
+    board.region(defender).armyCount() == 0)
+        setSelectedRegion(NO_REGION_SELECTED);
+    
     if(board.region(defender).armyCount() == 0){
+        
         //sprawdzenie czy wlasciciel podbitego regionu kontroluje jeszcze jakies regiony
         bool owns = false;
         for(int i = 0; i < board.numberOfRegions(); ++i){
@@ -407,4 +412,8 @@ void Controller::combat(unsigned int attacker, unsigned int defender){
         losses_txt += ("Broni¹cy "+intToString(def_losses));
 
     _window.info(losses_txt);
+}
+
+PhaseName Controller::getPhaseName(){
+    return _current_phase->phaseName();
 }
