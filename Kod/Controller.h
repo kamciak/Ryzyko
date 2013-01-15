@@ -4,6 +4,7 @@
 #include "PlayersData.h"
 #include "RegionDrawInformation.h"
 #include "Phase.h"
+#include "PlayerDrawInfo.h"
 class RiskFrm;
 class Phase;
 
@@ -53,12 +54,20 @@ public:
     bool allRegionsTaken();
     ///Zwraca obiekt przechowujacy wszystkie dane potrzebne do przedstawienia danych o regionie na mapie
     std::vector<RegionDrawInformation> getRegionDrawInfo(bool big_image);
+    ///Zwraca kolekcjê z informacjami potrzebnymi do narysowania statystyk graczy
+    std::vector<PlayerDrawInfo> getPlayerDrawInfo();
     ///Zwraca ilosc armii pozosta³ych do rozdzielenia
     unsigned int armiesToDistribute();
     ///Dodaje armie do regionu i usuwa je z puli armii do rozdzielenia
     void recruitArmies(unsigned int region_id, unsigned int amount);
     ///Przeprowadza walkê miêdzy regionami o podancych id i zwraca jej rezultat
 	void combat(unsigned int attacker, unsigned int defender);
+    ///Zwraca informacjêo tym, ile regionów kontroluje gracz
+    unsigned int regionsOwnedByPlayer(unsigned int player_id);
+    ///Pokazuje dialog wyboru iloœci wojsk do przemieszczenia
+    void showFortifyDialog(unsigned int region_start, unsigned int region_end);
+    ///Przemieszcza armie z jednego regionu do drugiego
+    void moveArmies(unsigned int region_start, unsigned int region_end, unsigned int number);
 };
 
 

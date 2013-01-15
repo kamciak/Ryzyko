@@ -14,13 +14,25 @@ END_EVENT_TABLE()
 ClickablePanel::ClickablePanel(RiskFrm* parent, Controller & control, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name) 
         : wxPanel(parent,id,pos,size,style,name), _controller(control), _parent(*parent){
     double scale = parent->getScale();
-    info_box = new wxTextCtrl(this,2499,"",wxPoint(0*scale,0*scale),wxSize(495*scale,105*scale),wxTE_READONLY | wxTE_MULTILINE);
-    wxImage::AddHandler( new wxPNGHandler );
-    wxImage *end_phase_img = new wxImage("Images/end_turn.png");
+    //info_box = new wxTextCtrl(this,2499,"",wxPoint(0*scale,0*scale),wxSize(495*scale,105*scale),wxTE_READONLY | wxTE_MULTILINE);
+    wxImage::AddHandler( new wxJPEGHandler );
+    wxImage *end_phase_img = new wxImage("Images/koniec_tury.jpg");
     wxBitmap *end_phase_bmp = new wxBitmap(*end_phase_img);
-    end_phase_btn = new wxBitmapButton(this,2498,*end_phase_bmp,wxPoint(0,0),wxSize(80,30));
+    
+    end_phase_btn = new wxBitmapButton(this,2498,*end_phase_bmp,wxPoint(0,0),end_phase_bmp->GetSize(),wxNO_BORDER);
+
+    wxImage::AddHandler( new wxJPEGHandler );
+    wxImage *end_phase_img_hover = new wxImage("Images/koniec_tury_hover.jpg");
+    wxBitmap *end_phase_bmp_hover = new wxBitmap(*end_phase_img_hover);
+    end_phase_btn -> SetBitmapHover(*end_phase_bmp_hover);
+    
+    wxImage::AddHandler( new wxJPEGHandler );
+    wxImage *end_phase_img_disabled = new wxImage("Images/koniec_tury_disabled.jpg");
+    wxBitmap *end_phase_bmp_disabled = new wxBitmap(*end_phase_img_disabled);
+    end_phase_btn -> SetBitmapDisabled(*end_phase_bmp_disabled);
+
     end_phase_btn -> Hide();
-    end_phase_btn -> SetDoubleBuffered(true);
+    
 }
 
 void ClickablePanel::mouseLeftClick(wxMouseEvent & event){
@@ -32,6 +44,4 @@ void ClickablePanel::mouseLeftClick(wxMouseEvent & event){
 
 void ClickablePanel::end_phase_bmpButtonClicked(wxCommandEvent & event){
     _controller.nextPhase();
-    NumberChoiceDialog * s = new NumberChoiceDialog(_controller,0,10,1,1,this);
-    s->ShowModal();
 }

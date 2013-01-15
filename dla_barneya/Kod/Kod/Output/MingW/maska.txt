@@ -1,0 +1,42 @@
+yeppon - 0
+karratha - 1
+yajapura - 2
+kapit - 3
+lao - 4
+chengdu - 5
+neyungri - 6
+aomori - 7
+magadan - 8
+bratks - 9
+yakutsk - 10
+achinsk - 11
+ulan-ude-12
+ajmer-13
+erdenet-14
+kansk-15
+yorkuta-16
+oulu-17
+lida-18
+temi-19
+gijon-20
+evel-21
+reykjavik-22
+mut-23
+dessie-24
+saka-25
+cradock-26
+likasi-27
+bobo-dioulasso-28
+qaanaaq-29
+yellowknife-30
+fairbanks-31
+terrace-32
+manitoba-33
+saguenay-34
+hoover-35
+riverton-36
+teape-37
+sipapo-38
+bahia-39
+potosi-40
+tandil-41

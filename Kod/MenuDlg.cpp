@@ -32,6 +32,7 @@ BEGIN_EVENT_TABLE(MenuDlg,wxDialog)
 	EVT_BUTTON(ID_WXBITMAPBUTTON7,MenuDlg::WxBitmapButton7Click)
 	EVT_BUTTON(ID_WXBITMAPBUTTON6,MenuDlg::WxBitmapButton6Click)
 	EVT_BUTTON(ID_WXBITMAPBUTTON5,MenuDlg::WxBitmapButton5Click)
+	EVT_BUTTON(ID_WXBITMAPBUTTON3,MenuDlg::WxBitmapButton3Click)
 	EVT_BUTTON(ID_WXBITMAPBUTTON2,MenuDlg::WxBitmapButton2Click)
 	EVT_COMBOBOX(ID_WXBITMAPCOMBOBOX6,MenuDlg::WxBitmapComboBox1Selected)
 	EVT_COMBOBOX(ID_WXBITMAPCOMBOBOX5,MenuDlg::WxBitmapComboBox1Selected)
@@ -41,6 +42,8 @@ BEGIN_EVENT_TABLE(MenuDlg,wxDialog)
 	EVT_COMBOBOX(ID_WXBITMAPCOMBOBOX1,MenuDlg::WxBitmapComboBox1Selected)
 	
 	EVT_TEXT(ID_WXEDIT4,MenuDlg::WxEdit4Updated)
+	
+	EVT_TEXT(ID_WXEDIT1,MenuDlg::WxEdit1Updated)
 	EVT_BUTTON(ID_WXBITMAPBUTTON1,MenuDlg::WxBitmapButton1Click)
 	
 	EVT_UPDATE_UI(ID_WXPANEL1,MenuDlg::WxPanel1UpdateUI)
@@ -69,91 +72,91 @@ void MenuDlg::CreateGUIControls()
 
 	wxInitAllImageHandlers();   //Initialize graphic format handlers
 
-	WxPanel1 = new wxPanel(this, ID_WXPANEL1, wxPoint(0, 0), wxSize(923, 462));
+	WxPanel1 = new wxPanel(this, ID_WXPANEL1, wxPoint(0, 0), wxSize(800, 400));
 
 	wxBitmap WxBitmapButton1_BITMAP (_("Images/zamknij.jpg"), wxBITMAP_TYPE_JPEG);
-	WxBitmapButton1 = new wxBitmapButton(WxPanel1, ID_WXBITMAPBUTTON1, WxBitmapButton1_BITMAP, wxPoint(730, 27), wxSize(108, 19), wxBU_AUTODRAW, wxDefaultValidator, _("WxBitmapButton1"));
+	WxBitmapButton1 = new wxBitmapButton(WxPanel1, ID_WXBITMAPBUTTON1, WxBitmapButton1_BITMAP, wxPoint(654, 20), wxSize(94, 20), wxBU_AUTODRAW, wxDefaultValidator, _("WxBitmapButton1"));
 
-	WxEdit1 = new wxTextCtrl(WxPanel1, ID_WXEDIT1, _("Gracz 1"), wxPoint(242, 125), wxSize(112, 19), wxNO_BORDER, wxDefaultValidator, _("WxEdit1"));
+	WxEdit1 = new wxTextCtrl(WxPanel1, ID_WXEDIT1, _("Gracz 1"), wxPoint(210, 108), wxSize(120, 18), wxNO_BORDER, wxDefaultValidator, _("WxEdit1"));
 	WxEdit1->SetForegroundColour(wxColour(64,0,0));
 	WxEdit1->SetBackgroundColour(wxColour(228,216,190));
-	WxEdit1->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, _("Comic Sans MS")));
+	WxEdit1->SetFont(wxFont(9, wxSWISS, wxNORMAL, wxNORMAL, false, _("Comic Sans MS")));
 
-	WxEdit2 = new wxTextCtrl(WxPanel1, ID_WXEDIT2, _("Gracz 2"), wxPoint(242, 159), wxSize(112, 20), wxNO_BORDER, wxDefaultValidator, _("WxEdit2"));
+	WxEdit2 = new wxTextCtrl(WxPanel1, ID_WXEDIT2, _("Gracz 2"), wxPoint(210, 138), wxSize(120, 18), wxNO_BORDER, wxDefaultValidator, _("WxEdit2"));
 	WxEdit2->SetForegroundColour(wxColour(64,0,0));
 	WxEdit2->SetBackgroundColour(wxColour(228,216,190));
-	WxEdit2->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, _("Comic Sans MS")));
+	WxEdit2->SetFont(wxFont(9, wxSWISS, wxNORMAL, wxNORMAL, false, _("Comic Sans MS")));
 
-	WxEdit3 = new wxTextCtrl(WxPanel1, ID_WXEDIT3, _("Gracz 3"), wxPoint(242, 194), wxSize(112, 19), wxNO_BORDER, wxDefaultValidator, _("WxEdit3"));
+	WxEdit3 = new wxTextCtrl(WxPanel1, ID_WXEDIT3, _("Gracz 3"), wxPoint(210, 168), wxSize(120, 18), wxNO_BORDER, wxDefaultValidator, _("WxEdit3"));
 	WxEdit3->Enable(false);
 	WxEdit3->SetForegroundColour(wxColour(64,0,0));
 	WxEdit3->SetBackgroundColour(wxColour(228,216,190));
-	WxEdit3->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, _("Comic Sans MS")));
+	WxEdit3->SetFont(wxFont(9, wxSWISS, wxNORMAL, wxNORMAL, false, _("Comic Sans MS")));
 
-	WxEdit4 = new wxTextCtrl(WxPanel1, ID_WXEDIT4, _("Gracz 4"), wxPoint(242, 228), wxSize(112, 20), wxNO_BORDER, wxDefaultValidator, _("WxEdit4"));
+	WxEdit4 = new wxTextCtrl(WxPanel1, ID_WXEDIT4, _("Gracz 4"), wxPoint(210, 198), wxSize(120, 18), wxNO_BORDER, wxDefaultValidator, _("WxEdit4"));
 	WxEdit4->Enable(false);
 	WxEdit4->SetForegroundColour(wxColour(64,0,0));
 	WxEdit4->SetBackgroundColour(wxColour(228,216,190));
-	WxEdit4->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, _("Comic Sans MS")));
+	WxEdit4->SetFont(wxFont(9, wxSWISS, wxNORMAL, wxNORMAL, false, _("Comic Sans MS")));
 
-	WxEdit5 = new wxTextCtrl(WxPanel1, ID_WXEDIT5, _("Gracz 5"), wxPoint(242, 263), wxSize(112, 20), wxNO_BORDER, wxDefaultValidator, _("WxEdit5"));
+	WxEdit5 = new wxTextCtrl(WxPanel1, ID_WXEDIT5, _("Gracz 5"), wxPoint(210, 228), wxSize(120, 18), wxNO_BORDER, wxDefaultValidator, _("WxEdit5"));
 	WxEdit5->Enable(false);
 	WxEdit5->SetForegroundColour(wxColour(64,0,0));
 	WxEdit5->SetBackgroundColour(wxColour(228,216,190));
-	WxEdit5->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, _("Comic Sans MS")));
+	WxEdit5->SetFont(wxFont(9, wxSWISS, wxNORMAL, wxNORMAL, false, _("Comic Sans MS")));
 
-	WxEdit6 = new wxTextCtrl(WxPanel1, ID_WXEDIT6, _("Gracz 6"), wxPoint(242, 298), wxSize(112, 19), wxNO_BORDER, wxDefaultValidator, _("WxEdit6"));
+	WxEdit6 = new wxTextCtrl(WxPanel1, ID_WXEDIT6, _("Gracz 6"), wxPoint(210, 258), wxSize(120, 18), wxNO_BORDER, wxDefaultValidator, _("WxEdit6"));
 	WxEdit6->Enable(false);
 	WxEdit6->SetForegroundColour(wxColour(64,0,0));
 	WxEdit6->SetBackgroundColour(wxColour(228,216,190));
-	WxEdit6->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, _("Comic Sans MS")));
+	WxEdit6->SetFont(wxFont(9, wxSWISS, wxNORMAL, wxNORMAL, false, _("Comic Sans MS")));
 
 	wxArrayString arrayStringFor_WxBitmapComboBox1;
-	WxBitmapComboBox1 = new wxBitmapComboBox(WxPanel1, ID_WXBITMAPCOMBOBOX1, _("Kolor"), wxPoint(390, 125), wxSize(84, 23), arrayStringFor_WxBitmapComboBox1, 0, wxDefaultValidator, _("WxBitmapComboBox1"));
+	WxBitmapComboBox1 = new wxBitmapComboBox(WxPanel1, ID_WXBITMAPCOMBOBOX1, _("Kolor"), wxPoint(340, 105), wxSize(90, 24), arrayStringFor_WxBitmapComboBox1, 0, wxDefaultValidator, _("WxBitmapComboBox1"));
 
 	wxArrayString arrayStringFor_WxBitmapComboBox2;
-	WxBitmapComboBox2 = new wxBitmapComboBox(WxPanel1, ID_WXBITMAPCOMBOBOX2, _("Kolor"), wxPoint(390, 159), wxSize(84, 23), arrayStringFor_WxBitmapComboBox2, 0, wxDefaultValidator, _("WxBitmapComboBox2"));
+	WxBitmapComboBox2 = new wxBitmapComboBox(WxPanel1, ID_WXBITMAPCOMBOBOX2, _("Kolor"), wxPoint(340, 136), wxSize(90, 24), arrayStringFor_WxBitmapComboBox2, 0, wxDefaultValidator, _("WxBitmapComboBox2"));
 
 	wxArrayString arrayStringFor_WxBitmapComboBox3;
-	WxBitmapComboBox3 = new wxBitmapComboBox(WxPanel1, ID_WXBITMAPCOMBOBOX3, _("Kolor"), wxPoint(390, 194), wxSize(84, 23), arrayStringFor_WxBitmapComboBox3, 0, wxDefaultValidator, _("WxBitmapComboBox3"));
+	WxBitmapComboBox3 = new wxBitmapComboBox(WxPanel1, ID_WXBITMAPCOMBOBOX3, _("Kolor"), wxPoint(340, 165), wxSize(90, 24), arrayStringFor_WxBitmapComboBox3, 0, wxDefaultValidator, _("WxBitmapComboBox3"));
 	WxBitmapComboBox3->Show(false);
 
 	wxArrayString arrayStringFor_WxBitmapComboBox4;
-	WxBitmapComboBox4 = new wxBitmapComboBox(WxPanel1, ID_WXBITMAPCOMBOBOX4, _("Kolor"), wxPoint(390, 228), wxSize(84, 23), arrayStringFor_WxBitmapComboBox4, 0, wxDefaultValidator, _("WxBitmapComboBox4"));
+	WxBitmapComboBox4 = new wxBitmapComboBox(WxPanel1, ID_WXBITMAPCOMBOBOX4, _("Kolor"), wxPoint(340, 196), wxSize(90, 24), arrayStringFor_WxBitmapComboBox4, 0, wxDefaultValidator, _("WxBitmapComboBox4"));
 	WxBitmapComboBox4->Show(false);
 
 	wxArrayString arrayStringFor_WxBitmapComboBox5;
-	WxBitmapComboBox5 = new wxBitmapComboBox(WxPanel1, ID_WXBITMAPCOMBOBOX5, _("Kolor"), wxPoint(390, 263), wxSize(84, 23), arrayStringFor_WxBitmapComboBox5, 0, wxDefaultValidator, _("WxBitmapComboBox5"));
+	WxBitmapComboBox5 = new wxBitmapComboBox(WxPanel1, ID_WXBITMAPCOMBOBOX5, _("Kolor"), wxPoint(340, 227), wxSize(90, 24), arrayStringFor_WxBitmapComboBox5, 0, wxDefaultValidator, _("WxBitmapComboBox5"));
 	WxBitmapComboBox5->Show(false);
 
 	wxArrayString arrayStringFor_WxBitmapComboBox6;
-	WxBitmapComboBox6 = new wxBitmapComboBox(WxPanel1, ID_WXBITMAPCOMBOBOX6, _("Kolor"), wxPoint(390, 298), wxSize(84, 23), arrayStringFor_WxBitmapComboBox6, 0, wxDefaultValidator, _("WxBitmapComboBox6"));
+	WxBitmapComboBox6 = new wxBitmapComboBox(WxPanel1, ID_WXBITMAPCOMBOBOX6, _("Kolor"), wxPoint(340, 256), wxSize(90, 24), arrayStringFor_WxBitmapComboBox6, 0, wxDefaultValidator, _("WxBitmapComboBox6"));
 	WxBitmapComboBox6->Show(false);
 
 	wxBitmap WxBitmapButton2_BITMAP (_("Images/do_boju.jpg"), wxBITMAP_TYPE_JPEG);
-	WxBitmapButton2 = new wxBitmapButton(WxPanel1, ID_WXBITMAPBUTTON2, WxBitmapButton2_BITMAP, wxPoint(441, 358), wxSize(94, 53), wxBU_AUTODRAW, wxDefaultValidator, _("WxBitmapButton2"));
+	WxBitmapButton2 = new wxBitmapButton(WxPanel1, ID_WXBITMAPBUTTON2, WxBitmapButton2_BITMAP, wxPoint(338, 292), wxSize(101, 56), wxBU_AUTODRAW, wxDefaultValidator, _("WxBitmapButton2"));
 
 	wxBitmap WxBitmapButton3_BITMAP (_("Images/checkbox_true.jpg"), wxBITMAP_TYPE_JPEG);
-	WxBitmapButton3 = new wxBitmapButton(WxPanel1, ID_WXBITMAPBUTTON3, WxBitmapButton3_BITMAP, wxPoint(218, 125), wxSize(21, 20), wxBU_AUTODRAW, wxDefaultValidator, _("WxBitmapButton3"));
+	WxBitmapButton3 = new wxBitmapButton(WxPanel1, ID_WXBITMAPBUTTON3, WxBitmapButton3_BITMAP, wxPoint(182, 106), wxSize(22, 22), wxBU_AUTODRAW, wxDefaultValidator, _("WxBitmapButton3"));
 
 	wxBitmap WxBitmapButton4_BITMAP (_("Images/checkbox_true.jpg"), wxBITMAP_TYPE_JPEG);
-	WxBitmapButton4 = new wxBitmapButton(WxPanel1, ID_WXBITMAPBUTTON4, WxBitmapButton4_BITMAP, wxPoint(218, 159), wxSize(21, 20), wxBU_AUTODRAW, wxDefaultValidator, _("WxBitmapButton4"));
+	WxBitmapButton4 = new wxBitmapButton(WxPanel1, ID_WXBITMAPBUTTON4, WxBitmapButton4_BITMAP, wxPoint(182, 136), wxSize(22, 22), wxBU_AUTODRAW, wxDefaultValidator, _("WxBitmapButton4"));
 
 	wxBitmap WxBitmapButton5_BITMAP (_("Images/checkbox_false.jpg"), wxBITMAP_TYPE_JPEG);
-	WxBitmapButton5 = new wxBitmapButton(WxPanel1, ID_WXBITMAPBUTTON5, WxBitmapButton5_BITMAP, wxPoint(218, 194), wxSize(21, 21), wxBU_AUTODRAW, wxDefaultValidator, _("WxBitmapButton5"));
+	WxBitmapButton5 = new wxBitmapButton(WxPanel1, ID_WXBITMAPBUTTON5, WxBitmapButton5_BITMAP, wxPoint(182, 166), wxSize(22, 22), wxBU_AUTODRAW, wxDefaultValidator, _("WxBitmapButton5"));
 
 	wxBitmap WxBitmapButton6_BITMAP (_("Images/checkbox_false.jpg"), wxBITMAP_TYPE_JPEG);
-	WxBitmapButton6 = new wxBitmapButton(WxPanel1, ID_WXBITMAPBUTTON6, WxBitmapButton6_BITMAP, wxPoint(218, 228), wxSize(21, 21), wxBU_AUTODRAW, wxDefaultValidator, _("WxBitmapButton6"));
+	WxBitmapButton6 = new wxBitmapButton(WxPanel1, ID_WXBITMAPBUTTON6, WxBitmapButton6_BITMAP, wxPoint(182, 196), wxSize(22, 22), wxBU_AUTODRAW, wxDefaultValidator, _("WxBitmapButton6"));
 
 	wxBitmap WxBitmapButton7_BITMAP (_("Images/checkbox_false.jpg"), wxBITMAP_TYPE_JPEG);
-	WxBitmapButton7 = new wxBitmapButton(WxPanel1, ID_WXBITMAPBUTTON7, WxBitmapButton7_BITMAP, wxPoint(218, 263), wxSize(21, 21), wxBU_AUTODRAW, wxDefaultValidator, _("WxBitmapButton7"));
+	WxBitmapButton7 = new wxBitmapButton(WxPanel1, ID_WXBITMAPBUTTON7, WxBitmapButton7_BITMAP, wxPoint(182, 226), wxSize(22, 22), wxBU_AUTODRAW, wxDefaultValidator, _("WxBitmapButton7"));
 
 	wxBitmap WxBitmapButton8_BITMAP (_("Images/checkbox_false.jpg"), wxBITMAP_TYPE_JPEG);
-	WxBitmapButton8 = new wxBitmapButton(WxPanel1, ID_WXBITMAPBUTTON8, WxBitmapButton8_BITMAP, wxPoint(218, 298), wxSize(21, 20), wxBU_AUTODRAW, wxDefaultValidator, _("WxBitmapButton8"));
+	WxBitmapButton8 = new wxBitmapButton(WxPanel1, ID_WXBITMAPBUTTON8, WxBitmapButton8_BITMAP, wxPoint(182, 256), wxSize(22, 22), wxBU_AUTODRAW, wxDefaultValidator, _("WxBitmapButton8"));
 
 	SetTitle(_("MenuDlg"));
 	SetIcon(wxNullIcon);
-	SetSize(8,8,930,460);
+	SetSize(8,8,800,400);
 	Center();
 	
 	////GUI Items Creation End
@@ -477,4 +480,20 @@ void MenuDlg::WxBitmapButton8Click(wxCommandEvent& event)
         
         
         }
+}
+
+/*
+ * WxEdit1Updated
+ */
+void MenuDlg::WxEdit1Updated(wxCommandEvent& event)
+{
+	// insert your code here
+}
+
+/*
+ * WxBitmapButton3Click
+ */
+void MenuDlg::WxBitmapButton3Click(wxCommandEvent& event)
+{
+	// insert your code here
 }

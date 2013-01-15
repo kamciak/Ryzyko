@@ -2,6 +2,7 @@
 #include "RiskFrm.h"
 #include "Phase.h"
 #include "Util.h"
+#include "NumberChoiceDialog.h"
 #include <algorithm>
 
 #define ROLL_D6 (rand()%6+1)
@@ -20,26 +21,26 @@ void Controller::nextPhase(){
             
             --_armies_to_distribute;
             if(_armies_to_distribute != 0){
-                _window.info("Wojsk do rozmieszczenia: "+intToString(_armies_to_distribute));                
+                //_window.info("Wojsk do rozmieszczenia: "+intToString(_armies_to_distribute));                
             }
             else{
                 startGame();
             }
         }
         //startGame moze zmienic aktualna faze - w takim wypadku nie wypisuj aktualnego gracza
-        if(dynamic_cast<SetupPhase*>(_current_phase))
-            _window.info("Aktualny gracz :"+PlayersData::instance().player(currentPlayer()).name());
+        //if(dynamic_cast<SetupPhase*>(_current_phase))
+            //_window.info("Aktualny gracz :"+PlayersData::instance().player(currentPlayer()).name());
     }
     else if(dynamic_cast<ReinforcePhase*>(_current_phase)){
         delete _current_phase;
         _current_phase = new AttackPhase(*this);
-        _window.info("Faza Walki: kliknij na swój region z dwoma lub wiêcej jednostkami, a nastêpnie na s¹siedni wrogi region, aby go zaatakowaæ");
-        _window.endPhaseButtonVisible(true);
+        //_window.info("Faza Walki: kliknij na swój region z dwoma lub wiêcej jednostkami, a nastêpnie na s¹siedni wrogi region, aby go zaatakowaæ");
+        _window.endPhaseButtonEnabled(true);
     }
     else if(dynamic_cast<AttackPhase*>(_current_phase)){
         delete _current_phase;
         _current_phase = new FortifyPhase(*this);
-        _window.info("Faza ruchu: kliknij na jeden ze swoich regionów z dwoma lub wiêcej jednostkami, a nastêpnie któryœ ze swoich s¹siednich regionów aby przemieœciæ tam wojska");
+        //_window.info("Faza ruchu: kliknij na jeden ze swoich regionów z dwoma lub wiêcej jednostkami, a nastêpnie któryœ ze swoich s¹siednich regionów aby przemieœciæ tam wojska");
     
     }
     else if(dynamic_cast<FortifyPhase*>(_current_phase)){
@@ -48,9 +49,9 @@ void Controller::nextPhase(){
             _current_player = _players_queue.begin();        
         delete _current_phase;
         _current_phase = new ReinforcePhase(*this);
-        _window.info("Faza Rekrutacji: kliknij na jeden ze swoich regionów aby umieœciæ tam dodatkowe jednostki");
+        //_window.info("Faza Rekrutacji: kliknij na jeden ze swoich regionów aby umieœciæ tam dodatkowe jednostki");
         calculateNumberOfRecruits(currentPlayer());
-        _window.endPhaseButtonVisible(false);
+        _window.endPhaseButtonEnabled(false);
     }
    
 }
@@ -58,7 +59,7 @@ void Controller::nextPhase(){
 Controller::Controller(RiskFrm & window) 
     : _window(window), _selected_region(NO_REGION_SELECTED){
     _current_phase = new SetupPhase(*this);
-    _window.info("Faza rozmieszczania wojsk: Wybierz jeden z wolnych regionów (lub jeden ze swoich, jeœli wszystkie s¹ zajête), aby umieœciæ tam jednostkê");
+    //_window.info("Faza rozmieszczania wojsk: Wybierz jeden z wolnych regionów (lub jeden ze swoich, jeœli wszystkie s¹ zajête), aby umieœciæ tam jednostkê");
 }
 
 Controller::~Controller(){
@@ -176,7 +177,7 @@ bool Controller::initPlayers(){
     _current_player = _players_queue.begin();
 
     _armies_to_distribute = 50-(pd.numberOfPlayers() * 5);
-    _window.info("Wojsk do roznmieszczenia:"+intToString(_armies_to_distribute));
+    //_window.info("Wojsk do roznmieszczenia:"+intToString(_armies_to_distribute));
     return true;
     
 }
@@ -194,8 +195,8 @@ bool Controller::allRegionsTaken(){
 void Controller::startGame(){
     delete _current_phase;
     _current_phase = new ReinforcePhase(*this);
-    _window.info("Aktualny gracz: "+PlayersData::instance().player(currentPlayer()).name());
-    _window.info("Faza Rekrutacji: kliknij na jeden ze swoich regionów aby umieœciæ tam dodatkowe jednostki");
+    //_window.info("Aktualny gracz: "+PlayersData::instance().player(currentPlayer()).name());
+    //_window.info("Faza Rekrutacji: kliknij na jeden ze swoich regionów aby umieœciæ tam dodatkowe jednostki");
     calculateNumberOfRecruits(currentPlayer());
 }
 
@@ -218,6 +219,23 @@ std::vector<RegionDrawInformation> Controller::getRegionDrawInfo(bool big_image)
     return draw_info;
 }
 
+std::vector<PlayerDrawInfo> Controller::getPlayerDrawInfo(){
+    PlayersData & pd = PlayersData::instance();
+    std::vector<PlayerDrawInfo> col;
+    for(int i = 0; i < pd.numberOfPlayers(); ++i){
+        col.push_back(PlayerDrawInfo(pd.player(i).isDead(), i == currentPlayer(), pd.player(i).color(), regionsOwnedByPlayer(i), pd.player(i).name()));
+    }
+    return col;
+}
+
+unsigned int Controller::regionsOwnedByPlayer(unsigned int player_id){
+    unsigned int count = 0;
+    for(int i = 0; i < Board::instance().numberOfRegions(); ++i){
+        if(Board::instance().region(i).owner() == player_id)
+            ++count;
+    }
+    return count;
+}
 
 void Controller::calculateNumberOfRecruits(unsigned int player_id){
     Board & board = Board::instance();
@@ -228,8 +246,8 @@ void Controller::calculateNumberOfRecruits(unsigned int player_id){
             ++standard;
     }
     standard = (standard/3) < 3 ? 3 : (standard/3);
-    _window.info("Iloœæ armii do rozmiesczenia:");
-    _window.info("\tPodstawowy przyrost: "+intToString(standard));
+    //_window.info("Iloœæ armii do rozmiesczenia:");
+    //_window.info("\tPodstawowy przyrost: "+intToString(standard));
     
     total += standard;
 
@@ -247,7 +265,7 @@ void Controller::calculateNumberOfRecruits(unsigned int player_id){
     board.region("Chengdu").owner() == player_id &&    
     board.region("Magadan").owner() == player_id &&    
     board.region("Aomori").owner() == player_id){
-        _window.info("\tKontrola nad Azj¹: 7");
+        //_window.info("\tKontrola nad Azj¹: 7");
         total += 7;
     }            
 
@@ -261,7 +279,7 @@ void Controller::calculateNumberOfRecruits(unsigned int player_id){
     board.region("Hoover").owner() == player_id &&    
     board.region("Teape").owner() == player_id &&    
     board.region("Qaanaaq").owner() == player_id){
-        _window.info("\tKontrola nad Ameryk¹ Pó³nocn¹: 5");
+        //_window.info("\tKontrola nad Ameryk¹ Pó³nocn¹: 5");
         total += 5;
     }    
 
@@ -273,7 +291,7 @@ void Controller::calculateNumberOfRecruits(unsigned int player_id){
     board.region("Gijon").owner() == player_id &&    
     board.region("Temi").owner() == player_id &&    
     board.region("Kansk").owner() == player_id){
-        _window.info("\tKontrola nad Europ¹: 5");
+        //_window.info("\tKontrola nad Europ¹: 5");
         total += 5;
     }
 
@@ -284,7 +302,7 @@ void Controller::calculateNumberOfRecruits(unsigned int player_id){
     board.region("Likasi").owner() == player_id &&    
     board.region("Cradock").owner() == player_id &&    
     board.region("Saka").owner() == player_id){
-        _window.info("\tKontrola nad Afryk¹: 3");
+        //_window.info("\tKontrola nad Afryk¹: 3");
         total += 3;
     }
     
@@ -293,7 +311,7 @@ void Controller::calculateNumberOfRecruits(unsigned int player_id){
     board.region("Jayapura").owner() == player_id &&
     board.region("Karratha").owner() == player_id &&    
     board.region("Yeppon").owner() == player_id){
-        _window.info("\tKontrola nad Australi¹: 2");
+        //_window.info("\tKontrola nad Australi¹: 2");
         total += 2;
     }    
     //Ameryka Po³udniowa
@@ -301,11 +319,11 @@ void Controller::calculateNumberOfRecruits(unsigned int player_id){
     board.region("Potosi").owner() == player_id &&
     board.region("Bahia").owner() == player_id &&    
     board.region("Tandil").owner() == player_id){
-        _window.info("\tKontrola nad Ameryk¹ Po³udniow¹: 2");
+        //_window.info("\tKontrola nad Ameryk¹ Po³udniow¹: 2");
         total += 2;
     }    
 
-    _window.info("\tRazem:"+intToString(total));
+    //_window.info("\tRazem:"+intToString(total));
     _armies_to_distribute = total;
     
 }
@@ -318,7 +336,7 @@ void Controller::recruitArmies(unsigned int region_id, unsigned int amount){
     Board::instance().region(region_id).addArmies(amount);
     _armies_to_distribute -= amount;
     if(_armies_to_distribute != 0){
-        _window.info("Armii do rozmieszczenia: "+intToString(_armies_to_distribute));
+        //_window.info("Armii do rozmieszczenia: "+intToString(_armies_to_distribute));
     }
 }
 
@@ -389,9 +407,9 @@ void Controller::combat(unsigned int attacker, unsigned int defender){
     }
 
     //TODO: Kod animacji itd;
-    _window.info("Bitwa "+board.region(attacker).name()+"-"+board.region(defender).name());
-    _window.info("Wyniki:");
-    wxString atk_txt = "\tAtakuj¹cy:";
+    //_window.info("Bitwa "+board.region(attacker).name()+"-"+board.region(defender).name());
+    //_window.info("Wyniki:");
+    /*wxString atk_txt = "\tAtakuj¹cy:";
     wxString def_txt = "\tBroni¹cy :";
     for(int i = 0; i < atk_rolls.size(); ++i){
         atk_txt += " "+intToString(atk_rolls[i]);
@@ -399,10 +417,10 @@ void Controller::combat(unsigned int attacker, unsigned int defender){
 
     for(int i = 0; i < def_rolls.size(); ++i){
         def_txt += " "+intToString(def_rolls[i]);
-    }
-    _window.info(atk_txt);
-    _window.info(def_txt);
-    wxString losses_txt = "Straty: ";
+    }*/
+    //_window.info(atk_txt);
+    //_window.info(def_txt);
+    /*wxString losses_txt = "Straty: ";
     if(atk_losses != 0){
         losses_txt += ("Atakuj¹cy "+intToString(atk_losses));
         if(def_losses != 0)
@@ -410,10 +428,23 @@ void Controller::combat(unsigned int attacker, unsigned int defender){
     }
     if(def_losses != 0)
         losses_txt += ("Broni¹cy "+intToString(def_losses));
-
-    _window.info(losses_txt);
+    */
+    //_window.info(losses_txt);
 }
 
 PhaseName Controller::getPhaseName(){
     return _current_phase->phaseName();
+}
+
+void Controller::showFortifyDialog(unsigned int region_start, unsigned int region_end){
+    Board & board = Board::instance();
+    unsigned int army_count = board.region(selectedRegion()).armyCount();           
+    NumberChoiceDialog * s = new NumberChoiceDialog(*this,1,army_count - 1,region_start,region_end,&_window);
+    s->ShowModal();
+}
+
+void Controller::moveArmies(unsigned region_start, unsigned region_end, unsigned number){
+    Board & board = Board::instance();
+    board.region(region_start).removeArmies(number);
+    board.region(region_end).addArmies(number);
 }

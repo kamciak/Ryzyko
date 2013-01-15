@@ -9,7 +9,6 @@
 ///------------------------------------------------------------------
 
 #include "RiskFrm.h"
-#include <wx/dcbuffer.h>
 #include <sstream>
 
 #include "Util.h"
@@ -17,9 +16,13 @@
 #define END_PHASE_X 790
 #define END_PHASE_Y 600
 #define PHASE_BAR_X 520
-#define PHASE_BAR_Y 640
+#define PHASE_BAR_WIDTH 400
 #define DEFAULT_SIZE_X 1366
 #define DEFAULT_SIZE_Y 768
+#define PLAYERS_SCROLL_X 60
+#define PLAYERS_SCROLL_Y 45
+#define PLAYERS_SCROLL_WIDTH 240
+#define PLAYERS_SCROLL_HEIGHT 120
 #define BIG_IMAGE_THRESHHOLD 1500
 
 //Do not add custom headers between
@@ -158,7 +161,11 @@ void RiskFrm::setResolution(){
     unsigned int panel_y = 0.5 * (size.GetHeight()-height);
 
     MapPanel = new ClickablePanel(this, control, 2500, wxPoint(0,panel_y), wxSize(width,height));
-    MapPanel -> end_phase_btn -> Move(END_PHASE_X * scale, END_PHASE_Y * scale);        
+    wxPoint endphasebtn_pos(PHASE_BAR_X + PHASE_BAR_WIDTH, MapPanel->GetSize().GetHeight() - MapPanel->end_phase_btn->GetBitmapLabel().GetSize().GetHeight());
+    MapPanel -> end_phase_btn -> Move(endphasebtn_pos);  
+    MapPanel -> end_phase_btn -> Show();
+    MapPanel -> end_phase_btn -> Disable();     
+    MapPanel -> end_phase_btn -> SetDoubleBuffered(true);
 
     wxImage::AddHandler( new wxJPEGHandler );
     wxImage::AddHandler( new wxJPEGHandler );
@@ -190,7 +197,7 @@ void RiskFrm::setResolution(){
     else
         army_number_plate = new wxImage("Images/numberplates.png");
 
-    info("Aktualny gracz: "+PlayersData::instance().player(control.currentPlayer()).name());
+    //info("Aktualny gracz: "+PlayersData::instance().player(control.currentPlayer()).name());
 }
 
 
@@ -231,7 +238,7 @@ void RiskFrm::WxPanel1UpdateUI(wxUpdateUIEvent& event)
 	wxClientDC dc(MapPanel);
 	wxBufferedDC bdc(&dc);
     if(map_with_mask){
-        
+       
         wxBitmap map_with_mask_bp(*map_with_mask);
         wxBitmap *phase_bar_bmp;
         PhaseName phase = control.getPhaseName();
@@ -250,7 +257,10 @@ void RiskFrm::WxPanel1UpdateUI(wxUpdateUIEvent& event)
                 break;
         }
         bdc.DrawBitmap(map_with_mask_bp,0,0,true);
-        bdc.DrawBitmap(*phase_bar_bmp,wxPoint(PHASE_BAR_X * scale, PHASE_BAR_Y * scale),true);
+        wxPoint phasebar_pos(PHASE_BAR_X * scale, MapPanel->GetSize().GetHeight() - phase_bar_bmp->GetSize().GetHeight()); 
+        bdc.DrawBitmap(*phase_bar_bmp,phasebar_pos,true);
+        drawPlayersData(bdc,control.getPlayerDrawInfo());
+        
         bool big_image = this -> GetSize().GetWidth() > BIG_IMAGE_THRESHHOLD ? true : false;
         std::vector<RegionDrawInformation> draw_info = control.getRegionDrawInfo(big_image);
         for(int i = 0; i < draw_info.size(); ++i){
@@ -271,6 +281,43 @@ void RiskFrm::WxPanel1UpdateUI(wxUpdateUIEvent& event)
     }
 }
 
+void RiskFrm::drawPlayersData(wxBufferedDC & dc, std::vector<PlayerDrawInfo> col){
+    double scale = getScale();
+    int players_display_x = PLAYERS_SCROLL_X * scale;
+    int players_display_width = PLAYERS_SCROLL_WIDTH * scale;
+
+    int players_display_height = PLAYERS_SCROLL_HEIGHT * scale;
+    int players_display_y[MAX_PLAYERS];
+    players_display_y[0] = PLAYERS_SCROLL_Y * scale;
+    for(int i = 1; i < MAX_PLAYERS; ++i){
+        players_display_y[i] = players_display_y[i-1] + players_display_height / MAX_PLAYERS;
+    }
+    wxImage *player_status[6];
+    wxBitmap *status_bmp[6];
+    for(int i = 0; i < col.size(); ++i){
+        dc.SetPen(wxPen(_player_colours[col[i].color]));
+        dc.SetBrush(wxBrush(_player_colours[col[i].color]));
+        dc.DrawRectangle(players_display_x, players_display_y[i], players_display_height/MAX_PLAYERS, players_display_height/MAX_PLAYERS);
+        dc.DrawText(col[i].name, players_display_x + players_display_height/MAX_PLAYERS + 1,players_display_y[i]);
+        dc.DrawText(intToString(col[i].territories), players_display_x + players_display_width - 10, players_display_y[i]);
+        
+       
+        if(col[i].dead){
+            player_status[i] = new wxImage("Images/skull.png");            
+        }
+        else if(col[i].current){
+            player_status[i] = new wxImage("Images/flag.png");
+        }
+        if(player_status[i]->IsOk()){
+            status_bmp[i] = new wxBitmap(*player_status[i]);
+            dc.DrawBitmap(*status_bmp[i], players_display_x + players_display_width - 35,players_display_y[i], true);
+            
+        }
+    }
+}
+
+
+
 unsigned int RiskFrm::getRegionID(unsigned int x, unsigned int y){
     if(x >= 0 && x < mask->GetSize().GetWidth() && y >= 0 && y < mask->GetSize().GetHeight()){
         unsigned char red = mask->GetRed(x,y);
@@ -285,7 +332,7 @@ unsigned int RiskFrm::getRegionID(unsigned int x, unsigned int y){
     }
 }
 
-void RiskFrm::info(wxString txt){    
+/*void RiskFrm::info(wxString txt){    
     static wxString buff="";
     //Jesli panel lub okno tekstowe nie zostaly jescze utworzone, zapamietaj komunikat i odtworz go przy nastepnym wywolaniu
     if(MapPanel && MapPanel -> info_box){
@@ -297,13 +344,13 @@ void RiskFrm::info(wxString txt){
     else{        
         buff.Append(txt);
     }
-}
+}*/
 
-void RiskFrm::endPhaseButtonVisible(bool flag){
+void RiskFrm::endPhaseButtonEnabled(bool flag){
     if(flag)
-        MapPanel -> end_phase_btn -> Show();
+        MapPanel -> end_phase_btn -> Enable();
     else
-        MapPanel -> end_phase_btn -> Hide();
+        MapPanel -> end_phase_btn -> Disable();
 }
 
 void RiskFrm::setScale(){

@@ -11,7 +11,7 @@ private:
     RiskFrm & _parent;
     
 public:      
-    wxTextCtrl *info_box;
+    //wxTextCtrl *info_box;
     wxBitmapButton *end_phase_btn;   
     
     ClickablePanel(RiskFrm* parent, Controller & control, wxWindowID id, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxTAB_TRAVERSAL, const wxString& name = "panel");

@@ -58,6 +58,8 @@ class MenuDlg : public wxDialog
 		void WxBitmapButton6Click(wxCommandEvent& event);
 		void WxBitmapButton7Click(wxCommandEvent& event);
 		void WxBitmapButton8Click(wxCommandEvent& event);
+		void WxEdit1Updated(wxCommandEvent& event);
+		void WxBitmapButton3Click(wxCommandEvent& event);
 	private:
 		void WxBitmapButton5Click(wxCommandEvent& event);
 		//Do not add custom control declarations between 

@@ -33,6 +33,7 @@
 #undef RiskFrm_STYLE
 #define RiskFrm_STYLE wxCAPTION | wxSYSTEM_MENU | wxMINIMIZE_BOX | wxCLOSE_BOX
 ////Dialog Style End
+#include <wx/dcbuffer.h>
 #include <map>
 #include <sstream>
 #include "MenuDlg.h"
@@ -99,11 +100,12 @@ class RiskFrm : public wxFrame
         void mouseLeftClick(wxMouseEvent & event);
         void setResolution();
         void paintSelectedRegion(unsigned int id);
-        void info(wxString txt);
+        //void info(wxString txt);
         void setScale();
         double getScale();
         unsigned int getRegionID(unsigned int x, unsigned int y);
-        void endPhaseButtonVisible(bool flag);
+        void endPhaseButtonEnabled(bool flag);
+        void drawPlayersData(wxBufferedDC & dc, std::vector<PlayerDrawInfo> col);
 };
 
 #endif
