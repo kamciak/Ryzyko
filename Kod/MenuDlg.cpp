@@ -257,6 +257,13 @@ WxBitmapComboBox6->Append("Morski",cyan);
 WxBitmapComboBox6->Append("Rozowy",magenta);
 WxBitmapComboBox6->Append("Pomarancz",orange);
 WxBitmapComboBox6->Append("Granatowy",darkblue);
+
+WxBitmapComboBox1->SetSelection(0);
+WxBitmapComboBox2->SetSelection(1);
+WxBitmapComboBox3->SetSelection(2);
+WxBitmapComboBox4->SetSelection(3);
+WxBitmapComboBox5->SetSelection(4);
+WxBitmapComboBox6->SetSelection(5);
 	
 
 /**
@@ -324,6 +331,10 @@ WxBitmapComboBox6->Append("Granatowy",darkblue);
 */	
 	WxBitmapButton8->SetDoubleBuffered(true);
 	isPlayer6=false;
+
+
+    _background = new wxImage("Images/background.jpg");
+    _background_bmp = new wxBitmap(*_background);
 }
 
 void MenuDlg::OnClose(wxCloseEvent& /*event*/)
@@ -336,16 +347,9 @@ void MenuDlg::OnClose(wxCloseEvent& /*event*/)
  */
 void MenuDlg::WxPanel1UpdateUI(wxUpdateUIEvent& event)
 {
-    
-
-	wxImage::AddHandler( new wxJPEGHandler );
-	wxImage image("Images/background.jpg");
-	wxBitmap tlo(image);
-	wxClientDC dc(WxPanel1);
-	wxBufferedDC bdc(&dc);
-	bdc.DrawBitmap(tlo,0,0,true);
-	
-
+    wxClientDC dc(WxPanel1);
+    wxBufferedDC bdc(&dc);
+	bdc.DrawBitmap(*_background_bmp,0,0,true);
 }
 
 /*

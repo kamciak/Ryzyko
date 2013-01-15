@@ -24,6 +24,7 @@
 #define PLAYERS_SCROLL_WIDTH 240
 #define PLAYERS_SCROLL_HEIGHT 120
 #define BIG_IMAGE_THRESHHOLD 1500
+#define MAP_BORDER_THICKNESS 22
 
 //Do not add custom headers between
 //Header Include Start and Header Include End
@@ -161,27 +162,25 @@ void RiskFrm::setResolution(){
     unsigned int panel_y = 0.5 * (size.GetHeight()-height);
 
     MapPanel = new ClickablePanel(this, control, 2500, wxPoint(0,panel_y), wxSize(width,height));
-    wxPoint endphasebtn_pos(PHASE_BAR_X + PHASE_BAR_WIDTH, MapPanel->GetSize().GetHeight() - MapPanel->end_phase_btn->GetBitmapLabel().GetSize().GetHeight());
+    wxPoint endphasebtn_pos(PHASE_BAR_X + PHASE_BAR_WIDTH, MapPanel->GetSize().GetHeight() - MapPanel->end_phase_btn->GetBitmapLabel().GetSize().GetHeight() - MAP_BORDER_THICKNESS * scale);
     MapPanel -> end_phase_btn -> Move(endphasebtn_pos);  
     MapPanel -> end_phase_btn -> Show();
     MapPanel -> end_phase_btn -> Disable();     
     MapPanel -> end_phase_btn -> SetDoubleBuffered(true);
 
     wxImage::AddHandler( new wxJPEGHandler );
-    wxImage::AddHandler( new wxJPEGHandler );
-    wxImage::AddHandler( new wxPNGHandler );
-    wxImage::AddHandler( new wxPNGHandler );
-    wxImage::AddHandler( new wxPNGHandler );
-    wxImage::AddHandler( new wxPNGHandler );
-    wxImage::AddHandler( new wxPNGHandler );
-    wxImage::AddHandler( new wxPNGHandler );
-    wxImage::AddHandler( new wxPNGHandler );
     wxImage::AddHandler( new wxPNGHandler );
 
     _fortify_phase_image = new wxImage("Images/fortifyphase.png");
     _attack_phase_image = new wxImage("Images/attackphase.png");
     _reinforce_phase_image = new wxImage("Images/reinforcephase.png");
     _setup_phase_image = new wxImage("Images/setupphase.png");
+
+    _dead_player_image = new wxImage("Images/skull.png");
+    _dead_player_bitmap = new wxBitmap(*_dead_player_image);
+
+    _current_player_image = new wxImage("Images/flag.png");
+    _current_player_bitmap = new wxBitmap(*_current_player_image);
 
     map = new wxImage("Images/map_regions.jpg");
     map->Rescale(width,height);
@@ -257,7 +256,7 @@ void RiskFrm::WxPanel1UpdateUI(wxUpdateUIEvent& event)
                 break;
         }
         bdc.DrawBitmap(map_with_mask_bp,0,0,true);
-        wxPoint phasebar_pos(PHASE_BAR_X * scale, MapPanel->GetSize().GetHeight() - phase_bar_bmp->GetSize().GetHeight()); 
+        wxPoint phasebar_pos(PHASE_BAR_X * scale, MapPanel->GetSize().GetHeight() - phase_bar_bmp->GetSize().GetHeight() - MAP_BORDER_THICKNESS * scale); 
         bdc.DrawBitmap(*phase_bar_bmp,phasebar_pos,true);
         drawPlayersData(bdc,control.getPlayerDrawInfo());
         
@@ -292,8 +291,6 @@ void RiskFrm::drawPlayersData(wxBufferedDC & dc, std::vector<PlayerDrawInfo> col
     for(int i = 1; i < MAX_PLAYERS; ++i){
         players_display_y[i] = players_display_y[i-1] + players_display_height / MAX_PLAYERS;
     }
-    wxImage *player_status[6];
-    wxBitmap *status_bmp[6];
     for(int i = 0; i < col.size(); ++i){
         dc.SetPen(wxPen(_player_colours[col[i].color]));
         dc.SetBrush(wxBrush(_player_colours[col[i].color]));
@@ -301,17 +298,13 @@ void RiskFrm::drawPlayersData(wxBufferedDC & dc, std::vector<PlayerDrawInfo> col
         dc.DrawText(col[i].name, players_display_x + players_display_height/MAX_PLAYERS + 1,players_display_y[i]);
         dc.DrawText(intToString(col[i].territories), players_display_x + players_display_width - 10, players_display_y[i]);
         
-       
         if(col[i].dead){
-            player_status[i] = new wxImage("Images/skull.png");            
+            if(_dead_player_bitmap)
+                dc.DrawBitmap(*_dead_player_bitmap, players_display_x + players_display_width - 35,players_display_y[i], true);            
         }
         else if(col[i].current){
-            player_status[i] = new wxImage("Images/flag.png");
-        }
-        if(player_status[i]->IsOk()){
-            status_bmp[i] = new wxBitmap(*player_status[i]);
-            dc.DrawBitmap(*status_bmp[i], players_display_x + players_display_width - 35,players_display_y[i], true);
-            
+            if(_current_player_bitmap)
+                dc.DrawBitmap(*_current_player_bitmap, players_display_x + players_display_width - 35,players_display_y[i], true);       
         }
     }
 }

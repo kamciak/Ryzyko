@@ -1,22 +1,22 @@
 # Project: Risk
 # Compiler: Default GCC compiler
 # Compiler Type: MingW 3
-# Makefile created by wxDev-C++ IDE 7.4.2.569 on 15-01-13 04:48
+# Makefile created by wxDev-C++ IDE 7.4.2.569 on 15-01-13 23:30
 
 WXLIBNAME = wxmsw29u
 CPP       = g++.exe
 CC        = gcc.exe
 WINDRES   = "windres.exe"
-OBJ       = Objects/MingW/RiskApp.o Objects/MingW/RiskFrm.o Objects/MingW/Board.o Objects/MingW/Region.o Objects/MingW/Player.o Objects/MingW/Controller.o Objects/MingW/MenuDlg.o Objects/MingW/ClickablePanel.o Objects/MingW/PlayersData.o Objects/MingW/Phase.o Objects/MingW/Util.o Objects/MingW/NumberChoiceDialog.o Objects/MingW/Risk_private.res
-LINKOBJ   = "Objects/MingW/RiskApp.o" "Objects/MingW/RiskFrm.o" "Objects/MingW/Board.o" "Objects/MingW/Region.o" "Objects/MingW/Player.o" "Objects/MingW/Controller.o" "Objects/MingW/MenuDlg.o" "Objects/MingW/ClickablePanel.o" "Objects/MingW/PlayersData.o" "Objects/MingW/Phase.o" "Objects/MingW/Util.o" "Objects/MingW/NumberChoiceDialog.o" Objects/MingW/Risk_private.res
-LIBS      = -L"C:/Program Files (x86)/Dev-Cpp/lib/wx/gcc_lib" -L"C:/Program Files (x86)/Dev-Cpp/lib" -L"C:/Program Files (x86)/Dev-Cpp/MinGW32/lib" -mwindows -l$(WXLIBNAME) -l$(WXLIBNAME)_gl -lwxscintilla -lwxtiff -lwxjpeg -lwxpng -lwxzlib -lwxregexu -lwxexpat -lkernel32 -luser32 -lgdi32 -lcomdlg32 -lwinspool -lwinmm -lshell32 -lcomctl32 -lole32 -loleaut32 -luuid -lrpcrt4 -ladvapi32 -lwsock32 -lodbc32 -lopengl32  
+OBJ       = Objects/MingW/RiskApp.o Objects/MingW/RiskFrm.o Objects/MingW/Board.o Objects/MingW/Region.o Objects/MingW/Player.o Objects/MingW/Controller.o Objects/MingW/MenuDlg.o Objects/MingW/ClickablePanel.o Objects/MingW/PlayersData.o Objects/MingW/Phase.o Objects/MingW/NumberChoiceDialog.o Objects/MingW/Util.o Objects/MingW/Risk_private.res
+LINKOBJ   = "Objects/MingW/RiskApp.o" "Objects/MingW/RiskFrm.o" "Objects/MingW/Board.o" "Objects/MingW/Region.o" "Objects/MingW/Player.o" "Objects/MingW/Controller.o" "Objects/MingW/MenuDlg.o" "Objects/MingW/ClickablePanel.o" "Objects/MingW/PlayersData.o" "Objects/MingW/Phase.o" "Objects/MingW/NumberChoiceDialog.o" "Objects/MingW/Util.o" Objects/MingW/Risk_private.res
+LIBS      = -L"C:/Program Files (x86)/Dev-Cpp/lib/wx/gcc_lib" -L"C:/Program Files (x86)/Dev-Cpp/lib" -L"C:/Program Files (x86)/Dev-Cpp/MinGW32/lib" -mwindows -l$(WXLIBNAME) -l$(WXLIBNAME)_gl -lwxscintilla -lwxtiff -lwxjpeg -lwxpng -lwxzlib -lwxregexu -lwxexpat -lkernel32 -luser32 -lgdi32 -lcomdlg32 -lwinspool -lwinmm -lshell32 -lcomctl32 -lole32 -loleaut32 -luuid -lrpcrt4 -ladvapi32 -lwsock32 -lodbc32 -lopengl32  -g3 
 INCS      = -I"C:/Program Files (x86)/Dev-Cpp/MinGW32/include"
 CXXINCS   = -I"C:/Program Files (x86)/Dev-Cpp/MinGW32/include" -I"C:/Program Files (x86)/Dev-Cpp/" -I"C:/Program Files (x86)/Dev-Cpp/include/common"
 RCINCS    = --include-dir "C:/PROGRA~2/Dev-Cpp/include/common"
 BIN       = Output/MingW/Risk.exe
 DEFINES   = -D__WXMSW__ -D__GNUWIN32__ -D_UNICODE
-CXXFLAGS  = $(CXXINCS) $(DEFINES)  
-CFLAGS    = $(INCS) $(DEFINES)  
+CXXFLAGS  = $(CXXINCS) $(DEFINES)   -g3
+CFLAGS    = $(INCS) $(DEFINES)   -g3
 GPROF     = gprof.exe
 ifeq ($(OS),Windows_NT)
    RM = del /Q
@@ -66,11 +66,11 @@ Objects/MingW/PlayersData.o: $(GLOBALDEPS) PlayersData.cpp PlayersData.h Player.
 Objects/MingW/Phase.o: $(GLOBALDEPS) Phase.cpp Phase.h Controller.h Board.h Region.h RiskExceptions.h PlayersData.h Player.h RegionDrawInformation.h Phase.h PlayerDrawInfo.h Player.h RiskFrm.h MenuDlg.h Controller.h PlayersData.h Board.h ClickablePanel.h Controller.h Board.h
 	$(CPP) -c Phase.cpp -o Objects/MingW/Phase.o $(CXXFLAGS)
 
-Objects/MingW/Util.o: $(GLOBALDEPS) Util.cpp Util.h
-	$(CPP) -c Util.cpp -o Objects/MingW/Util.o $(CXXFLAGS)
-
 Objects/MingW/NumberChoiceDialog.o: $(GLOBALDEPS) NumberChoiceDialog.cpp NumberChoiceDialog.h Controller.h Board.h Region.h RiskExceptions.h PlayersData.h Player.h RegionDrawInformation.h Phase.h PlayerDrawInfo.h Player.h
 	$(CPP) -c NumberChoiceDialog.cpp -o Objects/MingW/NumberChoiceDialog.o $(CXXFLAGS)
+
+Objects/MingW/Util.o: $(GLOBALDEPS) Util.cpp Util.h
+	$(CPP) -c Util.cpp -o Objects/MingW/Util.o $(CXXFLAGS)
 
 Objects/MingW/Risk_private.res: Objects/MingW/Risk_private.rc RiskApp.rc 
 	$(WINDRES) --input-format=rc -o Objects/MingW/Risk_private.res $(RCINCS) Objects/MingW/RISK_P~1.RC -O coff

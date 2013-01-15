@@ -12,7 +12,9 @@ void FortifyPhase::handleRegionClicked(unsigned int id){
     if(board.region(id).owner() == _controller.currentPlayer()){
         if(selected_region == NO_REGION_SELECTED)
             _controller.setSelectedRegion(id);
-        else if (id != selected_region && (board.region(selected_region).armyCount() > 2)){ 
+        else if (board.region(id).isNeighbor(selected_region) 
+        && id != selected_region 
+        && (board.region(selected_region).armyCount() > 1)){ 
             _controller.showFortifyDialog(selected_region, id);
         }   
         else

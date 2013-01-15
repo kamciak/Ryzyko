@@ -131,6 +131,8 @@ class MenuDlg : public wxDialog
 	    wxBitmap * bitmapCheckBoxTrue;
 	    wxImage * imgCheckBoxFalse;
 	    wxBitmap * bitmapCheckBoxFalse;
+        wxImage * _background;
+        wxBitmap * _background_bmp;
 		void OnClose(wxCloseEvent& event);
 		void CreateGUIControls();
         RiskFrm *_parent;

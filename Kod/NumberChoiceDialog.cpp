@@ -103,7 +103,6 @@ void NumberChoiceDialog::OnClose(wxCloseEvent& /*event*/)
  */
 void NumberChoiceDialog::WxPanel1UpdateUI(wxUpdateUIEvent& event)
 {
-	    wxImage::AddHandler( new wxJPEGHandler );
 	wxImage image("Images/scroll.jpg");
 	wxBitmap tlo(image);
 	wxClientDC dc(WxPanel1);

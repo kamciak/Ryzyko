@@ -2,9 +2,13 @@
 #define PLAYER_H
 #include <wx/wx.h>
 
+#define NUMBER_OF_COLORS 10
+
 enum PlayerColor{
         RED, BLUE, GREEN, YELLOW, PURPLE, GRAY, MAGENTA, CYAN, ORANGE, DARKBLUE    
 };
+
+
 
 class Player{
 private:

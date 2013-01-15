@@ -81,6 +81,12 @@ unsigned int Controller::currentPlayer(){
 
 
 bool Controller::initPlayers(){
+    bool color_taken[NUMBER_OF_COLORS];
+    for(int i = 0; i < NUMBER_OF_COLORS; ++i){
+        color_taken[i] = false;
+    }
+
+    std::vector<Player> players;
     PlayersData &pd = PlayersData::instance();
     MenuDlg &menu = *(_window.menu);
 
@@ -89,8 +95,9 @@ bool Controller::initPlayers(){
     if(name == "")
         name = "Gracz 1";
     
-    if(sel >= 0 && sel <= 9){
-        pd.addPlayer(Player(name, PlayerColor(sel)));
+    if(sel >= 0 && sel < NUMBER_OF_COLORS){        
+        color_taken[sel] = true;
+        players.push_back(Player(name, PlayerColor(sel)));
     }
     else{
         wxMessageBox("Wybierz kolor gracza 1!");
@@ -98,12 +105,17 @@ bool Controller::initPlayers(){
     }
 
     sel = menu.WxBitmapComboBox2->GetCurrentSelection();
-    name = menu.WxEdit2->GetValue();
+
+    name = menu.WxEdit2->GetValue();    
     if(name == "")
         name = "Gracz 2";
     
-    if(sel >= 0 && sel <= 9){
-        pd.addPlayer(Player(name, PlayerColor(sel)));
+    if(sel >= 0 && sel < NUMBER_OF_COLORS){
+        if(color_taken[sel]){
+            wxMessageBox("Kolory graczy musz¹ byæ unikalne!");
+            return false;
+        }
+        players.push_back(Player(name, PlayerColor(sel)));
     }
     else{
         wxMessageBox("Wybierz kolor gracza 2!");
@@ -116,8 +128,12 @@ bool Controller::initPlayers(){
         if(name == "")
             name = "Gracz 3";
     
-        if(sel >= 0 && sel <= 9){
-            pd.addPlayer(Player(name, PlayerColor(sel)));
+        if(sel >= 0 && sel < NUMBER_OF_COLORS){
+            if(color_taken[sel]){
+                wxMessageBox("Kolory graczy musz¹ byæ unikalne!");
+                return false;
+            }
+            players.push_back(Player(name, PlayerColor(sel)));
         }
         else{
             wxMessageBox("Wybierz kolor gracza 3!");
@@ -131,8 +147,12 @@ bool Controller::initPlayers(){
         if(name == "")
             name = "Gracz 4";
     
-        if(sel >= 0 && sel <= 9){
-            pd.addPlayer(Player(name, PlayerColor(sel)));
+        if(sel >= 0 && sel < NUMBER_OF_COLORS){
+            if(color_taken[sel]){
+                wxMessageBox("Kolory graczy musz¹ byæ unikalne!");
+                return false;
+            }
+            players.push_back(Player(name, PlayerColor(sel)));
         }
         else{
             wxMessageBox("Wybierz kolor gracza 4!");
@@ -146,8 +166,12 @@ bool Controller::initPlayers(){
         if(name == "")
             name = "Gracz 5";
     
-        if(sel >= 0 && sel <= 9){
-            pd.addPlayer(Player(name, PlayerColor(sel)));
+        if(sel >= 0 && sel < NUMBER_OF_COLORS){
+            if(color_taken[sel]){
+                wxMessageBox("Kolory graczy musz¹ byæ unikalne!");
+                return false;
+            }
+            players.push_back(Player(name, PlayerColor(sel)));
         }
         else{
             wxMessageBox("Wybierz kolor gracza 5!");
@@ -161,8 +185,12 @@ bool Controller::initPlayers(){
         if(name == "")
             name = "Gracz 6";
     
-        if(sel >= 0 && sel <= 9){
-            pd.addPlayer(Player(name, PlayerColor(sel)));
+        if(sel >= 0 && sel < NUMBER_OF_COLORS){
+            if(color_taken[sel]){
+                wxMessageBox("Kolory graczy musz¹ byæ unikalne!");
+                return false;
+            }
+            players.push_back(Player(name, PlayerColor(sel)));
         }
         else{
             wxMessageBox("Wybierz kolor gracza 6!");
@@ -170,9 +198,14 @@ bool Controller::initPlayers(){
         }
     }
     
+    for(int i = 0; i < players.size(); ++i){
+        pd.addPlayer(players[i]);
+    }
+
     for(int i = 0; i < pd.numberOfPlayers(); ++i){
         _players_queue.push_back(i);
     }
+    
     std::random_shuffle(_players_queue.begin(),_players_queue.end());
     _current_player = _players_queue.begin();
 
@@ -222,8 +255,9 @@ std::vector<RegionDrawInformation> Controller::getRegionDrawInfo(bool big_image)
 std::vector<PlayerDrawInfo> Controller::getPlayerDrawInfo(){
     PlayersData & pd = PlayersData::instance();
     std::vector<PlayerDrawInfo> col;
-    for(int i = 0; i < pd.numberOfPlayers(); ++i){
-        col.push_back(PlayerDrawInfo(pd.player(i).isDead(), i == currentPlayer(), pd.player(i).color(), regionsOwnedByPlayer(i), pd.player(i).name()));
+    std::vector<unsigned int>::iterator i;
+    for(i = _players_queue.begin(); i != _players_queue.end(); ++i){
+        col.push_back(PlayerDrawInfo(pd.player(*i).isDead(), *i == currentPlayer(), pd.player(*i).color(), regionsOwnedByPlayer(*i), pd.player(*i).name()));
     }
     return col;
 }
@@ -388,6 +422,7 @@ void Controller::combat(unsigned int attacker, unsigned int defender){
                 owns = true;
         }
         if(!owns){
+            PlayersData::instance().player(board.region(defender).owner()).kill();
             wxMessageBox(PlayersData::instance().player(board.region(defender).owner()).name()+" przegrywa!");
             std::vector<unsigned int>::iterator iter;
             for(iter = _players_queue.begin(); iter != _players_queue.end(); ++iter){

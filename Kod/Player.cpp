@@ -5,7 +5,6 @@ Player::Player(wxString player_name, PlayerColor player_color){
     _color = player_color;
     _name = player_name;
     _dead = false;
-    wxImage::AddHandler( new wxPNGHandler );
     
     switch(player_color){
         case RED:

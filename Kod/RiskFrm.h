@@ -87,6 +87,10 @@ class RiskFrm : public wxFrame
         wxImage *_attack_phase_image;
         wxImage *_reinforce_phase_image;
         wxImage *_setup_phase_image;
+        wxImage *_dead_player_image;
+        wxImage *_current_player_image;
+        wxBitmap *_dead_player_bitmap;
+        wxBitmap *_current_player_bitmap;
         double _scale;
         
     public:
