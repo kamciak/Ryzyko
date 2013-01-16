@@ -86,7 +86,7 @@ ProductName=
 ProductVersion=
 AutoIncBuildNrOnRebuild=0
 AutoIncBuildNrOnCompile=0
-UnitCount=30
+UnitCount=31
 
 [Profile1]
 ProfileName=MingW gcc
@@ -354,7 +354,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit29]
-FileName=CardsData.cpp
+FileName=Phase.h
 Folder=Risk
 Compile=1
 Link=1
@@ -374,7 +374,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit30]
-FileName=CardsData.h
+FileName=CardsData.cpp
 CompileCpp=1
 Folder=Risk
 Compile=1
@@ -384,7 +384,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit31]
-FileName=Phase.h
+FileName=CardsData.h
 CompileCpp=1
 Folder=Risk
 Compile=1

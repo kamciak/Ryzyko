@@ -11,6 +11,9 @@
 #include "CardDialog.h"
 #include <wx/dcbuffer.h>
 #include "Util.h"
+
+unsigned int CardDialog::set_values[] = {4,6,8,10,12,15,20,25,30,35,40,45,50,55,60,65,70};
+
 //Do not add custom headers
 //wxDev-C++ designer will remove them
 ////Header Include Start
@@ -125,6 +128,7 @@ void CardDialog::WxPanel1UpdateUI(wxUpdateUIEvent& event)
         wxPoint pos(10+i*155,10);
         bdc.DrawBitmap(*draw_info[i].image,pos,true);        
         bdc.DrawText(draw_info[i].region_name,pos.x+50,pos.y+225);
+        bdc.DrawText("Wartosc kolejnego zestawu kart ryzyka: "+intToString(set_values[ctrl.exchangedSets()]), 270, 260);
     }   
 }
 

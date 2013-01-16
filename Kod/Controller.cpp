@@ -6,82 +6,84 @@
 #include <algorithm>
 
 #define ROLL_D6 (rand()%6+1)
-static unsigned int set_values[] = {4,6,8,10,12,15,20,25,30,35,40,45,50,55,60,65,70};
+
 
 void Controller::setSelectedRegion(unsigned int id){
     _selected_region = id;
     _window.paintSelectedRegion(id);
 }
     
-void Controller::nextPhase(){    
-    setSelectedRegion(NO_REGION_SELECTED);
-    if(dynamic_cast<SetupPhase*>(_current_phase)){
-        _current_player++;
-        if(_current_player == _players_queue.end()){
-            _current_player = _players_queue.begin();
-            
-            --_armies_to_distribute;
-            if(_armies_to_distribute != 0){
-                //_window.info("Wojsk do rozmieszczenia: "+intToString(_armies_to_distribute));                
-            }
-            else{
-                startGame();
-            }
-        }
-        //startGame moze zmienic aktualna faze - w takim wypadku nie wypisuj aktualnego gracza
-        //if(dynamic_cast<SetupPhase*>(_current_phase))
-            //_window.info("Aktualny gracz :"+PlayersData::instance().player(currentPlayer()).name());
-    }
-    else if(dynamic_cast<ReinforcePhase*>(_current_phase)){
-        delete _current_phase;
-        _current_phase = new AttackPhase(*this);
-        //_window.info("Faza Walki: kliknij na swój region z dwoma lub wiêcej jednostkami, a nastêpnie na s¹siedni wrogi region, aby go zaatakowaæ");
-        _window.endPhaseButtonEnabled(true);
-        
-    }
-    else if(dynamic_cast<CardPhase*>(_current_phase)){
-        delete _current_phase;
-        _current_phase = new ReinforcePhase(*this);
-        _window.endPhaseButtonEnabled(false);
-    }
-    else if(dynamic_cast<AttackPhase*>(_current_phase)){
-        delete _current_phase;
-        _current_phase = new FortifyPhase(*this);
-        //_window.info("Faza ruchu: kliknij na jeden ze swoich regionów z dwoma lub wiêcej jednostkami, a nastêpnie któryœ ze swoich s¹siednich regionów aby przemieœciæ tam wojska");
-    
-    }
-    else if(dynamic_cast<FortifyPhase*>(_current_phase)){
-        if(_conquest_flag){
-            _conquest_flag = false;
-            giveCard(currentPlayer(),CardsData::instance().deck().drawCard());
-            
-        }
-        /*if(PlayersData::instance().player(currentPlayer()).hand.size()  > 5){
-            delete _current_phase;
-            _current_phase = new ForcedCardPhase(*this);  
-            _window.endPhaseButtonEnabled(false);      
-        }
-        else{*/
+void Controller::startPhase(PhaseName phase){
+    wxDELETE(_current_phase);
+    switch(phase){
+        case SETUP:
+            _current_phase = new SetupPhase(*this);
+            _armies_to_distribute = 50 - 5 * PlayersData::instance().numberOfPlayers(); 
+            break;
+        case REINFORCE:            
+            _current_phase = new ReinforcePhase(*this);
             _current_player++;
             if(_current_player == _players_queue.end())
-                _current_player = _players_queue.begin();        
-            delete _current_phase;
-            _current_phase = new CardPhase(*this);            
-            _armies_to_distribute = 0;
+                _current_player = _players_queue.begin();
+            calculateNumberOfRecruits();
             showCardsDialog();
-            calculateNumberOfRecruits(currentPlayer());
             _window.endPhaseButtonEnabled(false);
-        //}
+            break;
+        case ATTACK:
+            _current_phase = new AttackPhase(*this);  
+            _window.endPhaseButtonEnabled(true);
+            break;
+        case FORTIFY:
+            _current_phase = new FortifyPhase(*this);
+            _window.endPhaseButtonEnabled(true);
+            break;
+    }
+}
+
+void Controller::nextPhase(){    
+    setSelectedRegion(NO_REGION_SELECTED);
+    PhaseName phase = getPhaseName();
+    switch(phase){
+        case SETUP:
+            _current_player++;
+            if(_current_player == _players_queue.end()){
+                _current_player = _players_queue.begin();            
+                --_armies_to_distribute;
+            }
+            if(_armies_to_distribute == 0){                
+                if(_skip_reinforce){
+                    _skip_reinforce = false;
+                    startPhase(ATTACK);
+                }   
+                else{
+                    --_current_player;
+                    startPhase(REINFORCE);     
+                }           
+            }
+            break;
+        case REINFORCE:
+            startPhase(ATTACK);
+            break;
+        case ATTACK:
+            startPhase(FORTIFY);
+            attacker_rolls.clear();
+            defender_rolls.clear();
+            break;
+        case FORTIFY:
+            if(_conquest_flag){
+                giveCard(currentPlayer(), CardsData::instance().deck().drawCard());
+                _conquest_flag = false;
+            }        
+            startPhase(REINFORCE);
+            break;
     }
    _window.setDrawFlag();
 }
 
 Controller::Controller(RiskFrm & window) 
-    : _window(window), _selected_region(NO_REGION_SELECTED){
-    _current_phase = new SetupPhase(*this);
+    : _window(window), _selected_region(NO_REGION_SELECTED){    
     _conquest_flag = false;
     _sets_exchanged = 0;
-    //_window.info("Faza rozmieszczania wojsk: Wybierz jeden z wolnych regionów (lub jeden ze swoich, jeœli wszystkie s¹ zajête), aby umieœciæ tam jednostkê");
 }
 
 Controller::~Controller(){
@@ -232,12 +234,11 @@ bool Controller::initPlayers(){
     for(int i = 0; i < pd.numberOfPlayers(); ++i){
         _players_queue.push_back(i);
     }
-    
+    srand(time(0));
     std::random_shuffle(_players_queue.begin(),_players_queue.end());
     _current_player = _players_queue.begin();
-
-    _armies_to_distribute = 50-(pd.numberOfPlayers() * 5);
-    //_window.info("Wojsk do roznmieszczenia:"+intToString(_armies_to_distribute));
+    _skip_reinforce = _players_queue.size() == 2 ? true : false;
+    startPhase(SETUP);    
     return true;
     
 }
@@ -252,13 +253,6 @@ bool Controller::allRegionsTaken(){
 }
 
 
-void Controller::startGame(){
-    delete _current_phase;
-    _current_phase = new ReinforcePhase(*this);
-    //_window.info("Aktualny gracz: "+PlayersData::instance().player(currentPlayer()).name());
-    //_window.info("Faza Rekrutacji: kliknij na jeden ze swoich regionów aby umieœciæ tam dodatkowe jednostki");
-    calculateNumberOfRecruits(currentPlayer());
-}
 
 std::vector<RegionDrawInformation> Controller::getRegionDrawInfo(bool big_image){
     std::vector<RegionDrawInformation> draw_info;
@@ -298,17 +292,16 @@ unsigned int Controller::regionsOwnedByPlayer(unsigned int player_id){
     return count;
 }
 
-void Controller::calculateNumberOfRecruits(unsigned int player_id){
+void Controller::calculateNumberOfRecruits(){
+    unsigned int player_id = currentPlayer();
     Board & board = Board::instance();
-    int total = _armies_to_distribute;
+    int total = 0;
     int standard = 0;
     for(int i = 0; i < board.numberOfRegions(); ++i){
         if(board.region(i).owner() == player_id)
             ++standard;
     }
     standard = (standard/3) < 3 ? 3 : (standard/3);
-    //_window.info("Iloœæ armii do rozmiesczenia:");
-    //_window.info("\tPodstawowy przyrost: "+intToString(standard));
     
     total += standard;
 
@@ -406,8 +399,7 @@ void Controller::giveCard(unsigned int player_id, RiskCard * card){
         PlayersData::instance().player(player_id).hand.push_back(card);
 }
 
-void Controller::combat(unsigned int attacker, unsigned int defender){
-    srand(time(0));
+void Controller::combat(unsigned int attacker, unsigned int defender){    
     Board & board = Board::instance();
 
 	unsigned int atk_dice = board.region(attacker).armyCount() > 4 ? 3 : board.region(attacker).armyCount() - 1;
@@ -426,6 +418,9 @@ void Controller::combat(unsigned int attacker, unsigned int defender){
 	
 	std::sort(atk_rolls.rbegin(),atk_rolls.rend());
 	std::sort(def_rolls.rbegin(),def_rolls.rend());
+
+    attacker_rolls = atk_rolls;
+    defender_rolls = def_rolls;    
 	
 	unsigned int comparisons = atk_dice > def_dice ? def_dice : atk_dice;
 	
@@ -473,30 +468,6 @@ void Controller::combat(unsigned int attacker, unsigned int defender){
         
     }
 
-    //TODO: Kod animacji itd;
-    //_window.info("Bitwa "+board.region(attacker).name()+"-"+board.region(defender).name());
-    //_window.info("Wyniki:");
-    /*wxString atk_txt = "\tAtakuj¹cy:";
-    wxString def_txt = "\tBroni¹cy :";
-    for(int i = 0; i < atk_rolls.size(); ++i){
-        atk_txt += " "+intToString(atk_rolls[i]);
-    }
-
-    for(int i = 0; i < def_rolls.size(); ++i){
-        def_txt += " "+intToString(def_rolls[i]);
-    }*/
-    //_window.info(atk_txt);
-    //_window.info(def_txt);
-    /*wxString losses_txt = "Straty: ";
-    if(atk_losses != 0){
-        losses_txt += ("Atakuj¹cy "+intToString(atk_losses));
-        if(def_losses != 0)
-            losses_txt += ", ";
-    }
-    if(def_losses != 0)
-        losses_txt += ("Broni¹cy "+intToString(def_losses));
-    */
-    //_window.info(losses_txt);
 }
 
 PhaseName Controller::getPhaseName(){
@@ -521,7 +492,6 @@ void Controller::showCardsDialog(){
         wxDELETE(dlg);
         _window.unsetPermaDraw();
     }    
-    nextPhase();
     
 }
 
@@ -529,7 +499,7 @@ void Controller::moveArmies(unsigned region_start, unsigned region_end, unsigned
     Board & board = Board::instance();
     board.region(region_start).removeArmies(number);
     board.region(region_end).addArmies(number);
-    if(dynamic_cast<FortifyPhase*>(_current_phase)){
+    if(getPhaseName() == FORTIFY){
         nextPhase();
     }
 }
@@ -638,9 +608,8 @@ void Controller::exchangeSame(){
             Board::instance().region((*iter)->getRegion()).addArmies(2);
         hand.erase(iter);
     }    
-    _armies_to_distribute+= set_values[_sets_exchanged];
+    _armies_to_distribute += CardDialog::set_values[_sets_exchanged];
     _sets_exchanged++;
-    nextPhase();
 }
 
 void Controller::exchangeDifferent(){
@@ -675,7 +644,10 @@ void Controller::exchangeDifferent(){
         Board::instance().region((*iter)->getRegion()).addArmies(2);
     hand.erase(iter);
 
-    _armies_to_distribute+= set_values[_sets_exchanged];
+    _armies_to_distribute += CardDialog::set_values[_sets_exchanged];
     _sets_exchanged++;
-    nextPhase();
+}
+
+unsigned int Controller::exchangedSets(){
+    return _sets_exchanged;
 }

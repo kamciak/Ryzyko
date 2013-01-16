@@ -36,23 +36,29 @@ private:
     unsigned int _armies_to_distribute;
     ///informacja czy w tej turze graczowi uda³o siê podbic jakis region
     bool _conquest_flag;
+    ///czy pierwsza faza rozmieszczania wojsk ma zostac opuszczona (2 graczy)
+    bool _skip_reinforce;
     ///Oblicza ile armii gracz otrzymuje w swojej fazie rekrutacji, uaktualnia _armies_to_distribute
-    void calculateNumberOfRecruits(unsigned int player_id);
+    void calculateNumberOfRecruits();
     ///Dodaje do reki gracza karte ryzyka
     void giveCard(unsigned int player_id, RiskCard * card);
     ///Ilosc zestawow kart ryzyka juz wymienionych
     unsigned int _sets_exchanged;
+    ///zaczyna wybran¹ fazê i wykonuje wszystkie zwi¹zane z ni¹ czynnoœci
+    void startPhase(PhaseName phase);
 public:    
     void regionClicked(unsigned int id);
     Controller(RiskFrm & window);
     ~Controller();
 
+
+    ///Wartosci rzutow kosci ostatniego starcia
+    std::vector<unsigned int> attacker_rolls;
+    std::vector<unsigned int> defender_rolls;
     ///Zwraca wartoœæ PhaseName odpowiadaj¹c¹ aktualnej fazie
     PhaseName getPhaseName();
-    ///Koñczy fazê rozmieszczania pocz¹tkowych pionków i rozpoczyna grê
-    void startGame();
     ///Przechodzi do nastepnej fazy w turze, lub konczy ture jezeli jest to ostatnia faza
-    void nextPhase();
+    void nextPhase();    
     ///Ustawia region jako zaznaczony i rozkazuje oknu pomalowanie go
     void setSelectedRegion(unsigned int id);
     ///Zwraca id wybranego aktualnie regionu
@@ -93,6 +99,8 @@ public:
     void exchangeSame();
     ///dokonuje wymiany trzech roznych kart ryzyka aktualnego gracza na armie i umieszcza te armie w podanym regionie
     void exchangeDifferent();
+    ///zwraca ilosc zestawow kart ryzyka ktore zostaly juz wymienione
+    unsigned int exchangedSets();
 };
 
 

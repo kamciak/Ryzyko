@@ -35,6 +35,9 @@
 #define CardDialog_STYLE wxSYSTEM_MENU | wxDIALOG_NO_PARENT | wxMINIMIZE_BOX | wxCLOSE_BOX
 ////Dialog Style End
 #include "Controller.h"
+
+
+
 class CardDialog : public wxDialog
 {
 	private:
@@ -47,6 +50,7 @@ class CardDialog : public wxDialog
 		void WxBitmapButton1Click(wxCommandEvent& event);
 		void WxBitmapButton2Click(wxCommandEvent& event);
 		void WxBitmapButton3Click(wxCommandEvent& event);
+        static unsigned int set_values[];
 	
 	private:
 		//Do not add custom control declarations between 

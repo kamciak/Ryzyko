@@ -87,9 +87,12 @@ class RiskFrm : public wxFrame
         wxImage *_attack_phase_image;
         wxImage *_reinforce_phase_image;
         wxImage *_setup_phase_image;
-        wxImage *_card_phase_image;
-        wxImage *_forced_card_phase_image;
         wxImage *_current_player_image;
+        wxImage *_dice_img[6];
+        wxImage *_swords_img;
+        wxImage *_shield_img;
+        
+
         wxBitmap *_current_player_bitmap;
         double _scale;
         bool _draw_flag;
@@ -106,15 +109,15 @@ class RiskFrm : public wxFrame
         void mouseLeftClick(wxMouseEvent & event);
         void setResolution();
         void paintSelectedRegion(unsigned int id);
-        //void info(wxString txt);
         void setScale();
         double getScale();
-        unsigned int getRegionID(unsigned int x, unsigned int y);
+        unsigned int getPointID(unsigned int x, unsigned int y);
         void endPhaseButtonEnabled(bool flag);
         void drawPlayersData(wxBufferedDC & dc, std::vector<PlayerDrawInfo> col);
         void setDrawFlag();
         void setPermaDraw();
         void unsetPermaDraw();
+        void drawDice(std::vector<unsigned int> atk_rolls, std::vector<unsigned int> def_rolls, wxBufferedDC & bdc);
 };
 
 #endif

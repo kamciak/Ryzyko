@@ -73,9 +73,6 @@ void SetupPhase::handleRegionClicked(unsigned int id){
     
 }
 
-void CardPhase::handleRegionClicked(unsigned int id){
-    
-}
 
 
 PhaseName AttackPhase::phaseName(){
@@ -94,7 +91,4 @@ PhaseName FortifyPhase::phaseName(){
     return FORTIFY;
 }
 
-PhaseName CardPhase::phaseName(){
-    return CARD;
-}
 

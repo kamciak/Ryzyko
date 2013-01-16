@@ -35,9 +35,9 @@ ClickablePanel::ClickablePanel(RiskFrm* parent, Controller & control, wxWindowID
 
 void ClickablePanel::mouseLeftClick(wxMouseEvent & event){
     wxPoint pt = event.GetPosition();    
-    unsigned int region_id = _parent.getRegionID(pt.x,pt.y);
+    unsigned int region_id = _parent.getPointID(pt.x,pt.y);
     if(region_id != NO_REGION_SELECTED)
-        _controller.regionClicked(_parent.getRegionID(pt.x,pt.y));
+        _controller.regionClicked(_parent.getPointID(pt.x,pt.y));
     _parent.setDrawFlag();
 }
 
