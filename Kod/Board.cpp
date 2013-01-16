@@ -87,7 +87,7 @@ Board::Board(){
         addConnection("Neyungri","Achinsk");
         
         addConnection("Aomori","Magadan");
-        addConnection("Aomori","Chengdu");
+        addConnection("Aomori","Neyungri");
 
         addConnection("Bratsk","Achinsk");
         addConnection("Bratsk","Yakutsk");

@@ -1,7 +1,7 @@
 #include "RiskDeck.h"
 #include <algorithm>
 
-RiskDeck::RiskDeck(RiskCard tab[], int n){
+RiskDeck::RiskDeck(RiskCard *tab, int n){
     for(int i=0;i<n;i++)
         cards.push_back(&tab[i]);
     random_shuffle(cards.begin(),cards.end());    

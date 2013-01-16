@@ -1,6 +1,9 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 #include <wx/wx.h>
+#include <vector>
+
+#include "RiskCard.h"
 
 #define NUMBER_OF_COLORS 10
 
@@ -15,14 +18,13 @@ private:
     wxString _name;
     wxImage _soldier_image;
     wxImage _soldier_image_big;
-    bool _dead;
     PlayerColor _color;
+    
 public:
     Player(wxString player_name, PlayerColor player_color);
+    std::vector<RiskCard*> hand;    
     wxString name();
     wxImage & image(bool big);
-    bool isDead();
-    void kill();
     PlayerColor color();
 };
 

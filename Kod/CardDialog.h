@@ -45,12 +45,16 @@ class CardDialog : public wxDialog
 		virtual ~CardDialog();
 		void WxPanel1UpdateUI(wxUpdateUIEvent& event);
 		void WxBitmapButton1Click(wxCommandEvent& event);
+		void WxBitmapButton2Click(wxCommandEvent& event);
+		void WxBitmapButton3Click(wxCommandEvent& event);
 	
 	private:
 		//Do not add custom control declarations between 
 		//GUI Control Declaration Start and GUI Control Declaration End.
 		//wxDev-C++ will remove them. Add custom code after the block.
 		////GUI Control Declaration Start
+		wxBitmapButton *WxBitmapButton3;
+		wxBitmapButton *WxBitmapButton2;
 		wxBitmapButton *WxBitmapButton1;
 		wxPanel *WxPanel1;
 		////GUI Control Declaration End
@@ -63,6 +67,8 @@ class CardDialog : public wxDialog
 		enum
 		{
 			////GUI Enum Control ID Start
+			ID_WXBITMAPBUTTON3 = 1004,
+			ID_WXBITMAPBUTTON2 = 1003,
 			ID_WXBITMAPBUTTON1 = 1002,
 			ID_WXPANEL1 = 1001,
 			////GUI Enum Control ID End

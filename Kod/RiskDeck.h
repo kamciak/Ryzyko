@@ -5,7 +5,7 @@
 
 class RiskDeck{
     public:
-        RiskDeck(RiskCard tab[], int n);
+        RiskDeck(RiskCard *tab, int n);
         RiskCard* drawCard();
     private:
         std::vector<RiskCard*> cards;   

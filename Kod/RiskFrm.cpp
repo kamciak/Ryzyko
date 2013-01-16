@@ -145,6 +145,8 @@ void RiskFrm::CreateGUIControls()
     //WxPanel1 = new wxPanel(this, ID_WXPANEL1, wxPoint(0, 0), wxSize(1366, 768));
     
     this->SetBackgroundColour(wxColour(0,0,0));
+    _draw_flag = true;
+    _perma_draw = false;
     Centre();
 }
 
@@ -175,9 +177,8 @@ void RiskFrm::setResolution(){
     _attack_phase_image = new wxImage("Images/attackphase.png");
     _reinforce_phase_image = new wxImage("Images/reinforcephase.png");
     _setup_phase_image = new wxImage("Images/setupphase.png");
-
-    _dead_player_image = new wxImage("Images/skull.png");
-    _dead_player_bitmap = new wxBitmap(*_dead_player_image);
+    _card_phase_image = new wxImage("Images/cardphase.png");
+    _forced_card_phase_image = new wxImage("Images/cardphaseforce.png");
 
     _current_player_image = new wxImage("Images/flag.png");
     _current_player_bitmap = new wxBitmap(*_current_player_image);
@@ -203,7 +204,7 @@ void RiskFrm::setResolution(){
 void RiskFrm::paintSelectedRegion(unsigned int id){
     //DebugText -> SetLabel(DebugText -> GetLabel()+"paint:"+(char)id);
     
-    delete map_with_mask;
+    wxDELETE(map_with_mask);
     map_with_mask = new wxImage(*map);
 
     if(id != NO_REGION_SELECTED){             
@@ -232,51 +233,58 @@ void RiskFrm::paintSelectedRegion(unsigned int id){
  */
 void RiskFrm::WxPanel1UpdateUI(wxUpdateUIEvent& event)
 {
-	double scale = getScale();
-
-	wxClientDC dc(MapPanel);
-	wxBufferedDC bdc(&dc);
-    if(map_with_mask){
-       
-        wxBitmap map_with_mask_bp(*map_with_mask);
-        wxBitmap *phase_bar_bmp;
-        PhaseName phase = control.getPhaseName();
-        switch(phase){
-            case SETUP:
-                phase_bar_bmp = new wxBitmap(*_setup_phase_image);
-                break;
-            case REINFORCE:
-                phase_bar_bmp = new wxBitmap(*_reinforce_phase_image);
-                break;
-            case ATTACK:
-                phase_bar_bmp = new wxBitmap(*_attack_phase_image);
-                break;
-            case FORTIFY:
-                phase_bar_bmp = new wxBitmap(*_fortify_phase_image);
-                break;
-        }
-        bdc.DrawBitmap(map_with_mask_bp,0,0,true);
-        wxPoint phasebar_pos(PHASE_BAR_X * scale, MapPanel->GetSize().GetHeight() - phase_bar_bmp->GetSize().GetHeight() - MAP_BORDER_THICKNESS * scale); 
-        bdc.DrawBitmap(*phase_bar_bmp,phasebar_pos,true);
-        drawPlayersData(bdc,control.getPlayerDrawInfo());
-        
-        bool big_image = this -> GetSize().GetWidth() > BIG_IMAGE_THRESHHOLD ? true : false;
-        std::vector<RegionDrawInformation> draw_info = control.getRegionDrawInfo(big_image);
-        for(int i = 0; i < draw_info.size(); ++i){
-            if(draw_info[i].image){
-                wxBitmap soldier_bp(*draw_info[i].image);
-                wxBitmap numberplate(*army_number_plate);
-
-                int bmp_width = soldier_bp.GetSize().GetWidth();
-                int soldier_height = soldier_bp.GetSize().GetHeight();
-
-                bdc.DrawBitmap(soldier_bp,draw_info[i].point.x-(bmp_width/2),draw_info[i].point.y-soldier_height,true);
-                bdc.DrawBitmap(numberplate,draw_info[i].point.x-(bmp_width/2),draw_info[i].point.y,true);
-                std::string armies_s = intToString(draw_info[i].armies);
-                int text_dx = armies_s.length() > 1 ? -5 : -2;
-                bdc.DrawText(armies_s,draw_info[i].point.x+text_dx,draw_info[i].point.y);
+    if(_draw_flag || _perma_draw){
+    	double scale = getScale();
+    
+    	wxClientDC dc(MapPanel);
+    	wxBufferedDC bdc(&dc);
+        if(map_with_mask){
+           
+            wxBitmap map_with_mask_bp(*map_with_mask);
+            wxBitmap *phase_bar_bmp;
+            PhaseName phase = control.getPhaseName();
+            switch(phase){
+                case SETUP:
+                    phase_bar_bmp = new wxBitmap(*_setup_phase_image);
+                    break;
+                case REINFORCE:
+                    phase_bar_bmp = new wxBitmap(*_reinforce_phase_image);
+                    break;
+                case ATTACK:
+                    phase_bar_bmp = new wxBitmap(*_attack_phase_image);
+                    break;
+                case FORTIFY:
+                    phase_bar_bmp = new wxBitmap(*_fortify_phase_image);
+                    break;
+                case CARD:
+                    phase_bar_bmp = new wxBitmap(*_card_phase_image);
+                    break;
+            }
+            bdc.DrawBitmap(map_with_mask_bp,0,0,true);
+            wxPoint phasebar_pos(PHASE_BAR_X * scale, MapPanel->GetSize().GetHeight() - phase_bar_bmp->GetSize().GetHeight() - MAP_BORDER_THICKNESS * scale); 
+            bdc.DrawBitmap(*phase_bar_bmp,phasebar_pos,true);
+            wxDELETE(phase_bar_bmp);
+            drawPlayersData(bdc,control.getPlayerDrawInfo());
+            
+            bool big_image = this -> GetSize().GetWidth() > BIG_IMAGE_THRESHHOLD ? true : false;
+            std::vector<RegionDrawInformation> draw_info = control.getRegionDrawInfo(big_image);
+            for(int i = 0; i < draw_info.size(); ++i){
+                if(draw_info[i].image){
+                    wxBitmap soldier_bp(*draw_info[i].image);
+                    wxBitmap numberplate(*army_number_plate);
+    
+                    int bmp_width = soldier_bp.GetSize().GetWidth();
+                    int soldier_height = soldier_bp.GetSize().GetHeight();
+    
+                    bdc.DrawBitmap(soldier_bp,draw_info[i].point.x-(bmp_width/2),draw_info[i].point.y-soldier_height,true);
+                    bdc.DrawBitmap(numberplate,draw_info[i].point.x-(bmp_width/2),draw_info[i].point.y,true);
+                    std::string armies_s = intToString(draw_info[i].armies);
+                    int text_dx = armies_s.length() > 1 ? -5 : -2;
+                    bdc.DrawText(armies_s,draw_info[i].point.x+text_dx,draw_info[i].point.y);
+                }
             }
         }
+        _draw_flag = false;
     }
 }
 
@@ -298,11 +306,7 @@ void RiskFrm::drawPlayersData(wxBufferedDC & dc, std::vector<PlayerDrawInfo> col
         dc.DrawText(col[i].name, players_display_x + players_display_height/MAX_PLAYERS + 1,players_display_y[i]);
         dc.DrawText(intToString(col[i].territories), players_display_x + players_display_width - 10, players_display_y[i]);
         
-        if(col[i].dead){
-            if(_dead_player_bitmap)
-                dc.DrawBitmap(*_dead_player_bitmap, players_display_x + players_display_width - 35,players_display_y[i], true);            
-        }
-        else if(col[i].current){
+        if(col[i].current){
             if(_current_player_bitmap)
                 dc.DrawBitmap(*_current_player_bitmap, players_display_x + players_display_width - 35,players_display_y[i], true);       
         }
@@ -356,4 +360,16 @@ double RiskFrm::getScale(){
     return _scale;
 }   
 
+
+void RiskFrm::setDrawFlag(){
+    _draw_flag = true;
+}
+
+void RiskFrm::setPermaDraw(){
+    _perma_draw = true;
+}
+
+void RiskFrm::unsetPermaDraw(){
+    _perma_draw = false;
+}
 

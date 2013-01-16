@@ -38,8 +38,10 @@ void ClickablePanel::mouseLeftClick(wxMouseEvent & event){
     unsigned int region_id = _parent.getRegionID(pt.x,pt.y);
     if(region_id != NO_REGION_SELECTED)
         _controller.regionClicked(_parent.getRegionID(pt.x,pt.y));
+    _parent.setDrawFlag();
 }
 
 void ClickablePanel::end_phase_bmpButtonClicked(wxCommandEvent & event){
+    _parent.setDrawFlag();
     _controller.nextPhase();
 }

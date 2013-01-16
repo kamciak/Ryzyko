@@ -4,7 +4,6 @@
 Player::Player(wxString player_name, PlayerColor player_color){
     _color = player_color;
     _name = player_name;
-    _dead = false;
     
     switch(player_color){
         case RED:
@@ -54,13 +53,6 @@ wxString Player::name(){
     return _name;
 }
 
-bool Player::isDead(){
-    return _dead;
-}
-
-void Player::kill(){
-    _dead = true;
-}
 
 PlayerColor Player::color(){
     return _color;

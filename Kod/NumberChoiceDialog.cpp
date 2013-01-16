@@ -90,6 +90,8 @@ void NumberChoiceDialog::CreateGUIControls()
 	WxBitmapButton2->SetBitmapHover(anuluj_hover);
     WxBitmapButton2->Reparent(WxPanel1);	
     WxBitmapButton2->SetDoubleBuffered(true);
+
+    WxSpinCtrl1->SetValue(max);
       
 }
 
@@ -131,7 +133,6 @@ void NumberChoiceDialog::WxBitmapButton2Click(wxCommandEvent& event)
  */
 void NumberChoiceDialog::WxBitmapButton1Click(wxCommandEvent& event)
 {
-	ctrl.moveArmies(start_region,end_region,WxSpinCtrl1->GetValue());
-    ctrl.nextPhase();
+	ctrl.moveArmies(start_region,end_region,WxSpinCtrl1->GetValue());    
     this->EndModal(0);
 }

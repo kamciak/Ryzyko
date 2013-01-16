@@ -8,7 +8,8 @@ enum PhaseName{
     REINFORCE,
     FORTIFY,
     ATTACK,
-    SETUP
+    SETUP,
+    CARD,
 };
 
 class Phase{
@@ -52,5 +53,15 @@ public:
 	void handleRegionClicked(unsigned int id);
     PhaseName phaseName();
 };
+
+class CardPhase : public Phase{
+private:
+	Controller & _controller;
+public:
+	CardPhase(Controller & controller) : _controller(controller){};
+	void handleRegionClicked(unsigned int id);
+    PhaseName phaseName();
+};
+
 
 #endif

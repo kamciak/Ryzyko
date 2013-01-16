@@ -6,13 +6,14 @@
 #include <algorithm>
 
 #define ROLL_D6 (rand()%6+1)
+static unsigned int set_values[] = {4,6,8,10,12,15,20,25,30,35,40,45,50,55,60,65,70};
 
 void Controller::setSelectedRegion(unsigned int id){
     _selected_region = id;
     _window.paintSelectedRegion(id);
 }
     
-void Controller::nextPhase(){
+void Controller::nextPhase(){    
     setSelectedRegion(NO_REGION_SELECTED);
     if(dynamic_cast<SetupPhase*>(_current_phase)){
         _current_player++;
@@ -36,6 +37,12 @@ void Controller::nextPhase(){
         _current_phase = new AttackPhase(*this);
         //_window.info("Faza Walki: kliknij na swój region z dwoma lub wiêcej jednostkami, a nastêpnie na s¹siedni wrogi region, aby go zaatakowaæ");
         _window.endPhaseButtonEnabled(true);
+        
+    }
+    else if(dynamic_cast<CardPhase*>(_current_phase)){
+        delete _current_phase;
+        _current_phase = new ReinforcePhase(*this);
+        _window.endPhaseButtonEnabled(false);
     }
     else if(dynamic_cast<AttackPhase*>(_current_phase)){
         delete _current_phase;
@@ -44,21 +51,36 @@ void Controller::nextPhase(){
     
     }
     else if(dynamic_cast<FortifyPhase*>(_current_phase)){
-        _current_player++;
-        if(_current_player == _players_queue.end())
-            _current_player = _players_queue.begin();        
-        delete _current_phase;
-        _current_phase = new ReinforcePhase(*this);
-        //_window.info("Faza Rekrutacji: kliknij na jeden ze swoich regionów aby umieœciæ tam dodatkowe jednostki");
-        calculateNumberOfRecruits(currentPlayer());
-        _window.endPhaseButtonEnabled(false);
+        if(_conquest_flag){
+            _conquest_flag = false;
+            giveCard(currentPlayer(),CardsData::instance().deck().drawCard());
+            
+        }
+        /*if(PlayersData::instance().player(currentPlayer()).hand.size()  > 5){
+            delete _current_phase;
+            _current_phase = new ForcedCardPhase(*this);  
+            _window.endPhaseButtonEnabled(false);      
+        }
+        else{*/
+            _current_player++;
+            if(_current_player == _players_queue.end())
+                _current_player = _players_queue.begin();        
+            delete _current_phase;
+            _current_phase = new CardPhase(*this);            
+            _armies_to_distribute = 0;
+            showCardsDialog();
+            calculateNumberOfRecruits(currentPlayer());
+            _window.endPhaseButtonEnabled(false);
+        //}
     }
-   
+   _window.setDrawFlag();
 }
 
 Controller::Controller(RiskFrm & window) 
     : _window(window), _selected_region(NO_REGION_SELECTED){
     _current_phase = new SetupPhase(*this);
+    _conquest_flag = false;
+    _sets_exchanged = 0;
     //_window.info("Faza rozmieszczania wojsk: Wybierz jeden z wolnych regionów (lub jeden ze swoich, jeœli wszystkie s¹ zajête), aby umieœciæ tam jednostkê");
 }
 
@@ -115,6 +137,7 @@ bool Controller::initPlayers(){
             wxMessageBox("Kolory graczy musz¹ byæ unikalne!");
             return false;
         }
+        color_taken[sel] = true;
         players.push_back(Player(name, PlayerColor(sel)));
     }
     else{
@@ -133,6 +156,7 @@ bool Controller::initPlayers(){
                 wxMessageBox("Kolory graczy musz¹ byæ unikalne!");
                 return false;
             }
+            color_taken[sel] = true;
             players.push_back(Player(name, PlayerColor(sel)));
         }
         else{
@@ -152,6 +176,7 @@ bool Controller::initPlayers(){
                 wxMessageBox("Kolory graczy musz¹ byæ unikalne!");
                 return false;
             }
+            color_taken[sel] = true;
             players.push_back(Player(name, PlayerColor(sel)));
         }
         else{
@@ -171,6 +196,7 @@ bool Controller::initPlayers(){
                 wxMessageBox("Kolory graczy musz¹ byæ unikalne!");
                 return false;
             }
+            color_taken[sel] = true;
             players.push_back(Player(name, PlayerColor(sel)));
         }
         else{
@@ -190,6 +216,7 @@ bool Controller::initPlayers(){
                 wxMessageBox("Kolory graczy musz¹ byæ unikalne!");
                 return false;
             }
+            color_taken[sel] = true;
             players.push_back(Player(name, PlayerColor(sel)));
         }
         else{
@@ -257,7 +284,7 @@ std::vector<PlayerDrawInfo> Controller::getPlayerDrawInfo(){
     std::vector<PlayerDrawInfo> col;
     std::vector<unsigned int>::iterator i;
     for(i = _players_queue.begin(); i != _players_queue.end(); ++i){
-        col.push_back(PlayerDrawInfo(pd.player(*i).isDead(), *i == currentPlayer(), pd.player(*i).color(), regionsOwnedByPlayer(*i), pd.player(*i).name()));
+        col.push_back(PlayerDrawInfo(*i == currentPlayer(), pd.player(*i).color(), regionsOwnedByPlayer(*i), pd.player(*i).name()));
     }
     return col;
 }
@@ -273,7 +300,7 @@ unsigned int Controller::regionsOwnedByPlayer(unsigned int player_id){
 
 void Controller::calculateNumberOfRecruits(unsigned int player_id){
     Board & board = Board::instance();
-    int total = 0;
+    int total = _armies_to_distribute;
     int standard = 0;
     for(int i = 0; i < board.numberOfRegions(); ++i){
         if(board.region(i).owner() == player_id)
@@ -374,6 +401,11 @@ void Controller::recruitArmies(unsigned int region_id, unsigned int amount){
     }
 }
 
+void Controller::giveCard(unsigned int player_id, RiskCard * card){
+    if(card)
+        PlayersData::instance().player(player_id).hand.push_back(card);
+}
+
 void Controller::combat(unsigned int attacker, unsigned int defender){
     srand(time(0));
     Board & board = Board::instance();
@@ -409,12 +441,16 @@ void Controller::combat(unsigned int attacker, unsigned int defender){
 	
     board.region(attacker).removeArmies(atk_losses);
     board.region(defender).removeArmies(def_losses);
-    if(board.region(attacker).armyCount() == 1 ||
-    board.region(defender).armyCount() == 0)
+    if(board.region(attacker).armyCount() == 1)
         setSelectedRegion(NO_REGION_SELECTED);
     
     if(board.region(defender).armyCount() == 0){
-        
+        _conquest_flag = true;
+        //przemieszczenie armi armii z regionu atakujacego do atakowanego
+        board.region(defender).setOwner(currentPlayer());
+        showFortifyDialog(attacker,defender);
+        setSelectedRegion(NO_REGION_SELECTED);
+
         //sprawdzenie czy wlasciciel podbitego regionu kontroluje jeszcze jakies regiony
         bool owns = false;
         for(int i = 0; i < board.numberOfRegions(); ++i){
@@ -422,7 +458,6 @@ void Controller::combat(unsigned int attacker, unsigned int defender){
                 owns = true;
         }
         if(!owns){
-            PlayersData::instance().player(board.region(defender).owner()).kill();
             wxMessageBox(PlayersData::instance().player(board.region(defender).owner()).name()+" przegrywa!");
             std::vector<unsigned int>::iterator iter;
             for(iter = _players_queue.begin(); iter != _players_queue.end(); ++iter){
@@ -433,11 +468,8 @@ void Controller::combat(unsigned int attacker, unsigned int defender){
             }   
         }   
         
-        //przemieszczenie wszystkich armii oprócz jednej z regionu atakujacego do atakowanego
-        board.region(defender).setOwner(currentPlayer());
-        unsigned int armies_moved = board.region(attacker).armyCount() - 1;
-        board.region(attacker).removeArmies(armies_moved);
-        board.region(defender).addArmies(armies_moved);
+        
+        
         
     }
 
@@ -473,13 +505,177 @@ PhaseName Controller::getPhaseName(){
 
 void Controller::showFortifyDialog(unsigned int region_start, unsigned int region_end){
     Board & board = Board::instance();
-    unsigned int army_count = board.region(selectedRegion()).armyCount();           
+    unsigned int army_count = board.region(selectedRegion()).armyCount(); 
+    _window.setPermaDraw();          
     NumberChoiceDialog * s = new NumberChoiceDialog(*this,1,army_count - 1,region_start,region_end,&_window);
     s->ShowModal();
+    _window.unsetPermaDraw();
+    wxDELETE(s);
+}
+
+void Controller::showCardsDialog(){
+    if(PlayersData::instance().player(currentPlayer()).hand.size() > 0){
+        _window.setPermaDraw();
+        CardDialog * dlg = new CardDialog(*this,&_window);
+        dlg->ShowModal();
+        wxDELETE(dlg);
+        _window.unsetPermaDraw();
+    }    
+    nextPhase();
+    
 }
 
 void Controller::moveArmies(unsigned region_start, unsigned region_end, unsigned number){
     Board & board = Board::instance();
     board.region(region_start).removeArmies(number);
     board.region(region_end).addArmies(number);
+    if(dynamic_cast<FortifyPhase*>(_current_phase)){
+        nextPhase();
+    }
+}
+
+bool Controller::mustExchange(){
+    return (PlayersData::instance().player(currentPlayer()).hand.size() > 4);
+}
+
+bool Controller::hasThreeOfAKind(){
+    std::vector<RiskCard*> & hand = PlayersData::instance().player(currentPlayer()).hand;
+    int count[3] = {0,0,0};
+    for(int i = 0; i < hand.size(); ++i){
+        switch(hand[i]->getArmy()){
+            case 'i':
+                count[0]++;
+                break;
+            case 'c':
+                count[1]++;
+                break;
+            case 'a':
+                count[2]++;
+                break;
+        }
+    }
+    if(count[0] >= 3 || count[1] >= 3 || count[2] >= 3)
+        return true;
+    else
+        return false;
+}
+
+bool Controller::hasThreeDifferent(){
+    std::vector<RiskCard*> & hand = PlayersData::instance().player(currentPlayer()).hand;
+    int count[3] = {0,0,0};
+    for(int i = 0; i < hand.size(); ++i){
+        switch(hand[i]->getArmy()){
+            case 'i':
+                count[0]++;
+                break;
+            case 'c':
+                count[1]++;
+                break;
+            case 'a':
+                count[2]++;
+                break;
+        }
+    }
+    if(count[0] > 0 && count[1] > 0 && count[2] > 0)
+        return true;
+    else
+        return false;
+}
+
+std::vector<CardDrawInfo> Controller::getCardDrawInfo(){
+    std::vector<RiskCard*> & hand = PlayersData::instance().player(currentPlayer()).hand;
+    std::vector<CardDrawInfo> result;
+    for(int i = 0; i < hand.size(); ++i){
+        std::string region = hand[i]->getRegion();
+        wxBitmap * bmp;
+        switch(hand[i]->getArmy()){
+            case 'i':
+                bmp = CardsData::instance().infantryBitmap();
+                break;
+            case 'c':
+                bmp = CardsData::instance().cavalryBitmap();
+                break;
+            case 'a':
+                bmp = CardsData::instance().artilleryBitmap();
+                break;
+        }
+        result.push_back(CardDrawInfo(region, bmp));
+    }   
+    return result;
+}
+
+void Controller::exchangeSame(){
+    std::vector<RiskCard*> & hand = PlayersData::instance().player(currentPlayer()).hand;
+    int count[3] = {0,0,0};
+    for(int i = 0; i < hand.size(); ++i){
+        switch(hand[i]->getArmy()){
+            case 'i':
+                count[0]++;
+                break;
+            case 'c':
+                count[1]++;
+                break;
+            case 'a':
+                count[2]++;
+                break;
+        }
+    }
+    
+    char type;
+    if(count[0] >= 3){
+        type = 'i';
+    }
+    else if(count[1] >= 3){
+        type = 'c';
+    }
+    else if(count[2] >= 3){
+        type = 'a';
+    }
+    for(int i = 0; i < 3; i++){
+        std::vector<RiskCard*>::iterator iter;  
+        for(iter = hand.begin(); (*iter)->getArmy() != type; ++iter);
+        if(Board::instance().region((*iter)->getRegion()).owner() == currentPlayer())
+            Board::instance().region((*iter)->getRegion()).addArmies(2);
+        hand.erase(iter);
+    }    
+    _armies_to_distribute+= set_values[_sets_exchanged];
+    _sets_exchanged++;
+    nextPhase();
+}
+
+void Controller::exchangeDifferent(){
+    std::vector<RiskCard*> & hand = PlayersData::instance().player(currentPlayer()).hand;
+    int count[3] = {0,0,0};
+    for(int i = 0; i < hand.size(); ++i){
+        switch(hand[i]->getArmy()){
+            case 'i':
+                count[0]++;
+                break;
+            case 'c':
+                count[1]++;
+                break;
+            case 'a':
+                count[2]++;
+                break;
+        }
+    }
+    std::vector<RiskCard*>::iterator iter; 
+    for(iter = hand.begin(); (*iter)->getArmy() != 'i'; ++iter);
+    if(Board::instance().region((*iter)->getRegion()).owner() == currentPlayer())
+        Board::instance().region((*iter)->getRegion()).addArmies(2);
+    hand.erase(iter);
+
+    for(iter = hand.begin(); (*iter)->getArmy() != 'c'; ++iter);
+    if(Board::instance().region((*iter)->getRegion()).owner() == currentPlayer())
+       Board::instance().region((*iter)->getRegion()).addArmies(2);
+    hand.erase(iter);
+
+    for(iter = hand.begin(); (*iter)->getArmy() != 'a'; ++iter);
+    if(Board::instance().region((*iter)->getRegion()).owner() == currentPlayer())
+        Board::instance().region((*iter)->getRegion()).addArmies(2);
+    hand.erase(iter);
+
+    _armies_to_distribute+= set_values[_sets_exchanged];
+    _sets_exchanged++;
+    nextPhase();
 }
