@@ -260,8 +260,8 @@ void RiskFrm::drawDice(std::vector<unsigned int> atk_rolls, std::vector<unsigned
 }
 
 void RiskFrm::WxPanel1UpdateUI(wxUpdateUIEvent& event)
-{
-    
+{   
+
     if(_draw_flag || _perma_draw){
     	double scale = getScale();
     

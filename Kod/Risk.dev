@@ -374,9 +374,9 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit30]
-FileName=CardsData.cpp
+FileName=SoundController.h
 CompileCpp=1
-Folder=Risk
+Folder=
 Compile=1
 Link=1
 Priority=1000
@@ -384,9 +384,9 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit31]
-FileName=CardsData.h
+FileName=SoundController.cpp
 CompileCpp=1
-Folder=Risk
+Folder=
 Compile=1
 Link=1
 Priority=1000

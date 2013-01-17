@@ -82,7 +82,7 @@ public:
     ///Zwraca informacjêo tym, ile regionów kontroluje gracz
     unsigned int regionsOwnedByPlayer(unsigned int player_id);
     ///Pokazuje dialog wyboru iloœci wojsk do przemieszczenia
-    void showFortifyDialog(unsigned int region_start, unsigned int region_end);
+    void showFortifyDialog(unsigned int region_start, unsigned int region_end, bool optional);
     ///Przemieszcza armie z jednego regionu do drugiego
     void moveArmies(unsigned int region_start, unsigned int region_end, unsigned int number);
     ///Pokazuje dialog z kartami ryzyka

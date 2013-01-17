@@ -3,6 +3,7 @@
 #include "Phase.h"
 #include "Util.h"
 #include "NumberChoiceDialog.h"
+#include "SoundController.h"
 #include <algorithm>
 
 #define ROLL_D6 (rand()%6+1)
@@ -238,7 +239,8 @@ bool Controller::initPlayers(){
     std::random_shuffle(_players_queue.begin(),_players_queue.end());
     _current_player = _players_queue.begin();
     _skip_reinforce = _players_queue.size() == 2 ? true : false;
-    startPhase(SETUP);    
+    startPhase(SETUP);
+    SoundController::playSound(START_GAME);    
     return true;
     
 }
@@ -444,6 +446,7 @@ void Controller::combat(unsigned int attacker, unsigned int defender){
         setSelectedRegion(NO_REGION_SELECTED);
     
     if(board.region(defender).armyCount() == 0){
+        SoundController::playSound(REGION_CONQUERED);
         _conquest_flag = true;
         
         
@@ -456,7 +459,7 @@ void Controller::combat(unsigned int attacker, unsigned int defender){
         }
         //przemieszczenie armi armii z regionu atakujacego do atakowanego
         board.region(defender).setOwner(attacking_player);
-        showFortifyDialog(attacker,defender);
+        showFortifyDialog(attacker,defender,false);
         setSelectedRegion(NO_REGION_SELECTED);
 
         if(!owns){
@@ -489,11 +492,11 @@ PhaseName Controller::getPhaseName(){
     return _current_phase->phaseName();
 }
 
-void Controller::showFortifyDialog(unsigned int region_start, unsigned int region_end){
+void Controller::showFortifyDialog(unsigned int region_start, unsigned int region_end, bool optional){
     Board & board = Board::instance();
     unsigned int army_count = board.region(selectedRegion()).armyCount(); 
     _window.setPermaDraw();          
-    NumberChoiceDialog * s = new NumberChoiceDialog(*this,1,army_count - 1,region_start,region_end,&_window);
+    NumberChoiceDialog * s = new NumberChoiceDialog(*this,1,army_count - 1,region_start,region_end, optional, &_window);
     s->ShowModal();
     _window.unsetPermaDraw();
     wxDELETE(s);

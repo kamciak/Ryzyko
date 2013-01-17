@@ -42,7 +42,7 @@ class NumberChoiceDialog : public wxDialog
 		DECLARE_EVENT_TABLE();
 		
 	public:
-		NumberChoiceDialog(Controller & ctrl, unsigned min, unsigned max, unsigned start_region, unsigned end_region, wxWindow *parent, wxWindowID id = 1, const wxString &title = wxT("NumberChoiceDialog"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = NumberChoiceDialog_STYLE);
+		NumberChoiceDialog(Controller & ctrl, unsigned min, unsigned max, unsigned start_region, unsigned end_region, bool optional, wxWindow *parent, wxWindowID id = 1, const wxString &title = wxT("NumberChoiceDialog"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = NumberChoiceDialog_STYLE);
 		virtual ~NumberChoiceDialog();
 		void WxPanel1UpdateUI(wxUpdateUIEvent& event);
 		void WxBitmapButton2Click(wxCommandEvent& event);
@@ -79,6 +79,7 @@ class NumberChoiceDialog : public wxDialog
 	private:
         Controller & ctrl;
         unsigned min, max, start_region, end_region;
+        bool _optional;
         
         
     private:

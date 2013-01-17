@@ -9,6 +9,7 @@
 ///------------------------------------------------------------------
 
 #include "NumberChoiceDialog.h"
+#include "SoundController.h"
 #include <wx/dcbuffer.h>
 //Do not add custom headers
 //wxDev-C++ designer will remove them
@@ -34,14 +35,18 @@ BEGIN_EVENT_TABLE(NumberChoiceDialog,wxDialog)
 END_EVENT_TABLE()
 ////Event Table End
 
-NumberChoiceDialog::NumberChoiceDialog(Controller & ctrl, unsigned min, unsigned max, unsigned start_region, unsigned end_region,wxWindow *parent, wxWindowID id, const wxString &title, const wxPoint &position, const wxSize& size, long style)
+NumberChoiceDialog::NumberChoiceDialog(Controller & ctrl, unsigned min, unsigned max, unsigned start_region, unsigned end_region, bool optional, wxWindow *parent, wxWindowID id, const wxString &title, const wxPoint &position, const wxSize& size, long style)
 : wxDialog(parent, id, title, position, size, style), ctrl(ctrl)
 {
+    _optional = optional;
     this->min=min;
     this->max=max;
     this->start_region=start_region;
     this->end_region=end_region;
 	CreateGUIControls();
+    if(!_optional){
+        WxBitmapButton2->Disable();
+    }
 }
 
 NumberChoiceDialog::~NumberChoiceDialog()
@@ -133,6 +138,7 @@ void NumberChoiceDialog::WxBitmapButton2Click(wxCommandEvent& event)
  */
 void NumberChoiceDialog::WxBitmapButton1Click(wxCommandEvent& event)
 {
+    SoundController::playSound(ARMY_MARCH);
 	ctrl.moveArmies(start_region,end_region,WxSpinCtrl1->GetValue());    
     this->EndModal(0);
 }
