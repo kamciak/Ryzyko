@@ -399,8 +399,12 @@ void Controller::giveCard(unsigned int player_id, RiskCard * card){
         PlayersData::instance().player(player_id).hand.push_back(card);
 }
 
-void Controller::combat(unsigned int attacker, unsigned int defender){    
+void Controller::combat(unsigned int attacker, unsigned int defender){   
+    
     Board & board = Board::instance();
+
+    unsigned int attacking_player = board.region(attacker).owner();
+    unsigned int defending_player = board.region(defender).owner();
 
 	unsigned int atk_dice = board.region(attacker).armyCount() > 4 ? 3 : board.region(attacker).armyCount() - 1;
 	unsigned int def_dice = board.region(defender).armyCount() > 1 ? 2 : 1;
@@ -441,26 +445,37 @@ void Controller::combat(unsigned int attacker, unsigned int defender){
     
     if(board.region(defender).armyCount() == 0){
         _conquest_flag = true;
-        //przemieszczenie armi armii z regionu atakujacego do atakowanego
-        board.region(defender).setOwner(currentPlayer());
-        showFortifyDialog(attacker,defender);
-        setSelectedRegion(NO_REGION_SELECTED);
+        
+        
 
         //sprawdzenie czy wlasciciel podbitego regionu kontroluje jeszcze jakies regiony
         bool owns = false;
         for(int i = 0; i < board.numberOfRegions(); ++i){
-            if(i != defender && board.region(i).owner() == board.region(defender).owner())
+            if(i != defender && board.region(i).owner() == defending_player)
                 owns = true;
         }
+        //przemieszczenie armi armii z regionu atakujacego do atakowanego
+        board.region(defender).setOwner(attacking_player);
+        showFortifyDialog(attacker,defender);
+        setSelectedRegion(NO_REGION_SELECTED);
+
         if(!owns){
-            wxMessageBox(PlayersData::instance().player(board.region(defender).owner()).name()+" przegrywa!");
+            _window.setPermaDraw();
+            wxMessageBox(PlayersData::instance().player(defending_player).name()+" przegrywa!");
+            _window.unsetPermaDraw();
             std::vector<unsigned int>::iterator iter;
             for(iter = _players_queue.begin(); iter != _players_queue.end(); ++iter){
-                if(*iter == board.region(defender).owner()){
+                if(*iter == defending_player){
                     _players_queue.erase(iter);
                     break;
                 }                    
             }   
+            if(_players_queue.size() == 1){
+                _window.setPermaDraw();
+                wxMessageBox(PlayersData::instance().player(currentPlayer()).name()+" wygrywa!");
+                _window.setPermaDraw();
+                wxExit();
+            }
         }   
         
         
