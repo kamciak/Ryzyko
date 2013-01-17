@@ -1,11 +1,11 @@
-object frmNewForm: TfrmNewForm
+object frmNewForm_1: TfrmNewForm
   Left = 8
   Top = 8
   AutoScroll = False
   BorderIcons = [biSystemMenu, biMinimize]
   Caption = 'NumberChoiceDialog'
-  ClientHeight = 260
-  ClientWidth = 173
+  ClientHeight = 277
+  ClientWidth = 184
   Color = clBtnFace
   OldCreateOrder = True
   PopupMenu = DesignerPopup.Owner
@@ -29,12 +29,12 @@ object frmNewForm: TfrmNewForm
   Wx_BorderAlignment = []
   isAuimanagerAvailable = False
   PixelsPerInch = 96
-  TextHeight = 15
+  TextHeight = 16
   object WxPanel1: TWxPanel
     Left = 0
     Top = 0
-    Width = 188
-    Height = 295
+    Width = 200
+    Height = 315
     TabOrder = 0
     EVT_UPDATE_UI = 'WxPanel1UpdateUI'
     Wx_BKColor = clBlack
@@ -65,10 +65,10 @@ object frmNewForm: TfrmNewForm
     Wx_Floating_X_Pos = 0
     Wx_Floating_Y_Pos = 0
     object WxSpinCtrl1: TWxSpinCtrl
-      Left = 50
-      Top = 118
-      Width = 67
-      Height = 24
+      Left = 53
+      Top = 126
+      Width = 72
+      Height = 26
       MinValue = 0
       TabOrder = 0
       Value = 0
@@ -101,10 +101,10 @@ object frmNewForm: TfrmNewForm
       Wx_Floating_Y_Pos = 0
     end
     object WxBitmapButton1: TWxBitmapButton
-      Left = 36
-      Top = 216
-      Width = 28
-      Height = 23
+      Left = 38
+      Top = 230
+      Width = 30
+      Height = 25
       TabOrder = 1
       Glyph.Data = {
         EE0B0000424DEE0B00000000000036000000280000001E000000190000000100
@@ -334,10 +334,10 @@ object frmNewForm: TfrmNewForm
       Wx_Floating_Y_Pos = 0
     end
     object WxBitmapButton2: TWxBitmapButton
-      Left = 93
-      Top = 216
-      Width = 59
-      Height = 23
+      Left = 99
+      Top = 230
+      Width = 63
+      Height = 25
       TabOrder = 2
       Glyph.Data = {
         D2180000424DD21800000000000036000000280000003F000000190000000100

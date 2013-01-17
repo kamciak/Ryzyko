@@ -180,7 +180,13 @@ void RiskFrm::setResolution(){
 
     MapPanel = new ClickablePanel(this, control, 2500, wxPoint(0,panel_y), wxSize(width,height));
     wxPoint endphasebtn_pos((PHASE_BAR_X * scale) + PHASE_BAR_WIDTH, MapPanel->GetSize().GetHeight() - MapPanel->end_phase_btn->GetBitmapLabel().GetSize().GetHeight() - MAP_BORDER_THICKNESS * scale);
+//    wxPoint closegamebtn_pos(MapPanel->GetSize().GetHeight()-MAP_BORDER_THICKNESS * scale-108,MapPanel->GetSize().GetHeight()-MAP_BORDER_THICKNESS * scale);
+
+    wxPoint closegamebtn_pos(MapPanel->GetSize().GetWidth()- MapPanel->close_game_btn->GetBitmapLabel().GetSize().GetWidth()- (MAP_BORDER_THICKNESS + 4) * scale ,MAP_BORDER_THICKNESS * scale);
     MapPanel -> end_phase_btn -> Move(endphasebtn_pos);  
+    MapPanel -> close_game_btn -> Move(closegamebtn_pos);
+    MapPanel -> close_game_btn -> Show();
+    MapPanel -> close_game_btn -> SetDoubleBuffered(true);
     MapPanel -> end_phase_btn -> Show();
     MapPanel -> end_phase_btn -> Disable();     
     MapPanel -> end_phase_btn -> SetDoubleBuffered(true);

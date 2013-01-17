@@ -1,7 +1,7 @@
 [Project]
 FileName=Risk.dev
 Name=Risk
-UnitCount=29
+UnitCount=31
 PchHead=-1
 PchSource=-1
 Ver=3
@@ -86,7 +86,7 @@ ProductName=
 ProductVersion=
 AutoIncBuildNrOnRebuild=0
 AutoIncBuildNrOnCompile=0
-UnitCount=31
+UnitCount=35
 
 [Profile1]
 ProfileName=MingW gcc
@@ -376,7 +376,7 @@ BuildCmd=
 [Unit30]
 FileName=SoundController.h
 CompileCpp=1
-Folder=
+Folder=Risk
 Compile=1
 Link=1
 Priority=1000
@@ -386,17 +386,7 @@ BuildCmd=
 [Unit31]
 FileName=SoundController.cpp
 CompileCpp=1
-Folder=
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit32]
-FileName=CardsData.cpp
-CompileCpp=1
-Folder=
+Folder=Risk
 Compile=1
 Link=1
 Priority=1000
@@ -404,7 +394,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit33]
-FileName=PlayerDrawInfo.h
+FileName=StatusDialog.cpp
 CompileCpp=1
 Folder=Risk
 Compile=1
@@ -414,21 +404,21 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit34]
-FileName=Phase.h
+FileName=StatusDialog.wxform
 CompileCpp=1
 Folder=Risk
-Compile=1
-Link=1
+Compile=0
+Link=0
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
 [Unit35]
-FileName=CardDialog.h
+FileName=NumberChoiceDialog.wxform
 CompileCpp=1
 Folder=Risk
-Compile=1
-Link=1
+Compile=0
+Link=0
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
@@ -438,6 +428,16 @@ FileName=CardDialog.wxform
 Folder=Risk
 Compile=0
 Link=0
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit32]
+FileName=StatusDialog.h
+CompileCpp=1
+Folder=Risk
+Compile=1
+Link=1
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=

@@ -62,13 +62,13 @@ void CardDialog::CreateGUIControls()
 	WxPanel1 = new wxPanel(this, ID_WXPANEL1, wxPoint(0, 0), wxSize(800, 400));
 
 	wxBitmap WxBitmapButton1_BITMAP (_("Images/zakoncz.jpg"), wxBITMAP_TYPE_JPEG);
-	WxBitmapButton1 = new wxBitmapButton(WxPanel1, ID_WXBITMAPBUTTON1, WxBitmapButton1_BITMAP, wxPoint(320, 328), wxSize(114, 29), wxBU_AUTODRAW, wxDefaultValidator, _("WxBitmapButton1"));
+	WxBitmapButton1 = new wxBitmapButton(WxPanel1, ID_WXBITMAPBUTTON1, WxBitmapButton1_BITMAP, wxPoint(341, 350), wxSize(122, 31), wxBU_AUTODRAW, wxDefaultValidator, _("WxBitmapButton1"));
 
 	wxBitmap WxBitmapButton2_BITMAP (wxNullBitmap);
-	WxBitmapButton2 = new wxBitmapButton(WxPanel1, ID_WXBITMAPBUTTON2, WxBitmapButton2_BITMAP, wxPoint(98, 280), wxSize(258, 27), wxBU_AUTODRAW, wxDefaultValidator, _("WxBitmapButton2"));
+	WxBitmapButton2 = new wxBitmapButton(WxPanel1, ID_WXBITMAPBUTTON2, WxBitmapButton2_BITMAP, wxPoint(105, 299), wxSize(258, 27), wxBU_AUTODRAW, wxDefaultValidator, _("WxBitmapButton2"));
 
 	wxBitmap WxBitmapButton3_BITMAP (wxNullBitmap);
-	WxBitmapButton3 = new wxBitmapButton(WxPanel1, ID_WXBITMAPBUTTON3, WxBitmapButton3_BITMAP, wxPoint(394, 280), wxSize(258, 27), wxBU_AUTODRAW, wxDefaultValidator, _("WxBitmapButton3"));
+	WxBitmapButton3 = new wxBitmapButton(WxPanel1, ID_WXBITMAPBUTTON3, WxBitmapButton3_BITMAP, wxPoint(420, 299), wxSize(258, 27), wxBU_AUTODRAW, wxDefaultValidator, _("WxBitmapButton3"));
 
 	SetTitle(_("CardDialog"));
 	SetIcon(wxNullIcon);

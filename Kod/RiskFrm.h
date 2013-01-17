@@ -92,6 +92,7 @@ class RiskFrm : public wxFrame
         wxImage *_swords_img;
         wxImage *_shield_img;
         
+        
 
         wxBitmap *_current_player_bitmap;
         double _scale;

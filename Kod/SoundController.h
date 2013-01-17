@@ -7,7 +7,8 @@
 enum Sound{
     START_GAME,
     REGION_CONQUERED,
-    ARMY_MARCH    
+    ARMY_MARCH,
+    END_GAME 
 };
 
 class SoundController{

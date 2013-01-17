@@ -12,13 +12,14 @@ private:
     
 public:      
     //wxTextCtrl *info_box;
-    wxBitmapButton *end_phase_btn;   
+    wxBitmapButton *end_phase_btn; 
+    wxBitmapButton *close_game_btn;  
     
     ClickablePanel(RiskFrm* parent, Controller & control, wxWindowID id, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxTAB_TRAVERSAL, const wxString& name = "panel");
     
     void mouseLeftClick(wxMouseEvent & event);
     void end_phase_bmpButtonClicked(wxCommandEvent & event);
-
+    void close_game_bmpButtonClicked(wxCommandEvent & event);
     DECLARE_EVENT_TABLE()
 };
 #endif

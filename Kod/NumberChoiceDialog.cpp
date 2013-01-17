@@ -63,19 +63,19 @@ void NumberChoiceDialog::CreateGUIControls()
 
 	wxInitAllImageHandlers();   //Initialize graphic format handlers
 
-	WxPanel1 = new wxPanel(this, ID_WXPANEL1, wxPoint(0, 0), wxSize(188, 295));
+	WxPanel1 = new wxPanel(this, ID_WXPANEL1, wxPoint(0, 0), wxSize(200, 315));
 
-	WxSpinCtrl1 = new wxSpinCtrl(WxPanel1, ID_WXSPINCTRL1, _("0"), wxPoint(50, 118), wxSize(67, 24), wxSP_ARROW_KEYS, 0, 100, 0);
+	WxSpinCtrl1 = new wxSpinCtrl(WxPanel1, ID_WXSPINCTRL1, _("0"), wxPoint(53, 126), wxSize(72, 26), wxSP_ARROW_KEYS, 0, 100, 0);
 
 	wxBitmap WxBitmapButton1_BITMAP (_("Images/ok.jpg"), wxBITMAP_TYPE_JPEG);
-	WxBitmapButton1 = new wxBitmapButton(WxPanel1, ID_WXBITMAPBUTTON1, WxBitmapButton1_BITMAP, wxPoint(36, 216), wxSize(28, 23), wxBU_AUTODRAW, wxDefaultValidator, _("WxBitmapButton1"));
+	WxBitmapButton1 = new wxBitmapButton(WxPanel1, ID_WXBITMAPBUTTON1, WxBitmapButton1_BITMAP, wxPoint(38, 230), wxSize(30, 25), wxBU_AUTODRAW, wxDefaultValidator, _("WxBitmapButton1"));
 
 	wxBitmap WxBitmapButton2_BITMAP (_("Images/anuluj.jpg"), wxBITMAP_TYPE_JPEG);
-	WxBitmapButton2 = new wxBitmapButton(WxPanel1, ID_WXBITMAPBUTTON2, WxBitmapButton2_BITMAP, wxPoint(93, 216), wxSize(59, 23), wxBU_AUTODRAW, wxDefaultValidator, _("WxBitmapButton2"));
+	WxBitmapButton2 = new wxBitmapButton(WxPanel1, ID_WXBITMAPBUTTON2, WxBitmapButton2_BITMAP, wxPoint(99, 230), wxSize(63, 25), wxBU_AUTODRAW, wxDefaultValidator, _("WxBitmapButton2"));
 
 	SetTitle(_("NumberChoiceDialog"));
 	SetIcon(wxNullIcon);
-	SetSize(8,8,189,298);
+	SetSize(8,8,200,315);
 	Center();
 	
 	////GUI Items Creation End
@@ -92,6 +92,11 @@ void NumberChoiceDialog::CreateGUIControls()
     
     wxImage anulujHover("Images/anuluj_hover.jpg");
 	wxBitmap anuluj_hover(anulujHover);
+	
+	wxImage anulujDisable("Images/anuluj_disable.jpg");
+	wxBitmap anuluj_disable(anulujDisable);
+	
+	WxBitmapButton2->SetBitmapDisabled(anuluj_disable);
 	WxBitmapButton2->SetBitmapHover(anuluj_hover);
     WxBitmapButton2->Reparent(WxPanel1);	
     WxBitmapButton2->SetDoubleBuffered(true);

@@ -4,6 +4,7 @@
 #include "Util.h"
 #include "NumberChoiceDialog.h"
 #include "SoundController.h"
+#include "StatusDialog.h"
 #include <algorithm>
 
 #define ROLL_D6 (rand()%6+1)
@@ -463,9 +464,9 @@ void Controller::combat(unsigned int attacker, unsigned int defender){
         setSelectedRegion(NO_REGION_SELECTED);
 
         if(!owns){
-            _window.setPermaDraw();
-            wxMessageBox(PlayersData::instance().player(defending_player).name()+" przegrywa!");
-            _window.unsetPermaDraw();
+           // wxMessageBox(PlayersData::instance().player(defending_player).name()+" przegrywa!");
+            StatusDialog * s = new StatusDialog(false,&_window);
+            s->ShowModal();
             std::vector<unsigned int>::iterator iter;
             for(iter = _players_queue.begin(); iter != _players_queue.end(); ++iter){
                 if(*iter == defending_player){
@@ -474,9 +475,10 @@ void Controller::combat(unsigned int attacker, unsigned int defender){
                 }                    
             }   
             if(_players_queue.size() == 1){
-                _window.setPermaDraw();
-                wxMessageBox(PlayersData::instance().player(currentPlayer()).name()+" wygrywa!");
-                _window.setPermaDraw();
+                SoundController::playSound(END_GAME);   
+                //wxMessageBox(PlayersData::instance().player(currentPlayer()).name()+" wygrywa!");
+                 StatusDialog * s = new StatusDialog(true,&_window);
+                 s->ShowModal();
                 wxExit();
             }
         }   

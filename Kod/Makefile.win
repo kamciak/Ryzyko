@@ -1,18 +1,18 @@
 # Project: Risk
 # Compiler: Default GCC compiler
 # Compiler Type: MingW 3
-# Makefile created by wxDev-C++ IDE 7.4.2.569 on 17-01-13 17:32
+# Makefile created by wxDev-C++ IDE 7.4.2.569 on 17-01-13 22:21
 
 WXLIBNAME = wxmsw29u
 CPP       = g++.exe
 CC        = gcc.exe
 WINDRES   = "windres.exe"
-OBJ       = Objects/MingW/RiskApp.o Objects/MingW/RiskFrm.o Objects/MingW/Board.o Objects/MingW/Region.o Objects/MingW/Player.o Objects/MingW/Controller.o Objects/MingW/MenuDlg.o Objects/MingW/ClickablePanel.o Objects/MingW/PlayersData.o Objects/MingW/Phase.o Objects/MingW/NumberChoiceDialog.o Objects/MingW/CardDialog.o Objects/MingW/RiskCard.o Objects/MingW/RiskDeck.o Objects/MingW/Util.o Objects/MingW/CardsData.o Objects/MingW/SoundController.o Objects/MingW/Risk_private.res
-LINKOBJ   = "Objects/MingW/RiskApp.o" "Objects/MingW/RiskFrm.o" "Objects/MingW/Board.o" "Objects/MingW/Region.o" "Objects/MingW/Player.o" "Objects/MingW/Controller.o" "Objects/MingW/MenuDlg.o" "Objects/MingW/ClickablePanel.o" "Objects/MingW/PlayersData.o" "Objects/MingW/Phase.o" "Objects/MingW/NumberChoiceDialog.o" "Objects/MingW/CardDialog.o" "Objects/MingW/RiskCard.o" "Objects/MingW/RiskDeck.o" "Objects/MingW/Util.o" "Objects/MingW/CardsData.o" "Objects/MingW/SoundController.o" Objects/MingW/Risk_private.res
-LIBS      = -L"C:/Program Files (x86)/Dev-Cpp/lib/wx/gcc_lib" -L"C:/Program Files (x86)/Dev-Cpp/lib" -L"C:/Program Files (x86)/Dev-Cpp/MinGW32/lib" -mwindows -l$(WXLIBNAME) -l$(WXLIBNAME)_gl -lwxscintilla -lwxtiff -lwxjpeg -lwxpng -lwxzlib -lwxregexu -lwxexpat -lkernel32 -luser32 -lgdi32 -lcomdlg32 -lwinspool -lwinmm -lshell32 -lcomctl32 -lole32 -loleaut32 -luuid -lrpcrt4 -ladvapi32 -lwsock32 -lodbc32 -lopengl32  
-INCS      = -I"C:/Program Files (x86)/Dev-Cpp/MinGW32/include"
-CXXINCS   = -I"C:/Program Files (x86)/Dev-Cpp/MinGW32/include" -I"C:/Program Files (x86)/Dev-Cpp/" -I"C:/Program Files (x86)/Dev-Cpp/include/common"
-RCINCS    = --include-dir "C:/PROGRA~2/Dev-Cpp/include/common"
+OBJ       = Objects/MingW/RiskApp.o Objects/MingW/RiskFrm.o Objects/MingW/Board.o Objects/MingW/Region.o Objects/MingW/Player.o Objects/MingW/Controller.o Objects/MingW/MenuDlg.o Objects/MingW/ClickablePanel.o Objects/MingW/PlayersData.o Objects/MingW/Phase.o Objects/MingW/NumberChoiceDialog.o Objects/MingW/CardDialog.o Objects/MingW/RiskCard.o Objects/MingW/RiskDeck.o Objects/MingW/Util.o Objects/MingW/CardsData.o Objects/MingW/SoundController.o Objects/MingW/StatusDialog.o Objects/MingW/Risk_private.res
+LINKOBJ   = "Objects/MingW/RiskApp.o" "Objects/MingW/RiskFrm.o" "Objects/MingW/Board.o" "Objects/MingW/Region.o" "Objects/MingW/Player.o" "Objects/MingW/Controller.o" "Objects/MingW/MenuDlg.o" "Objects/MingW/ClickablePanel.o" "Objects/MingW/PlayersData.o" "Objects/MingW/Phase.o" "Objects/MingW/NumberChoiceDialog.o" "Objects/MingW/CardDialog.o" "Objects/MingW/RiskCard.o" "Objects/MingW/RiskDeck.o" "Objects/MingW/Util.o" "Objects/MingW/CardsData.o" "Objects/MingW/SoundController.o" "Objects/MingW/StatusDialog.o" Objects/MingW/Risk_private.res
+LIBS      = -L"C:/Program Files/Dev-Cpp/lib/wx/gcc_lib" -L"C:/Program Files/Dev-Cpp/lib" -L"C:/Program Files/Dev-Cpp/MinGW32/lib" -mwindows -l$(WXLIBNAME) -l$(WXLIBNAME)_gl -lwxscintilla -lwxtiff -lwxjpeg -lwxpng -lwxzlib -lwxregexu -lwxexpat -lkernel32 -luser32 -lgdi32 -lcomdlg32 -lwinspool -lwinmm -lshell32 -lcomctl32 -lole32 -loleaut32 -luuid -lrpcrt4 -ladvapi32 -lwsock32 -lodbc32 -lopengl32  
+INCS      = -I"C:/Program Files/Dev-Cpp/MinGW32/include"
+CXXINCS   = -I"C:/Program Files/Dev-Cpp/MinGW32/include" -I"C:/Program Files/Dev-Cpp/" -I"C:/Program Files/Dev-Cpp/include/common"
+RCINCS    = --include-dir "C:/PROGRA~1/Dev-Cpp/include/common"
 BIN       = Output/MingW/Risk.exe
 DEFINES   = -D__WXMSW__ -D__GNUWIN32__ -D_UNICODE
 CXXFLAGS  = $(CXXINCS) $(DEFINES)  
@@ -51,7 +51,7 @@ Objects/MingW/Region.o: $(GLOBALDEPS) Region.cpp Region.h RiskExceptions.h
 Objects/MingW/Player.o: $(GLOBALDEPS) Player.cpp Player.h RiskCard.h
 	$(CPP) -c Player.cpp -o Objects/MingW/Player.o $(CXXFLAGS)
 
-Objects/MingW/Controller.o: $(GLOBALDEPS) Controller.cpp Controller.h Board.h Region.h RiskExceptions.h PlayersData.h Player.h RiskCard.h RegionDrawInformation.h Phase.h PlayerDrawInfo.h Player.h CardsData.h RiskDeck.h RiskCard.h Board.h CardDialog.h Controller.h CardDrawInfo.h RiskFrm.h MenuDlg.h Controller.h PlayersData.h Board.h ClickablePanel.h Controller.h Phase.h Util.h NumberChoiceDialog.h Controller.h SoundController.h
+Objects/MingW/Controller.o: $(GLOBALDEPS) Controller.cpp Controller.h Board.h Region.h RiskExceptions.h PlayersData.h Player.h RiskCard.h RegionDrawInformation.h Phase.h PlayerDrawInfo.h Player.h CardsData.h RiskDeck.h RiskCard.h Board.h CardDialog.h Controller.h CardDrawInfo.h RiskFrm.h MenuDlg.h Controller.h PlayersData.h Board.h ClickablePanel.h Controller.h Phase.h Util.h NumberChoiceDialog.h Controller.h SoundController.h StatusDialog.h
 	$(CPP) -c Controller.cpp -o Objects/MingW/Controller.o $(CXXFLAGS)
 
 Objects/MingW/MenuDlg.o: $(GLOBALDEPS) MenuDlg.cpp MenuDlg.h RiskFrm.h MenuDlg.h Controller.h Board.h Region.h RiskExceptions.h PlayersData.h Player.h RiskCard.h RegionDrawInformation.h Phase.h PlayerDrawInfo.h Player.h CardsData.h RiskDeck.h RiskCard.h Board.h CardDialog.h Controller.h CardDrawInfo.h PlayersData.h Board.h ClickablePanel.h Controller.h Controller.h
@@ -86,6 +86,9 @@ Objects/MingW/CardsData.o: $(GLOBALDEPS) CardsData.cpp CardsData.h RiskDeck.h Ri
 
 Objects/MingW/SoundController.o: $(GLOBALDEPS) SoundController.cpp SoundController.h
 	$(CPP) -c SoundController.cpp -o Objects/MingW/SoundController.o $(CXXFLAGS)
+
+Objects/MingW/StatusDialog.o: $(GLOBALDEPS) StatusDialog.cpp StatusDialog.h
+	$(CPP) -c StatusDialog.cpp -o Objects/MingW/StatusDialog.o $(CXXFLAGS)
 
 Objects/MingW/Risk_private.res: Objects/MingW/Risk_private.rc RiskApp.rc 
 	$(WINDRES) --input-format=rc -o Objects/MingW/Risk_private.res $(RCINCS) Objects/MingW/RISK_P~1.RC -O coff
