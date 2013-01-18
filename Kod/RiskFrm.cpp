@@ -28,9 +28,9 @@
 #define RECRUITS_X 320
 #define RECRUITS_Y 48
 #define DIE_A1_X 690
-#define DIE_A1_Y 45
+#define DIE_A1_Y 60
 #define DIE_D1_X 845
-#define DIE_D1_Y 45
+#define DIE_D1_Y 60
 
 //Do not add custom headers between
 //Header Include Start and Header Include End
@@ -250,8 +250,12 @@ void RiskFrm::paintSelectedRegion(unsigned int id){
 /*
  * WxPanel1UpdateUI
  */
-void RiskFrm::drawDice(std::vector<unsigned int> atk_rolls, std::vector<unsigned int> def_rolls, wxBufferedDC & bdc){
+void RiskFrm::drawDice(CombatData cd, wxBufferedDC & bdc){
     double scale = getScale();
+
+    std::vector<unsigned int> atk_rolls = cd.getAtkRolls();
+    std::vector<unsigned int> def_rolls = cd.getDefRolls();
+
     for(int i = 0; i < atk_rolls.size(); ++i){
         bdc.DrawBitmap(wxBitmap(*_dice_img[atk_rolls[i]-1]), DIE_A1_X * scale, DIE_A1_Y * scale + i * 30);
     }
@@ -260,9 +264,16 @@ void RiskFrm::drawDice(std::vector<unsigned int> atk_rolls, std::vector<unsigned
     }
     for(int  i =0; i < atk_rolls.size() && i < def_rolls.size(); ++i){
         wxBitmap battle_result = atk_rolls[i] > def_rolls[i] ? wxBitmap(*_swords_img) : wxBitmap (*_shield_img);
-        bdc.DrawBitmap(battle_result, (DIE_A1_X * scale)+ ( (DIE_D1_X * scale) - (DIE_A1_X * scale + 25))/2, DIE_A1_Y * scale + i * 30);
+        bdc.DrawBitmap(battle_result, (DIE_A1_X * scale)+ ( (DIE_D1_X * scale) - (DIE_A1_X * scale + 25))/2 + 12, DIE_A1_Y * scale + i * 30);
     }
-    
+    if(atk_rolls.size()){
+        int greater_size = atk_rolls.size() > def_rolls.size() ? atk_rolls.size() : def_rolls.size();
+        bdc.DrawText(cd.getAtkName(), DIE_A1_X * scale, DIE_A1_Y * scale - 25);
+        bdc.DrawText(cd.getDefName(), DIE_D1_X * scale - 30, DIE_A1_Y * scale - 25);
+        bdc.DrawText(cd.getAtkRegionName()+": "+intToString(cd.getAtkArmyCount()), DIE_A1_X * scale, DIE_A1_Y * scale - 15);
+        bdc.DrawText(cd.getDefRegionName()+": "+intToString(cd.getDefArmyCount()), DIE_D1_X * scale - 30, DIE_D1_Y * scale - 15);
+        
+    }
 }
 
 void RiskFrm::WxPanel1UpdateUI(wxUpdateUIEvent& event)
@@ -298,7 +309,7 @@ void RiskFrm::WxPanel1UpdateUI(wxUpdateUIEvent& event)
             wxDELETE(phase_bar_bmp);
             drawPlayersData(bdc,control.getPlayerDrawInfo());
             if(control.getPhaseName() == ATTACK){
-                drawDice(control.attacker_rolls,control.defender_rolls,bdc);
+                drawDice(control.getCombatData(),bdc);
             }
             bool big_image = this -> GetSize().GetWidth() > BIG_IMAGE_THRESHHOLD ? true : false;
             std::vector<RegionDrawInformation> draw_info = control.getRegionDrawInfo(big_image);

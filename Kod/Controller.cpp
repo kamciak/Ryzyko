@@ -20,13 +20,20 @@ void Controller::startPhase(PhaseName phase){
     switch(phase){
         case SETUP:
             _current_phase = new SetupPhase(*this);
-            _armies_to_distribute = 50 - 5 * PlayersData::instance().numberOfPlayers(); 
+            _armies_to_distribute = 50 - 5 * PlayersData::instance().numberOfPlayers();
+            if(isTwoPlayerGame())
+                randomRegionSetup();
             break;
         case REINFORCE:            
             _current_phase = new ReinforcePhase(*this);
             _current_player++;
             if(_current_player == _players_queue.end())
                 _current_player = _players_queue.begin();
+
+            if(PlayersData::instance().player(currentPlayer()).isNeutral()){
+                nextPhase();
+                break;
+            }
             calculateNumberOfRecruits();
             showCardsDialog();
             _window.endPhaseButtonEnabled(false);
@@ -34,10 +41,18 @@ void Controller::startPhase(PhaseName phase){
         case ATTACK:
             _current_phase = new AttackPhase(*this);  
             _window.endPhaseButtonEnabled(true);
+            if(PlayersData::instance().player(currentPlayer()).isNeutral()){
+                nextPhase();
+                break;
+            }
             break;
         case FORTIFY:
             _current_phase = new FortifyPhase(*this);
             _window.endPhaseButtonEnabled(true);
+            if(PlayersData::instance().player(currentPlayer()).isNeutral()){
+                nextPhase();
+                break;
+            }
             break;
     }
 }
@@ -52,24 +67,22 @@ void Controller::nextPhase(){
                 _current_player = _players_queue.begin();            
                 --_armies_to_distribute;
             }
-            if(_armies_to_distribute == 0){                
-                if(_skip_reinforce){
-                    _skip_reinforce = false;
-                    startPhase(ATTACK);
-                }   
-                else{
+            if(PlayersData::instance().player(currentPlayer()).isNeutral()){
+                nextPhase();
+                break;
+            }
+            if(_armies_to_distribute == 0){          
                     --_current_player;
                     startPhase(REINFORCE);     
-                }           
             }
+            
             break;
         case REINFORCE:
             startPhase(ATTACK);
             break;
         case ATTACK:
             startPhase(FORTIFY);
-            attacker_rolls.clear();
-            defender_rolls.clear();
+            clearCombatData();            
             break;
         case FORTIFY:
             if(_conquest_flag){
@@ -123,7 +136,7 @@ bool Controller::initPlayers(){
     
     if(sel >= 0 && sel < NUMBER_OF_COLORS){        
         color_taken[sel] = true;
-        players.push_back(Player(name, PlayerColor(sel)));
+        players.push_back(Player(name, PlayerColor(sel),false));
     }
     else{
         wxMessageBox("Wybierz kolor gracza 1!");
@@ -142,7 +155,7 @@ bool Controller::initPlayers(){
             return false;
         }
         color_taken[sel] = true;
-        players.push_back(Player(name, PlayerColor(sel)));
+        players.push_back(Player(name, PlayerColor(sel),false));
     }
     else{
         wxMessageBox("Wybierz kolor gracza 2!");
@@ -161,7 +174,7 @@ bool Controller::initPlayers(){
                 return false;
             }
             color_taken[sel] = true;
-            players.push_back(Player(name, PlayerColor(sel)));
+            players.push_back(Player(name, PlayerColor(sel),false));
         }
         else{
             wxMessageBox("Wybierz kolor gracza 3!");
@@ -181,7 +194,7 @@ bool Controller::initPlayers(){
                 return false;
             }
             color_taken[sel] = true;
-            players.push_back(Player(name, PlayerColor(sel)));
+            players.push_back(Player(name, PlayerColor(sel),false));
         }
         else{
             wxMessageBox("Wybierz kolor gracza 4!");
@@ -201,7 +214,7 @@ bool Controller::initPlayers(){
                 return false;
             }
             color_taken[sel] = true;
-            players.push_back(Player(name, PlayerColor(sel)));
+            players.push_back(Player(name, PlayerColor(sel),false));
         }
         else{
             wxMessageBox("Wybierz kolor gracza 5!");
@@ -221,7 +234,7 @@ bool Controller::initPlayers(){
                 return false;
             }
             color_taken[sel] = true;
-            players.push_back(Player(name, PlayerColor(sel)));
+            players.push_back(Player(name, PlayerColor(sel),false));
         }
         else{
             wxMessageBox("Wybierz kolor gracza 6!");
@@ -233,13 +246,29 @@ bool Controller::initPlayers(){
         pd.addPlayer(players[i]);
     }
 
+    if(pd.numberOfPlayers() == 2){
+        _two_player_game = true;
+        int color=0;
+        for(color = 0; color_taken[color] == true; ++color);
+        pd.addPlayer(Player("Neutralny", PlayerColor(color),true));
+    }
+    else{
+        _two_player_game = false;
+    }
+
     for(int i = 0; i < pd.numberOfPlayers(); ++i){
         _players_queue.push_back(i);
     }
+
+    
+
     srand(time(0));
-    std::random_shuffle(_players_queue.begin(),_players_queue.end());
+    if(!isTwoPlayerGame())
+        std::random_shuffle(_players_queue.begin(),_players_queue.end());
+    else
+        std::random_shuffle(_players_queue.begin(),_players_queue.end()-1);
+    
     _current_player = _players_queue.begin();
-    _skip_reinforce = _players_queue.size() == 2 ? true : false;
     startPhase(SETUP);
     SoundController::playSound(START_GAME);    
     return true;
@@ -426,8 +455,7 @@ void Controller::combat(unsigned int attacker, unsigned int defender){
 	std::sort(atk_rolls.rbegin(),atk_rolls.rend());
 	std::sort(def_rolls.rbegin(),def_rolls.rend());
 
-    attacker_rolls = atk_rolls;
-    defender_rolls = def_rolls;    
+    
 	
 	unsigned int comparisons = atk_dice > def_dice ? def_dice : atk_dice;
 	
@@ -443,6 +471,14 @@ void Controller::combat(unsigned int attacker, unsigned int defender){
 	
     board.region(attacker).removeArmies(atk_losses);
     board.region(defender).removeArmies(def_losses);
+
+    _combat_data = CombatData(atk_rolls, def_rolls, 
+                              PlayersData::instance().player(attacking_player).name(), 
+                              PlayersData::instance().player(defending_player).name(), 
+                              board.region(attacker).armyCount(), board.region(defender).armyCount(),
+                              board.region(attacker).name(), board.region(defender).name());
+                                
+
     if(board.region(attacker).armyCount() == 1)
         setSelectedRegion(NO_REGION_SELECTED);
     
@@ -670,4 +706,44 @@ void Controller::exchangeDifferent(){
 
 unsigned int Controller::exchangedSets(){
     return _sets_exchanged;
+}
+
+CombatData Controller::getCombatData(){
+    return _combat_data;
+}
+
+void Controller::clearCombatData(){
+    _combat_data = CombatData();
+}
+
+void Controller::randomRegionSetup(){
+    --_armies_to_distribute;
+    Board & board = Board::instance();
+    PlayersData & pd = PlayersData::instance();
+
+    std::vector<bool> region_taken;
+    for(int i = 0; i < board.numberOfRegions(); ++i){
+        region_taken.push_back(false);
+    }
+    std::vector<unsigned int>::iterator iter = _players_queue.begin();
+    while(!allRegionsTaken()){
+        int rand_reg = rand() % board.numberOfRegions();
+        while(region_taken[rand_reg] == true)
+            rand_reg = rand() % board.numberOfRegions();
+        board.region(rand_reg).setOwner(*iter);
+        if(pd.player(*iter).isNeutral()){
+            board.region(rand_reg).addArmies(3);
+        }
+        else{
+            board.region(rand_reg).addArmies(1);
+        }
+        region_taken[rand_reg] = true;
+        iter++;
+        if(iter == _players_queue.end())
+            iter = _players_queue.begin();
+    }
+}
+
+bool Controller::isTwoPlayerGame(){
+    return _two_player_game;
 }

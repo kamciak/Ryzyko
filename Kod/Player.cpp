@@ -1,9 +1,10 @@
 #include "Player.h"
 
 
-Player::Player(wxString player_name, PlayerColor player_color){
+Player::Player(wxString player_name, PlayerColor player_color, bool neutral){
     _color = player_color;
     _name = player_name;
+    _neutral = neutral;
     
     switch(player_color){
         case RED:
@@ -63,4 +64,8 @@ wxImage & Player::image(bool big){
         return _soldier_image_big;
     else
         return _soldier_image;
+}
+
+bool Player::isNeutral(){
+    return _neutral;
 }

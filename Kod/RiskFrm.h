@@ -118,7 +118,7 @@ class RiskFrm : public wxFrame
         void setDrawFlag();
         void setPermaDraw();
         void unsetPermaDraw();
-        void drawDice(std::vector<unsigned int> atk_rolls, std::vector<unsigned int> def_rolls, wxBufferedDC & bdc);
+        void drawDice(CombatData cd, wxBufferedDC & bdc);
 };
 
 #endif

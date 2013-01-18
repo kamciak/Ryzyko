@@ -19,13 +19,14 @@ private:
     wxImage _soldier_image;
     wxImage _soldier_image_big;
     PlayerColor _color;
-    
+    bool _neutral;
 public:
-    Player(wxString player_name, PlayerColor player_color);
+    Player(wxString player_name, PlayerColor player_color, bool neutral);
     std::vector<RiskCard*> hand;    
     wxString name();
     wxImage & image(bool big);
     PlayerColor color();
+    bool isNeutral();
 };
 
 

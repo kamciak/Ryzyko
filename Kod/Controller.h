@@ -9,6 +9,7 @@
 #include "CardsData.h"
 #include "CardDialog.h"
 #include "CardDrawInfo.h"
+#include "CombatData.h"
 
 class RiskFrm;
 class Phase;
@@ -36,8 +37,6 @@ private:
     unsigned int _armies_to_distribute;
     ///informacja czy w tej turze graczowi uda³o siê podbic jakis region
     bool _conquest_flag;
-    ///czy pierwsza faza rozmieszczania wojsk ma zostac opuszczona (2 graczy)
-    bool _skip_reinforce;
     ///Oblicza ile armii gracz otrzymuje w swojej fazie rekrutacji, uaktualnia _armies_to_distribute
     void calculateNumberOfRecruits();
     ///Dodaje do reki gracza karte ryzyka
@@ -46,15 +45,23 @@ private:
     unsigned int _sets_exchanged;
     ///zaczyna wybran¹ fazê i wykonuje wszystkie zwi¹zane z ni¹ czynnoœci
     void startPhase(PhaseName phase);
+    ///Dane o ostatniej bitwie
+    CombatData _combat_data;
+    //usuwa dane bitwy
+    void clearCombatData();
+    //czy gra dokladnie dwoch graczy (w takiej sytuacji inne sa zasady gry)
+    bool _two_player_game;
+    //losowe rozdzielenie poczatkowych regionow (w grze dwuosobowej)
+    void randomRegionSetup();
 public:    
     void regionClicked(unsigned int id);
     Controller(RiskFrm & window);
     ~Controller();
+   
 
-
-    ///Wartosci rzutow kosci ostatniego starcia
-    std::vector<unsigned int> attacker_rolls;
-    std::vector<unsigned int> defender_rolls;
+    ///zwraca dane bitwy
+    CombatData getCombatData();
+    
     ///Zwraca wartoœæ PhaseName odpowiadaj¹c¹ aktualnej fazie
     PhaseName getPhaseName();
     ///Przechodzi do nastepnej fazy w turze, lub konczy ture jezeli jest to ostatnia faza
@@ -93,6 +100,8 @@ public:
     bool hasThreeOfAKind();
     ///Zwraca wartosc logiczna czy aktualny gracz posiada trzy karty ryzyka z jednakowym obrazkiem
     bool hasThreeDifferent();
+    ///Czy gra dokladnie dwoch graczy (zasady sa inne jesli tak)
+    bool isTwoPlayerGame();
     ///Zwraca dane potrzebne do narysowania kart ryzyka w dialogu kart ryzyka
     std::vector<CardDrawInfo> getCardDrawInfo();
     ///dokonuje wymiany trzech jednakowych kart ryzyka aktualnego gracza na armie i umieszcza te armie w podanym regionie
