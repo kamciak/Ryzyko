@@ -35,10 +35,11 @@ BEGIN_EVENT_TABLE(StatusDialog,wxDialog)
 END_EVENT_TABLE()
 ////Event Table End
 
-StatusDialog::StatusDialog(bool status, wxWindow *parent, wxWindowID id, const wxString &title, const wxPoint &position, const wxSize& size, long style)
+StatusDialog::StatusDialog(bool status,wxString player_name, wxWindow *parent, wxWindowID id, const wxString &title, const wxPoint &position, const wxSize& size, long style)
 : wxDialog(parent, id, title, position, size, style), _status(status)
 {
 	CreateGUIControls();
+    _name = player_name;
 }
 
 StatusDialog::~StatusDialog()
@@ -90,6 +91,7 @@ void StatusDialog::WxPanel1UpdateUI(wxUpdateUIEvent& event)
 	   wxClientDC dc(WxPanel1);
 	   wxBufferedDC bdc(&dc);
 	   bdc.DrawBitmap(tlo,0,0,true);
+        bdc.DrawText(_name+" wygrywa!", 130,200);
     }
     else{    
     	wxImage image("Images/defeated_background.png");
@@ -97,6 +99,7 @@ void StatusDialog::WxPanel1UpdateUI(wxUpdateUIEvent& event)
     	wxClientDC dc(WxPanel1);
     	wxBufferedDC bdc(&dc);
     	bdc.DrawBitmap(tlo,0,0,true);
+        bdc.DrawText(_name+" przegrywa!", 130,200);
     }
 }
 

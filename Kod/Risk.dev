@@ -86,7 +86,7 @@ ProductName=
 ProductVersion=
 AutoIncBuildNrOnRebuild=0
 AutoIncBuildNrOnCompile=0
-UnitCount=36
+UnitCount=34
 
 [Profile1]
 ProfileName=MingW gcc
@@ -394,7 +394,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit33]
-FileName=StatusDialog.h
+FileName=StatusDialog.cpp
 CompileCpp=1
 Folder=Risk
 Compile=1
@@ -404,11 +404,11 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit34]
-FileName=StatusDialog.wxform
+FileName=StatusDialog.h
 CompileCpp=1
 Folder=Risk
-Compile=0
-Link=0
+Compile=1
+Link=1
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
@@ -434,7 +434,7 @@ BuildCmd=
 CompileCpp=1
 
 [Unit32]
-FileName=StatusDialog.cpp
+FileName=CombatData.cpp
 CompileCpp=1
 Folder=Risk
 Compile=1

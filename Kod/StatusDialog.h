@@ -41,7 +41,7 @@ class StatusDialog : public wxDialog
 		DECLARE_EVENT_TABLE();
 		
 	public:
-		StatusDialog(bool status, wxWindow *parent, wxWindowID id = 1, const wxString &title = wxT("StatusDialog"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = StatusDialog_STYLE);
+		StatusDialog(bool status, wxString player_name, wxWindow *parent, wxWindowID id = 1, const wxString &title = wxT("StatusDialog"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = StatusDialog_STYLE);
 		virtual ~StatusDialog();
 		void WxPanel1UpdateUI(wxUpdateUIEvent& event);
 		void WxBitmapButton1Click(wxCommandEvent& event);
@@ -73,6 +73,7 @@ class StatusDialog : public wxDialog
 		void OnClose(wxCloseEvent& event);
 		void CreateGUIControls();
 		bool _status;
+        wxString _name;
 };
 
 #endif

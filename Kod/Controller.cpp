@@ -501,8 +501,10 @@ void Controller::combat(unsigned int attacker, unsigned int defender){
 
         if(!owns){
            // wxMessageBox(PlayersData::instance().player(defending_player).name()+" przegrywa!");
-            StatusDialog * s = new StatusDialog(false,&_window);
+            _window.setPermaDraw();
+            StatusDialog * s = new StatusDialog(false, PlayersData::instance().player(defending_player).name(),&_window);
             s->ShowModal();
+            _window.unsetPermaDraw();
             std::vector<unsigned int>::iterator iter;
             for(iter = _players_queue.begin(); iter != _players_queue.end(); ++iter){
                 if(*iter == defending_player){
@@ -513,7 +515,9 @@ void Controller::combat(unsigned int attacker, unsigned int defender){
             if(_players_queue.size() == 1){
                 SoundController::playSound(END_GAME);   
                 //wxMessageBox(PlayersData::instance().player(currentPlayer()).name()+" wygrywa!");
-                 StatusDialog * s = new StatusDialog(true,&_window);
+                _window.setPermaDraw();
+                 StatusDialog * s = new StatusDialog(true,PlayersData::instance().player(attacking_player).name(),&_window);
+                _window.unsetPermaDraw();
                  s->ShowModal();
                 wxExit();
             }
